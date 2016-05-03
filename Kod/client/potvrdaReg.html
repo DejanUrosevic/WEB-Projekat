@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script src="angular.js"></script>
+    <script src="angular-resource.js"></script>
+    <script src="primer01.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+
+    <style>
+          #tableContainer-1 {
+            height: 100%;
+            width: 100%;
+            display: table;
+          }
+          #tableContainer-2 {
+            vertical-align: middle;
+            display: table-cell;
+            height: 100%;
+          }
+          #myTable {
+            margin: 0 auto;
+          }
+    </style>
+
+    <title>SlickTask - You will always know what you have to do</title>
+</head>
+
+<body ng-app="app">
+<div id="container">
+        <div id="header">
+            <h1>Slick<span class="off">Task</span></h1>       
+        </div>   
+        
+        <div id="menu">
+            <ul>
+                <li class="menuitem"><a href="index2.html">Home</a></li>
+            </ul>
+        </div>
+        
+       
+
+
+                
+                
+        
+        
+        
+        
+        
+        <div id="content" ng-controller="blogEntriesCtrl">
+        
+        
+        <div id="content_top"></div>
+        <div id="content_main">
+               <div id="tableContainer-1">
+                    <div id="tableContainer-2">
+                      <table id="myTable">
+                       <tr>
+                               <td style="text-align: center;"> <input type="image" src="images/regOk.png" border="0" alt="RegOK"/></td>                             
+                        </tr>
+                        <tr>
+                               <td style="text-align: center; font-size: 18px;"> Uspešno ste se registrovali. Čestitamo.</td>                             
+                        </tr>                                                             
+                       </table>
+              
+                  </div>
+                 </div>
+        </div>
+        <div id="content_bottom"></div>
+            
+            <div id="footer"></div>
+      </div>
+   </div>
+</body>
+</html>
