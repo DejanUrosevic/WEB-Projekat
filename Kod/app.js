@@ -81,4 +81,7 @@ app.use(function(err, req, res, next) {
 app.listen(port);
 
 
-console.log('Server radi nadasdasdasd portu ' + port);
+
+
+console.log('Server dfasfdasf radi na portu ' + port);
+
