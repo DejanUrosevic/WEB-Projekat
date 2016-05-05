@@ -81,4 +81,4 @@ app.use(function(err, req, res, next) {
 app.listen(port);
 
 
-console.log('Server radi na portu ' + port);
+console.log('Server funkcionise na portu ' + port);
