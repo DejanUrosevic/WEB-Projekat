@@ -83,5 +83,5 @@ app.listen(port);
 
 
 
-console.log('Server dfasfdasf radi na portu ' + port);
+console.log('Server radi na portu ' + port);
 
