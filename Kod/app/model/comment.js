@@ -3,24 +3,19 @@ var Schema = mongoose.Schema;
 
 // kreiramo novu shemu
 var commentSchema = new Schema({
-  signedBy: String,
-  text: {
+  autor: { type: Schema.Types.ObjectId, ref: 'Korisnik' },
+  tekst: {
     type: String,
     required: true
   },
-  createdAt: Date,
-  updatedAt: Date
+  createdAt: Date
 });
-//mozemo da napravimo rekurzivnu shemu, pa da komentari imaju svoje podkomentare
-commentSchema.add({comments:[commentSchema]});
+
 
 // prilikom snimanja se postavi datum
 commentSchema.pre('save', function(next) {
   // preuzmemo trenutni datum
   var currentDate = new Date();
-
-  // postavimo trenutni datum poslednju izmenu
-  this.updatedAt = currentDate;
 
   // ako nije postavljena vrednost za createdAt, postavimo je
   if (!this.createdAt)

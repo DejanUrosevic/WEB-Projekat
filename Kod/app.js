@@ -6,6 +6,8 @@ var mongoose = require('mongoose');
 var BlogEntry = require(__dirname + '/app/model/blogEntry');
 var Comment = require(__dirname + '/app/model/comment');
 var Korisnik = require(__dirname + '/app/model/korisnik');
+var Projekat = require(__dirname + '/app/model/projekat');
+var Zadatak = require(__dirname + '/app/model/zadatak');
 
 
 mongoose.connect('mongodb://localhost/blogApp');
@@ -56,9 +58,48 @@ korisnikRouter.post('/', function(req, res, next)
     });
 });
 
+var projekatRouter = express.Router();
+
+projekatRouter.post('/', function(req, res, next) 
+{
+    var projekat = new Projekat(req.body);
+    projekat.save(function(err, entry) 
+    {
+      if (err)
+      {
+      	console.log(err);
+      	next(err);
+      	return;
+      } 
+      res.json(entry);
+    });
+});
+
+var zadatakRouter = express.Router();
+
+zadatakRouter.post('/', function(req, res, next) 
+{
+    var zadatak = new Zadatak(req.body);
+    zadatak.save(function(err, entry) 
+    {
+      if (err)
+      {
+      	console.log(err);
+      	next(err);
+      	return;
+      } 
+      res.json(entry);
+    });
+});
+
+var commentRouter = express.Router();
+
 // dodavanje rutera zu blogEntries /api/blogEntries
 app.use('/api/blogEntries', blogEntryRouter);
 app.use('/api/korisnik', korisnikRouter);
+app.use('/api/projekat', projekatRouter);
+app.use('/api/zadatak', zadatakRouter);
+app.use('/api/komentar', commentRouter);
 //klijentsku angular aplikaciju serviramo iz direktorijuma client
 app.use('/blog', express.static(__dirname + '/client'));
 app.use('/lib', express.static(__dirname + '/bower_components'));

@@ -2,37 +2,26 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 // kreiramo novu shemu
-var korShema = new Schema({
-  ime: {
+var projekatShema = new Schema({
+  naziv: {
     type: String,
     required: true
   },
-  prezime:
-  {
-    type: String,
-    required: true
-  }, 
-  email: {
-    type: String,
+  oznaka: {
+  	type: String,
     required: true,
     unique: true
   },
-  lozinka:
-  {
-    type: String,
-    required: true
-  },
-  vrsta: String,
   createdAt: Date,
-  zadatak: [{ type: Schema.Types.ObjectId, ref: 'Zadatak' }]
+  zadatak: [{ type: Schema.Types.ObjectId, ref: 'Zadatak' }],
+  korisnici: [{ type: Schema.Types.ObjectId, ref: 'Korisnik' }]
 });
 
 // prilikom snimanja se postavi datum
-korShema.pre('save', function(next) 
+projekatShema.pre('save', function(next) 
 {
   // preuzmemo trenutni datum
   var currentDate = new Date();
-  this.vrsta = 'korisnik';
 
   // postavimo trenutni datum poslednju izmenu
   if (!this.createdAt)
@@ -43,7 +32,7 @@ korShema.pre('save', function(next)
 });
 
 // od sheme kreiramo model koji cemo koristiti
-var Korisnik = mongoose.model('Korisnik', korShema);
+var Projekat = mongoose.model('Projekat', projekatShema);
 
 // publikujemo kreirani model
-module.exports = Korisnik;
+module.exports = Projekat;
