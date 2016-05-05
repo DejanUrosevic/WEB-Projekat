@@ -3,7 +3,7 @@
 <head>
     <script src="angular.js"></script>
     <script src="angular-resource.js"></script>
-    <script src="primer01.js"></script>
+    <script src="primer02.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="style.css" />
 
@@ -39,7 +39,20 @@
                 <li class="menuitem"><a href="#">Products</a></li>
                 <li class="menuitem"><a href="#">Services</a></li>
                 <li class="menuitem"><a href="#">Design</a></li>
-              <li class="menuitem"><a href="#">Contact</a></li>
+                <li class="menuitem"><div ng-controller="projekatCtrl">                
+                        <select>
+                          <option selected>
+                            Skok na projekat
+                          </option>
+                          <option
+                                  ng-repeat="projEntry in projEntries"
+                                  value="{{projEntry.oznaka}}" >
+                                  
+                            {{projEntry.oznaka}}
+                          </option>
+                        </select>
+                      </div>
+                </li>
             </ul>
         </div>
         

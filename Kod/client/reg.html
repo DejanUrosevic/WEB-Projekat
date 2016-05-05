@@ -91,6 +91,28 @@
                     <div id="tableContainer-2">
                     
                     <div ng-controller="korisnikCtrl">
+                      <div ng-repeat="korEntry in korEntries">
+                        <div>
+                          {{ korEntry.ime }}
+                        </div>
+                        <div>
+                          {{ korEntry.prezime }}
+                        </div>
+                      </div>
+
+                      <div ng-controller="projekatCtrl">                
+                        <select>
+                          <option selected>
+                            Skok na projekat
+                          </option>
+                          <option
+                                  ng-repeat="projEntry in projEntries"
+                                  value="{{projEntry.oznaka}}" >
+                                  
+                            {{projEntry.oznaka}}
+                          </option>
+                        </select>
+                      </div>
                       <h2 style="text-align: center; color: gray;">Sign up</h2>
                       <br/>
                       

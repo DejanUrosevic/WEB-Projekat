@@ -3,7 +3,10 @@ var Schema = mongoose.Schema;
 
 // kreiramo novu shemu
 var zadatakSchema = new Schema({
-  oznaka: { type: String, ref: 'Projekat.oznaka' },
+  oznaka: { 
+  	type: String,
+  	ref: 'Projekat.oznaka'
+   },
   redni_broj: {
   	type: Number,
   	required: true

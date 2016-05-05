@@ -16,6 +16,18 @@
 			}
 		}  
 	};
+
+	var projekatCtrl = function ($scope, $resource) 
+	{
+		var ProjEntry = $resource('/api/projekat');
+		var loadEntries2 = function () 
+		{
+			$scope.projEntries = ProjEntry.query();		
+			$scope.projEntry = new ProjEntry();
+		}
+		loadEntries2();  
+	};
 	var app = angular.module('app',['ngResource']);
 	app.controller('korisnikCtrl', korisnikCtrl);
+	app.controller('projekatCtrl', projekatCtrl);
 }(angular));
