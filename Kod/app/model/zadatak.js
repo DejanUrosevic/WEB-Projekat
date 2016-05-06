@@ -5,7 +5,8 @@ var Schema = mongoose.Schema;
 var zadatakSchema = new Schema({
   oznaka: { 
   	type: String,
-  	ref: 'Projekat.oznaka'
+  	required: true,
+    unique: true
    },
   redni_broj: {
   	type: Number,

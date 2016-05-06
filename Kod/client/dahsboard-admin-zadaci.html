@@ -19,40 +19,38 @@
         <div id="content_main">
           <div id="tableContainer-1">
                   <div id="tableContainer-2">
-                            
-                             <h2 style="text-align: center;">Dostupni projekti</h2>
-                             <br/>
+                               <h2 style="text-align: center;">Dostupni projekti</h2>
+                               <br/>
 
-                                <table style="border-collapse: collapse; border: 1px solid black;">
-                                  <tr>
-                                    <th class="pravaTabela">ID</th>
-                                    <th class="pravaTabela">Naziv</th>
-                                    <th class="pravaTabela">Oznaka</th>
-                                    <th class="pravaTabela">Novi</th>
-                                    <th class="pravaTabela">Detalji</th>
-                                  </tr>
+                                  <table style="border-collapse: collapse; border: 1px solid black;">
+                                    <tr>
+                                      <th class="pravaTabela">ID</th>
+                                      <th class="pravaTabela">Naziv</th>
+                                      <th class="pravaTabela">Oznaka</th>
+                                      <th class="pravaTabela">Zadaci</th>
+                                      <th class="pravaTabela">Detalji</th>
+                                    </tr>
 
-                                  <tr ng-repeat="projEntry in projEntries">
-                                    <td class="pravaTabela">{{projEntry._id}}</td>
-                                    <td class="pravaTabela">{{projEntry.naziv}}</td>
-                                    <td class="pravaTabela">{{projEntry.oznaka}}</td>
-                                    <td <a ui-sref="/reg" class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;"> <img src="images/add.png" height="35"/></button></a></td>
-                                    <td <a ui-sref="/reg" class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;"> <img src="images/details.png" height="35"/></button></a></td>
-                                  </tr>
+                                    <tr ng-repeat="projEntry in projEntries">
+                                      <td class="pravaTabela">{{projEntry._id}}</td>
+                                      <td class="pravaTabela">{{projEntry.naziv}}</td>
+                                      <td class="pravaTabela">{{projEntry.oznaka}}</td>
+                                      <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="dodajZad(projEntry)"> <img src="images/add.png" height="35"/></button></td>
+                                      <td <a ui-sref="reg" class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;"> <img src="images/details.png" height="35"/></button></a></td>
+                                    </tr>
 
-                                </table>
-                                <select>
-                                  <option selected>
-                                    Skok na projekat
-                                  </option>
-                                  <option
-                                          ng-repeat="projEntry in projEntries"
-                                          value="{{projEntry.oznaka}}" >
-                                          
-                                    {{projEntry.naziv}}
-                                  </option>
-                                </select>
-                        
+                                  </table>
+                                  <select>
+                                    <option selected>
+                                      Skok na projekat
+                                    </option>
+                                    <option
+                                            ng-repeat="projEntry in projEntries"
+                                            value="{{projEntry.oznaka}}" >
+                                            
+                                      {{projEntry.naziv}}
+                                    </option>
+                                  </select>
               </div>
                          
         </div>

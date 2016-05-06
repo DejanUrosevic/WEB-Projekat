@@ -13,6 +13,7 @@ var projekatShema = new Schema({
     unique: true
   },
   createdAt: Date,
+  brojZadataka: Number,
   zadatak: [{ type: Schema.Types.ObjectId, ref: 'Zadatak' }],
   korisnici: [{ type: Schema.Types.ObjectId, ref: 'Korisnik' }]
 });
@@ -26,7 +27,7 @@ projekatShema.pre('save', function(next)
   // postavimo trenutni datum poslednju izmenu
   if (!this.createdAt)
     this.createdAt = currentDate;
-
+  this.brojZadataka = this.zadatak.length+1;
   // predjemo na sledecu funckiju u lancu
   next();
 });

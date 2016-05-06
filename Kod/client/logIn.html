@@ -15,13 +15,13 @@
                                 <h2 style="text-align: center; color: gray;"><u>Login<u/></h2>
                                 <br/>
                                 
-                                <form action="../api/korisnik/login" name="myForm" method="post">
+                                <form action="../api/korisnik/test" name="myForm" method="post">
                                     <table id="myTable">
                                         <tr>
-                                             <td> <input class="sredina" type="text" placeholder="Your username" size="30" name="user" required></input></td>
+                                             <td> <input class="sredina" type="text" placeholder="Your username" size="30" name="user" ng-model="username" required></input></td>
                                         </tr>
                                         <tr>
-                                           <td> <input class="sredina" type="password" placeholder="Your password" size="30" name="pass" required></input></td>                             
+                                           <td> <input class="sredina" type="password" placeholder="Your password" size="30" name="pass" ng-model="password" required></input></td>                             
                                         </tr>
                                         <tr>
                                            <td style="text-align: center;"> <input type="image" name="submit" src="images/login.jpg" border="0" alt="Login" width="85" height="50"/></td>                             
@@ -30,8 +30,8 @@
                                 </form>
                                 
                                 <br/><br>
-                                <a ui-sref="/reg"><button type="submit" style="background-color:transparent; border-color:transparent;"> <img src="images/signUp.jpg" height="35"/></button> </a>
-                                <a ui-sref="/main"> Proba za admina dash</a>
+                                <a ui-sref="reg"><button type="submit" style="background-color:transparent; border-color:transparent;"> <img src="images/signUp.jpg" height="35"/></button> </a>
+                                <a ui-sref="main"> Proba za admina dash</a>
                             
             	   </div>
             </div>

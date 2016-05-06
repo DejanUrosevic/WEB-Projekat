@@ -1,5 +1,5 @@
 (function (angular) {
-	var korisnikCtrl = function ($scope, $resource, $state) 
+	var korisnikCtrl = function ($scope, $resource) 
 	{
 		var KorEntry = $resource('/api/korisnik');
 		var loadEntries = function () 
@@ -17,7 +17,7 @@
 		} 
 	};
 
-	var projekatCtrl = function ($scope, $resource) 
+	var projekatCtrl = function ($scope, $resource, $location) 
 	{
 		var ProjEntry = $resource('/api/projekat');
 		var loadEntries2 = function () 
@@ -25,11 +25,45 @@
 			$scope.projEntries = ProjEntry.query();		
 			$scope.projEntry = new ProjEntry();
 		}
-		loadEntries2();  
+		loadEntries2();
+
+		$scope.dodajZad = function (projEntry) {
+      		$location.path('/projekat/'+projEntry._id);
+    	}
 	};
+
+	var projekatGetCtrl = function ($scope, $resource, $stateParams) 
+	{
+		var ProjEntry = $resource('/api/projekat/:_id');
+		var projEntryId = $stateParams.id;
+    	$scope.projZad = ProjEntry.get({_id:projEntryId});
+	}
+
+
+	var zadatakCtrl = function ($scope, $resource) 
+	{
+		var ZadEntry = $resource('/api/zadatak');
+		var loadEntries = function () 
+		{
+			$scope.zadEntries = ZadEntry.query();		
+			$scope.zadEntry = new ZadEntry();
+		}
+		loadEntries();
+		$scope.save = function () 
+		{
+			if(!$scope.zadEntry._id)
+			{
+				$scope.zadEntry.$save(loadEntries);
+			}
+		} 
+	};
+
+
 	var app = angular.module('app',['ui.router', 'ngResource']);
 	app.controller('korisnikCtrl', korisnikCtrl);
 	app.controller('projekatCtrl', projekatCtrl);
+	app.controller('projekatGetCtrl', projekatGetCtrl);
+	app.controller('zadatakCtrl', zadatakCtrl);
 
 	app.config(function($stateProvider, $urlRouterProvider) {
 	    $urlRouterProvider.otherwise('/login');
@@ -37,19 +71,24 @@
 	    $stateProvider
 	    .state('login', {//naziv stanja!
 	      url: '/login',
-	      templateUrl: 'logIn.html',
-	      controller: 'korisnikCtrl'
+	      templateUrl: 'logIn.html'
+	      //controller: 'korisnikCtrl'
 	    })
-	    .state('/reg', {
+	    .state('reg', {
 	      url: '/reg', 
 	      templateUrl: 'reg-unos.html',
 	      controller: 'korisnikCtrl'
 	    })
-	    .state('/main', {
+	    .state('main', {
 	      url: '/main', 
 	      templateUrl: 'dahsboard-admin-zadaci.html',
 	      controller: 'projekatCtrl'
-	    })	    
+	    })
+	    .state('addZad', {
+	      url: '/projekat/:id', 
+	      templateUrl: 'zad-unos.html'
+	    //  controller: 'projekatCtrl'
+	    })     
   	});
 
 }(angular));
