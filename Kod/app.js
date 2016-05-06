@@ -54,7 +54,7 @@ korisnikRouter
     });
 })
 /*
-.post('/login', function(req, res) {
+.post('/test', function(req, res) {
     var entry={"email": req.body.user};
     Korisnik.findOne(entry).exec(function(err, data, next) {
       res.json(data);
@@ -72,10 +72,18 @@ korisnikRouter
 			//	console.log("logovan");
 				kor = data;
         sess.email = req.body.user;
-
+        if(kor.vrsta == 'admin')
+        {
+          res.redirect("http://localhost:8080/blog/indexx.html#/main");
+          return;
+        }
+        else
+        {
+          res.redirect("http://localhost:8080/blog/indexx.html#/reg");
+          return;
+        }
 				//console.log(kor);
-				res.redirect("http://localhost:8080/blog/indexx.html#/main");
-				return;
+				
 			}else{
 			//	console.log("losa lozinka");
 				res.redirect("blog/indexx.html");
@@ -93,7 +101,6 @@ korisnikRouter
 	var k = req.session.user;
 	console.log(k);
 });
-
 
 var projekatRouter = express.Router();
 

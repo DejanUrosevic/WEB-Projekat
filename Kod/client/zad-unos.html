@@ -35,20 +35,18 @@
                         </select>
                       </div>
                       -->
-                          <div ng-controller="projekatGetCtrl">
+                          <div ng-controller="zadatakCtrl">
                             <h2 style="text-align: center; color: gray;">Unos novog zadatka za projekat <span style="color: #10100a;">{{projZad.naziv}}</span> </h2>
                             <br/>
                           
-                              <form action="potvrdaReg.html" name="myForm">
+                              
                                 <table  id="myTable">
                                     <tr>
                                          <td> <input class="sredina" type="text" size="30" ng-model="projZad.oznaka" readonly></input></td>
                                     </tr>                      
                                     <tr>
-                                       <td> <input class="sredina" type="text"  size="30" ng-model="projZad.brojZadataka+1" readonly></input></td>                             
+                                       <td> <input class="sredina" type="text"  size="30" ng-model="projZad.brojZadataka" readonly></input></td>                             
                                     </tr>
-                          </div>
-                          <div ng-controller="zadatakCtrl">
                                 <tr>
                                      <td> <input class="sredina" type="text" placeholder="Unesite naslov zadatka" size="30" ng-model="zadEntry.naslov" required></input></td>
                                 </tr>
@@ -56,10 +54,10 @@
                                    <td> <input class="sredina" type="text" placeholder="Opis zadatka" size="30" ng-model="zadEntry.opis"></input required></td>                            
                                 </tr>
                                 <tr>
-                                   <td style="text-align: center;"> <button type="submit" style="background-color:transparent; border-color:transparent;" ng-click="save()"> <img src="images/submit.jpg" height="35"/></button></td>                             
+                                   <td style="text-align: center;"> <a ui-sref="main"><button type="submit" style="background-color:transparent; border-color:transparent;" ng-click="save()"> <img src="images/submit.jpg" height="35"/></button> </a></td>                             
                                 </tr>                                                          
                             </table>
-                          </form>
+                          
                         </div>
                       </div>
               </div>               

@@ -24,16 +24,17 @@ var zadatakSchema = new Schema({
   korisnik: { type: Schema.Types.ObjectId, ref: 'Korisnik' },
   createdAt: Date,
   komentari: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
-  status: {
-  	type: String, 
-  	enum: ['To Do', 'In Progress', 'Verify', 'Done'],
-  	required: true
-  },
   prioritet: {
   	type: String, 
   	enum: ['Blocker', 'Critical', 'Major', 'Minor', 'Trivial']
   },
-  izmeneZadatka: [{ type: Schema.Types.ObjectId, ref: 'Zadatak' }]
+  izmeneZadatka: [{ type: Schema.Types.ObjectId, ref: 'Zadatak' }],
+  status: 
+  {
+    type: String, 
+    enum: ['To Do', 'In Progress', 'Verify', 'Done'],
+    required: true
+  }
   
 });
 

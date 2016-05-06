@@ -14,7 +14,7 @@
 			{
 				$scope.korEntry.$save(loadEntries);
 			}
-		} 
+		}
 	};
 
 	var projekatCtrl = function ($scope, $resource, $location) 
@@ -32,15 +32,7 @@
     	}
 	};
 
-	var projekatGetCtrl = function ($scope, $resource, $stateParams) 
-	{
-		var ProjEntry = $resource('/api/projekat/:_id');
-		var projEntryId = $stateParams.id;
-    	$scope.projZad = ProjEntry.get({_id:projEntryId});
-	}
-
-
-	var zadatakCtrl = function ($scope, $resource) 
+	var zadatakCtrl = function ($scope, $resource, $stateParams) 
 	{
 		var ZadEntry = $resource('/api/zadatak');
 		var loadEntries = function () 
@@ -56,13 +48,17 @@
 				$scope.zadEntry.$save(loadEntries);
 			}
 		} 
+
+		var ProjEntry = $resource('/api/projekat/:_id');
+		var projEntryId = $stateParams.id;
+    	$scope.projZad = ProjEntry.get({_id:projEntryId});
 	};
+
 
 
 	var app = angular.module('app',['ui.router', 'ngResource']);
 	app.controller('korisnikCtrl', korisnikCtrl);
 	app.controller('projekatCtrl', projekatCtrl);
-	app.controller('projekatGetCtrl', projekatGetCtrl);
 	app.controller('zadatakCtrl', zadatakCtrl);
 
 	app.config(function($stateProvider, $urlRouterProvider) {
@@ -72,7 +68,6 @@
 	    .state('login', {//naziv stanja!
 	      url: '/login',
 	      templateUrl: 'logIn.html'
-	      //controller: 'korisnikCtrl'
 	    })
 	    .state('reg', {
 	      url: '/reg', 
