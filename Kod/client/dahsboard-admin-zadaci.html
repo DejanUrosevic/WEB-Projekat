@@ -1,0 +1,38 @@
+  <div id="tableContainer-1">
+          <div id="tableContainer-2">
+                    
+                  
+
+                     
+                      <h2 style="text-align: center;">Zadaci</h2>
+                     <br/>
+
+                        <table>
+                          <tr>
+                            <th>ID</th>
+                            <th>Naziv</th>
+                            <th>Oznaka</th>
+                          </tr>
+
+                          <tr ng-repeat="projEntry in projEntries">
+                            <td>{{projEntry._id}}</td>
+                            <td>{{projEntry.naziv}}</td>
+                            <td>{{projEntry.oznaka}}</td>
+                          </tr>
+
+                        </table>
+                        <select>
+                          <option selected>
+                            Skok na projekat
+                          </option>
+                          <option
+                                  ng-repeat="projEntry in projEntries"
+                                  value="{{projEntry.oznaka}}" >
+                                  
+                            {{projEntry.naziv}}
+                          </option>
+                        </select>
+                
+      </div>
+                 
+</div>

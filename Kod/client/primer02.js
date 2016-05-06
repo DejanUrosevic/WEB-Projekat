@@ -37,13 +37,18 @@
 	    $stateProvider
 	    .state('login', {//naziv stanja!
 	      url: '/login',
-	      templateUrl: 'logIn.html',
+	      templateUrl: 'logIn.html'
 	    //  controller: 'korisnikCtrl'
 	    })
 	    .state('/reg', {
 	      url: '/reg', 
 	      templateUrl: 'reg-unos.html',
 	      controller: 'korisnikCtrl'
+	    })
+	    .state('/main', {
+	      url: '/main', 
+	      templateUrl: 'dahsboard-admin-zadaci.html',
+	      controller: 'projekatCtrl'
 	    })	    
   	});
 
