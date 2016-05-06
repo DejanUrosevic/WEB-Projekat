@@ -3,12 +3,17 @@
   "version": "0.1.1",
   "description": "Primer REST back end aplikacije. Node, Express, MongoDB, Mongoose.",
   "author": "Milan Segedinac <milan.segedinac@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/npm/npm.git"
+  },
   "dependencies": {
     "body-parser": "^1.14.2",
     "express": "^4.13.4",
-    "mongoose": "^4.3.7"
+    "express-session": "^1.13.0",
+    "mongoose": "^4.3.7",
+    "request": "^2.58.0"
   },
   "devDependencies": {},
   "license": "MIT"
 }
-  
