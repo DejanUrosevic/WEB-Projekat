@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var session = require('express-session');
 // koristimo mongoose model koju smo kreirali u folderu model
 var Comment = require(__dirname + '/app/model/comment');
 var Korisnik = require(__dirname + '/app/model/korisnik');
@@ -11,7 +12,7 @@ var Zadatak = require(__dirname + '/app/model/zadatak');
 
 mongoose.connect('mongodb://localhost/blogApp');
 
-
+console.log(session);
 // konfigurisemo bodyParser()
 // da bismo mogli da preuzimamo podatke iz POST zahteva
 app.use(bodyParser.urlencoded({
@@ -19,6 +20,12 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 var port = process.env.PORT || 8080; // na kom portu slusa server
+
+var sess;
+
+app.get('/', function(req, res) {
+  res.send('hello world');
+});
 
 var korisnikRouter = express.Router();
 
@@ -42,6 +49,36 @@ korisnikRouter
       } 
       res.json(entry);
     });
+})
+.post('/test', function(req, res, next){
+	sess = req.session;
+	console.log(sess);
+	Korisnik.findOne({"email" : req.body.user}).exec(function(err, data, next){
+		var kor;
+		if(data !== null){
+			console.log(data.email + "------");
+			if(data.lozinka === req.body.pass){
+				console.log("logovan");
+				kor = data;
+				//console.log(kor);
+				res.redirect("blog/logovan.html");
+				return;
+			}else{
+				console.log("losa lozinka");
+				res.redirect("blog/index2.html");
+				return;
+			}
+		}else{
+			console.log("null");
+			res.redirect("/blog/index2.html");
+			return;
+		}
+	});
+	//console.log(req.body.user + " " + req.body.pass);
+})
+.get('/proba', function(req, res, next){
+	var k = req.session.user;
+	console.log(k);
 });
 
 var projekatRouter = express.Router();
