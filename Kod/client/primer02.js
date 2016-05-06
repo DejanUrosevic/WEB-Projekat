@@ -27,7 +27,24 @@
 		}
 		loadEntries2();  
 	};
-	var app = angular.module('app',['ngResource']);
+	var app = angular.module('app',['ui.router', 'ngResource']);
 	app.controller('korisnikCtrl', korisnikCtrl);
 	app.controller('projekatCtrl', projekatCtrl);
+
+	app.config(function($stateProvider, $urlRouterProvider) {
+	    $urlRouterProvider.otherwise('/login');
+
+	    $stateProvider
+	    .state('login', {//naziv stanja!
+	      url: '/login',
+	      templateUrl: 'logIn.html',
+	    //  controller: 'korisnikCtrl'
+	    })
+	    .state('/reg', {
+	      url: '/reg', 
+	      templateUrl: 'reg-unos.html',
+	      controller: 'korisnikCtrl'
+	    })	    
+  	});
+
 }(angular));
