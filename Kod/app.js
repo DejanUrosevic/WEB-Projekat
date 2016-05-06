@@ -12,7 +12,7 @@ var Zadatak = require(__dirname + '/app/model/zadatak');
 
 mongoose.connect('mongodb://localhost/blogApp');
 
-console.log(session);
+//console.log(session);
 // konfigurisemo bodyParser()
 // da bismo mogli da preuzimamo podatke iz POST zahteva
 app.use(bodyParser.urlencoded({
@@ -23,9 +23,6 @@ var port = process.env.PORT || 8080; // na kom portu slusa server
 
 var sess;
 
-app.get('/', function(req, res) {
-  res.send('hello world');
-});
 
 var korisnikRouter = express.Router();
 
@@ -61,16 +58,16 @@ korisnikRouter
 				console.log("logovan");
 				kor = data;
 				//console.log(kor);
-				res.redirect("blog/logovan.html");
+				res.redirect("http://localhost:8080/blog/indexx.html#/main");
 				return;
 			}else{
 				console.log("losa lozinka");
-				res.redirect("blog/index2.html");
+				res.redirect("blog/indexx.html");
 				return;
 			}
 		}else{
 			console.log("null");
-			res.redirect("/blog/index2.html");
+			res.redirect("/blog/indexx.html");
 			return;
 		}
 	});
@@ -80,6 +77,7 @@ korisnikRouter
 	var k = req.session.user;
 	console.log(k);
 });
+
 
 var projekatRouter = express.Router();
 
@@ -91,7 +89,7 @@ projekatRouter
     });
 });
 
-// dodavanje rutera zu blogEntries /api/blogEntries
+// dodavanje rutera za blogEntries /api/blogEntries
 app.use('/api/korisnik', korisnikRouter);
 app.use('/api/projekat', projekatRouter);
 //klijentsku angular aplikaciju serviramo iz direktorijuma client

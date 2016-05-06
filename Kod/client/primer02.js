@@ -1,5 +1,5 @@
 (function (angular) {
-	var korisnikCtrl = function ($scope, $resource) 
+	var korisnikCtrl = function ($scope, $resource, $state) 
 	{
 		var KorEntry = $resource('/api/korisnik');
 		var loadEntries = function () 
@@ -14,7 +14,9 @@
 			{
 				$scope.korEntry.$save(loadEntries);
 			}
-		}  
+		} 
+
+		
 	};
 
 	var projekatCtrl = function ($scope, $resource) 
@@ -37,8 +39,8 @@
 	    $stateProvider
 	    .state('login', {//naziv stanja!
 	      url: '/login',
-	      templateUrl: 'logIn.html'
-	    //  controller: 'korisnikCtrl'
+	      templateUrl: 'logIn.html',
+	      controller: 'korisnikCtrl'
 	    })
 	    .state('/reg', {
 	      url: '/reg', 
