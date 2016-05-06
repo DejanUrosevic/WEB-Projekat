@@ -3,6 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
+var passport = require('passport');
 // koristimo mongoose model koju smo kreirali u folderu model
 var Comment = require(__dirname + '/app/model/comment');
 var Korisnik = require(__dirname + '/app/model/korisnik');
@@ -21,7 +22,9 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 var port = process.env.PORT || 8080; // na kom portu slusa server
 
+//inicijalizacija sesije
 var sess;
+app.use(session({secret: 'ssshhhhh'}));
 
 
 var korisnikRouter = express.Router();
@@ -47,7 +50,7 @@ korisnikRouter
       res.json(entry);
     });
 })
-.post('/test', function(req, res, next){
+.post('/login', function(req, res, next){
 	sess = req.session;
 	console.log(sess);
 	Korisnik.findOne({"email" : req.body.user}).exec(function(err, data, next){

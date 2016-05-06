@@ -15,8 +15,6 @@
 				$scope.korEntry.$save(loadEntries);
 			}
 		} 
-
-		
 	};
 
 	var projekatCtrl = function ($scope, $resource) 
