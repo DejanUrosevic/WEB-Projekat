@@ -33,6 +33,7 @@ var zadatakSchema = new Schema({
   {
     type: String, 
     enum: ['To Do', 'In Progress', 'Verify', 'Done'],
+    default: 'To Do',
     required: true
   }
   
@@ -43,7 +44,7 @@ zadatakSchema.pre('save', function(next)
 {
   // preuzmemo trenutni datum
   var currentDate = new Date();
-  this.status = 'To Do';
+  
 
   // postavimo trenutni datum poslednju izmenu
   if (!this.createdAt)

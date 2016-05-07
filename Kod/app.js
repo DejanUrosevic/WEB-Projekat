@@ -30,14 +30,14 @@ var korisnikRouter = express.Router();
 
 korisnikRouter
 .get('/', function(req, res) {
-    sess = req.session;
-    if(sess.email)
-    {
+  //  sess = req.session;
+  //  if(sess.email)
+   // {
       var entry={};
       Korisnik.find(entry).exec(function(err, data, next) {
         res.json(data);
       });
-    }
+  //  }
 })
 .post('/', function(req, res, next) 
 {
@@ -102,6 +102,7 @@ korisnikRouter
 	console.log(k);
 });
 
+// router za projekat
 var projekatRouter = express.Router();
 
 projekatRouter
@@ -114,6 +115,20 @@ projekatRouter
 .get('/:id', function(req, res) {
     Projekat.findOne({"_id": req.params.id}).exec(function(err, data, next) {
       res.json(data);
+    });
+})
+.post('/', function(req, res, next) 
+{
+    var projekat = new Projekat(req.body);
+    projekat.save(function(err, entry) 
+    {
+      if (err)
+      {
+        console.log(err);
+        next(err);
+        return;
+      } 
+      res.json(entry);
     });
 });
 
@@ -140,7 +155,7 @@ zadatakRouter
 // dodavanje rutera za blogEntries /api/blogEntries
 app.use('/api/korisnik', korisnikRouter);
 app.use('/api/projekat', projekatRouter);
-app.use('/api/zadatak', projekatRouter);
+app.use('/api/zadatak', zadatakRouter);
 //klijentsku angular aplikaciju serviramo iz direktorijuma client
 app.use('/blog', express.static(__dirname + '/client'));
 app.use('/lib', express.static(__dirname + '/bower_components'));

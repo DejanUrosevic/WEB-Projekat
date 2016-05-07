@@ -1,7 +1,7 @@
 (function (angular) {
 	var korisnikCtrl = function ($scope, $resource) 
 	{
-		var KorEntry = $resource('/api/korisnik');
+		var KorEntry = $resource('/api/korisnik/');
 		var loadEntries = function () 
 		{
 			$scope.korEntries = KorEntry.query();		
@@ -17,19 +17,46 @@
 		}
 	};
 
-	var projekatCtrl = function ($scope, $resource, $location) 
+	var projekatCtrl = function ($scope, $resource, $location, $stateParams) 
 	{
-		var ProjEntry = $resource('/api/projekat');
+		var ProjEntry = $resource('/api/projekat', {'query':  {method:'GET', isArray:true}});
 		var loadEntries2 = function () 
 		{
 			$scope.projEntries = ProjEntry.query();		
 			$scope.projEntry = new ProjEntry();
 		}
 		loadEntries2();
+		//dodavanje novog projekta
+		$scope.save = function () 
+		{
+			if(!$scope.projEntry._id)
+			{
+				$scope.projEntry.$save(loadEntries2);
+			}
+		}
 
 		$scope.dodajZad = function (projEntry) {
       		$location.path('/projekat/'+projEntry._id);
     	}
+
+    	$scope.dodajUser = function (projEntry) {
+      		$location.path('/projekat' + '/korisnik/' +projEntry._id);
+    	}
+
+    	//za korisnike
+    	var KorEntry = $resource('/api/korisnik');
+		var loadEntries = function () 
+		{
+			$scope.korEntries = KorEntry.query();		
+			$scope.korEntry = new KorEntry();
+		}
+		loadEntries();
+
+		//preuzimanje odgovarajuceg projekta
+		var ProjEntry2 = $resource('/api/projekat/:_id');
+		var projEntryId = $stateParams.id;
+    	$scope.projUser = ProjEntry2.get({_id:projEntryId});
+
 	};
 
 	var zadatakCtrl = function ($scope, $resource, $stateParams) 
@@ -83,7 +110,17 @@
 	      url: '/projekat/:id', 
 	      templateUrl: 'zad-unos.html'
 	    //  controller: 'projekatCtrl'
-	    })     
+	    })
+	    .state('spisakUserProjekat', {
+	      url: '/projekat/korisnik/:id', 
+	      templateUrl: 'spisak-korisnika-projekat.html'
+	    //  controller: 'projekatCtrl'
+	    }) 
+	    .state('addProjekat', {
+	      url: '/newProject', 
+	      templateUrl: 'projekat-unos.html'
+	    //  controller: 'projekatCtrl'
+	    })    
   	});
 
 }(angular));
