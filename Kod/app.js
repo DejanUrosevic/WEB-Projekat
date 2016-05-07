@@ -108,12 +108,12 @@ var projekatRouter = express.Router();
 projekatRouter
 .get('/', function(req, res) {
     var entry={};
-    Projekat.find(entry).exec(function(err, data, next) {
+    Projekat.find(entry).populate('korisnici').populate('zadatak').exec(function(err, data, next) {
       res.json(data);
     });
 })
 .get('/:id', function(req, res) {
-    Projekat.findOne({"_id": req.params.id}).exec(function(err, data, next) {
+    Projekat.findOne({"_id": req.params.id}).populate('korisnici').populate('zadatak').exec(function(err, data, next) {
       res.json(data);
     });
 })
@@ -130,26 +130,54 @@ projekatRouter
       } 
       res.json(entry);
     });
+})
+.post('/:id/zadatak', function(req, res, next) 
+{
+    var zadatak = new Zadatak(req.body);
+    Projekat.findOne({"_id":req.params.id},function (err, entry) {
+    if(err) next(err);
+    zadatak.save(function (err, zadatak) {
+      if(err) next(err);
+      Projekat.findByIdAndUpdate(entry._id, {$push:{"zadatak":zadatak._id}}, function (err, entry) {
+        if(err) next(err);
+        res.json(entry);
+      });
+    });
+  });
+})
+.get('/:id/zadatak', function(req, res) {
+    var entry={"_id":req.params.id};
+    Projekat.findOne(entry).populate('korisnici').populate('zadatak').exec(function(err, data, next) {
+      console.log(data.zadatak);
+      res.json(data.zadatak); 
+    });
 });
 
 var zadatakRouter = express.Router();
 
+/*
 zadatakRouter
 .post('/', function(req, res, next) 
 {
     var zadatak = new Zadatak(req.body);
-    zadatak.save(function(err, entry) 
-    {
-      if (err)
-      {
-        console.log(err);
-        next(err);
-        return;
-      } 
-      res.json(entry);
+    Projekat.findOne({"oznaka":req.body.sifraOznaka},function (err, entry) {
+    if(err) next(err);
+    zadatak.save(function (err, zadatak) {
+      if(err) next(err);
+      Projekat.findByIdAndUpdate(entry._id, {$push:{"zadatak":zadatak._id}}, function (err, entry) {
+        if(err) next(err);
+        res.json(entry);
+      });
+    });
+  });
+})
+.get('/', function(req, res) {
+    var entry={};
+    Zadatak.find(entry).exec(function(err, data, next) {
+      res.json(data);
     });
 });
-
+*/
 
 
 // dodavanje rutera za blogEntries /api/blogEntries

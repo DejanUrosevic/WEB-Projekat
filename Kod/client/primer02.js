@@ -19,7 +19,7 @@
 
 	var projekatCtrl = function ($scope, $resource, $location, $stateParams) 
 	{
-		var ProjEntry = $resource('/api/projekat', {'query':  {method:'GET', isArray:true}});
+		var ProjEntry = $resource('/api/projekat');
 		var loadEntries2 = function () 
 		{
 			$scope.projEntries = ProjEntry.query();		
@@ -33,14 +33,17 @@
 			{
 				$scope.projEntry.$save(loadEntries2);
 			}
+			else{
+				$scope.projEntry.$update(loadEntries2);				
+			}
 		}
 
 		$scope.dodajZad = function (projEntry) {
-      		$location.path('/projekat/'+projEntry._id);
+      		$location.path('/projekat/'+projEntry._id + '/zadatak');
     	}
 
     	$scope.dodajUser = function (projEntry) {
-      		$location.path('/projekat' + '/korisnik/' +projEntry._id);
+      		$location.path('/projekat/'+ projEntry._id + '/korisnik');
     	}
 
     	//za korisnike
@@ -57,11 +60,13 @@
 		var projEntryId = $stateParams.id;
     	$scope.projUser = ProjEntry2.get({_id:projEntryId});
 
+
+
 	};
 
 	var zadatakCtrl = function ($scope, $resource, $stateParams) 
 	{
-		var ZadEntry = $resource('/api/zadatak');
+		var ZadEntry = $resource('/api/projekat/:id/zadatak');
 		var loadEntries = function () 
 		{
 			$scope.zadEntries = ZadEntry.query();		
@@ -107,12 +112,12 @@
 	      controller: 'projekatCtrl'
 	    })
 	    .state('addZad', {
-	      url: '/projekat/:id', 
+	      url: '/projekat/:id/zadatak', 
 	      templateUrl: 'zad-unos.html'
 	    //  controller: 'projekatCtrl'
 	    })
 	    .state('spisakUserProjekat', {
-	      url: '/projekat/korisnik/:id', 
+	      url: '/projekat/:id/korisnik', 
 	      templateUrl: 'spisak-korisnika-projekat.html'
 	    //  controller: 'projekatCtrl'
 	    }) 
