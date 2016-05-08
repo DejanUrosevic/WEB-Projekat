@@ -9,7 +9,6 @@ var Korisnik = require(__dirname + '/app/model/korisnik');
 var Projekat = require(__dirname + '/app/model/projekat');
 var Zadatak = require(__dirname + '/app/model/zadatak');
 
-
 mongoose.connect('mongodb://localhost/blogApp');
 
 //console.log(session);
@@ -131,14 +130,22 @@ projekatRouter
       res.json(entry);
     });
 })
-.post('/:id/zadatak', function(req, res, next) 
+.post('/zadatak', function(req, res, next) 
 {
+  //pitaj zasto ne moze adresa '/:id/zadatak' ??
     var zadatak = new Zadatak(req.body);
-    Projekat.findOne({"_id":req.params.id},function (err, entry) {
+    console.log('Pocetak  '+zadatak);
+    Projekat.findOne({"oznaka":zadatak.oznaka},function (err, entry) {
     if(err) next(err);
     zadatak.save(function (err, zadatak) {
-      if(err) next(err);
-      Projekat.findByIdAndUpdate(entry._id, {$push:{"zadatak":zadatak._id}}, function (err, entry) {
+      if(err)
+      {
+        console.log(err);
+        next(err);
+        
+      }
+      console.log('Kraj  '+ zadatak); 
+      Projekat.findByIdAndUpdate(entry._id, {$push:{"zadatak":zadatak}}, function (err, entry) {
         if(err) next(err);
         res.json(entry);
       });

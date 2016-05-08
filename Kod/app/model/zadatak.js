@@ -5,8 +5,7 @@ var Schema = mongoose.Schema;
 var zadatakSchema = new Schema({
   oznaka: { 
   	type: String,
-  	required: true,
-    unique: true
+  	required: true
    },
   redni_broj: {
   	type: Number,
