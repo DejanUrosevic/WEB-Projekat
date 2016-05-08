@@ -39,10 +39,6 @@
 				$scope.projEntry.$save(loadEntries2);
 			}
 		}
-		//brisanje korisnika iz projekta
-		$scope.obrisiUsera = function (projEntry) {
-			projEntry.$delete(loadEntries);
-		}
 
 		$scope.dodajZad = function (projEntry) {
       		$location.path('/projekat/'+projEntry._id + '/zadatak');
@@ -73,9 +69,9 @@
 
 	};
 
-	var zadatakCtrl = function ($scope, $resource, $stateParams) 
+	var zadatakCtrl = function ($scope, $resource, $stateParams, $location) 
 	{
-		var ZadEntry = $resource('/api/projekat/:id/zadatak');
+		var ZadEntry = $resource('/api/projekat/:_id/zadatak/');
 		var loadEntries = function () 
 		{
 			$scope.zadEntries = ZadEntry.query();		
@@ -84,7 +80,7 @@
 			//--------------------
 			var ProjEntry = $resource('/api/projekat/:_id');
 			var projEntryId = $stateParams.id;
-		    var projZad = ProjEntry.get({_id:projEntryId}, function (userInfo) 
+		    projZad = ProjEntry.get({_id:projEntryId}, function (userInfo) 
 		    {
 		    	 $scope.zadEntry.oznaka = userInfo.oznaka;
 		    	 $scope.zadEntry.redni_broj = userInfo.zadatak.length+1;
@@ -103,10 +99,39 @@
 		var ProjEntry = $resource('/api/projekat/:_id');
 		var projEntryId = $stateParams.id;
     	$scope.projZad = ProjEntry.get({_id:projEntryId});
-
-    	
-
 	};
+
+	var zadatakBrisanjeCtrl = function ($scope, $resource, $stateParams) 
+	{
+		var ZadEntry = $resource('/api/zadatak/:id',
+			{id:'@_id'});
+		var loadEntries = function () 
+		{
+			$scope.zadEntries = ZadEntry.query();		
+			$scope.zadEntry = new ZadEntry();
+		}
+		loadEntries();
+
+
+		$scope.obrisiZad = function (zadatak) 
+		{
+			var zad = ZadEntry.get({"_id": zadatak._id},function (userInfo) 
+		    {
+		    	console.log(zad);
+				console.log(zadatak);
+				zad.$delete(loadEntries);
+				
+		    });
+			
+
+		}
+
+		var ProjEntry = $resource('/api/projekat/:_id');
+		var projEntryId = $stateParams.id;
+    	$scope.projZad = ProjEntry.get({_id:projEntryId});
+	}
+
+
 
 
 
@@ -114,6 +139,7 @@
 	app.controller('korisnikCtrl', korisnikCtrl);
 	app.controller('projekatCtrl', projekatCtrl);
 	app.controller('zadatakCtrl', zadatakCtrl);
+	app.controller('zadatakBrisanjeCtrl', zadatakBrisanjeCtrl);
 
 	app.config(function($stateProvider, $urlRouterProvider) {
 	    $urlRouterProvider.otherwise('/login');
@@ -146,7 +172,7 @@
 	    .state('zadaciProj', {
 	      url: '/projekat/:id/zadaci', 
 	      templateUrl: 'svi-zadaci-projekat.html',
-	      controller: 'projekatCtrl'
+	      controller: 'zadatakBrisanjeCtrl'
 	    }) 
 	    .state('addProjekat', {
 	      url: '/newProject', 

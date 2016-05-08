@@ -142,11 +142,7 @@ projekatRouter
 .post('/zadatak', function(req, res, next) 
 {
   //pitaj zasto ne moze adresa '/:id/zadatak' ??
-    console.log(req.body);
-    console.log(req.body.oznaka);
-
     var zadatak = new Zadatak(req.body);
-    console.log('Pocetak  '+zadatak);
     Projekat.findOne({"oznaka":zadatak.oznaka},function (err, entry) {
     if(err) next(err);
     zadatak.save(function (err, zadatak) {
@@ -176,20 +172,34 @@ projekatRouter
       console.log(data.korisnici);
       res.json(data.korisnici); 
     });
+});
+
+
+var zadatakRouter = express.Router();
+
+
+zadatakRouter
+.get('/', function(req, res) {
+    var entry={};
+    Zadatak.find(entry).exec(function(err, data, next) {
+      res.json(data);
+    });
+})
+.get('/:id', function(req, res) {
+    Zadatak.findOne({"_id": req.params.id}).exec(function(err, data, next) {
+      res.json(data);
+    });
 })
 .delete('/:id', function(req, res, next) {
-    Projekat.remove({
+    Zadatak.remove({
       "_id": req.params.id
     }, function(err, successIndicator) {
       if (err) next(err);
       res.json(successIndicator);
     });
 });
-
-var zadatakRouter = express.Router();
-
 /*
-zadatakRouter
+
 .post('/', function(req, res, next) 
 {
     var zadatak = new Zadatak(req.body);
