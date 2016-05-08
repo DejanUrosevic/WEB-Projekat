@@ -15,11 +15,16 @@
 				$scope.korEntry.$save(loadEntries);
 			}
 		}
+
+		$scope.delete = function (user) {
+			user.$delete(loadEntries);
+		}
 	};
 
 	var projekatCtrl = function ($scope, $resource, $location, $stateParams) 
 	{
-		var ProjEntry = $resource('/api/projekat');
+		var ProjEntry = $resource('/api/projekat/:id',
+			{id: '@_id'});
 		var loadEntries2 = function () 
 		{
 			$scope.projEntries = ProjEntry.query();		
@@ -33,9 +38,10 @@
 			{
 				$scope.projEntry.$save(loadEntries2);
 			}
-			else{
-				$scope.projEntry.$update(loadEntries2);				
-			}
+		}
+		//brisanje korisnika iz projekta
+		$scope.obrisiUsera = function (projEntry) {
+			projEntry.$delete(loadEntries);
 		}
 
 		$scope.dodajZad = function (projEntry) {
@@ -45,6 +51,11 @@
     	$scope.dodajUser = function (projEntry) {
       		$location.path('/projekat/'+ projEntry._id + '/korisnik');
     	}
+
+    	$scope.pregledZadataka = function (projEntry) {
+      		$location.path('/projekat/'+ projEntry._id + '/zadaci');
+      	}
+
 
     	//za korisnike
     	var KorEntry = $resource('/api/korisnik');
@@ -60,8 +71,6 @@
 		var projEntryId = $stateParams.id;
     	$scope.projUser = ProjEntry2.get({_id:projEntryId});
 
-
-
 	};
 
 	var zadatakCtrl = function ($scope, $resource, $stateParams) 
@@ -71,6 +80,16 @@
 		{
 			$scope.zadEntries = ZadEntry.query();		
 			$scope.zadEntry = new ZadEntry();
+
+			//--------------------
+			var ProjEntry = $resource('/api/projekat/:_id');
+			var projEntryId = $stateParams.id;
+		    var projZad = ProjEntry.get({_id:projEntryId}, function (userInfo) 
+		    {
+		    	 $scope.zadEntry.oznaka = userInfo.oznaka;
+		    	 $scope.zadEntry.redni_broj = userInfo.zadatak.length+1;
+		    });
+
 		}
 		loadEntries();
 		$scope.save = function () 
@@ -84,6 +103,9 @@
 		var ProjEntry = $resource('/api/projekat/:_id');
 		var projEntryId = $stateParams.id;
     	$scope.projZad = ProjEntry.get({_id:projEntryId});
+
+    	
+
 	};
 
 
@@ -120,6 +142,11 @@
 	      url: '/projekat/:id/korisnik', 
 	      templateUrl: 'spisak-korisnika-projekat.html'
 	    //  controller: 'projekatCtrl'
+	    })
+	    .state('zadaciProj', {
+	      url: '/projekat/:id/zadaci', 
+	      templateUrl: 'svi-zadaci-projekat.html',
+	      controller: 'projekatCtrl'
 	    }) 
 	    .state('addProjekat', {
 	      url: '/newProject', 

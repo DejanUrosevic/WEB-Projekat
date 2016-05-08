@@ -19,26 +19,29 @@
         <div id="content_main">
           <div id="tableContainer-1">
                   <div id="tableContainer-2">
-                               <h2 style="text-align: center;">Dostupni projekti</h2>
+                               <h2 style="text-align: center;">Zadaci na projektu <span style="color: #10100a;">{{projUser.naziv}}</span></h2>
                                <br/>
 
                                   <table style="border-collapse: collapse; border: 1px solid black;">
                                     <tr>
                                       <th class="pravaTabela">ID</th>
-                                      <th class="pravaTabela">Naziv</th>
                                       <th class="pravaTabela">Oznaka</th>
-                                      <th class="pravaTabela">Novi zadatak</th>
-                                      <th class="pravaTabela">Korisnici na projektu</th>
-                                      <th class="pravaTabela">Svi zadaci</th>
+                                      <th class="pravaTabela">Redni Broj</th>
+                                      <th class="pravaTabela">Naslov</th>
+                                      <th class="pravaTabela">Opis</th>
+                                      <th class="pravaTabela">Status</th>
                                     </tr>
 
-                                    <tr ng-repeat="projEntry in projEntries">
-                                      <td class="pravaTabela">{{projEntry._id}}</td>
-                                      <td class="pravaTabela">{{projEntry.naziv}}</td>
-                                      <td class="pravaTabela">{{projEntry.oznaka}}</td>
+                                    <tr ng-repeat="zadatak in projUser.zadatak">
+                                      <td class="pravaTabela">{{zadatak._id}}</td>
+                                      <td class="pravaTabela">{{zadatak.oznaka}}</td>
+                                      <td class="pravaTabela">{{zadatak.redni_broj}}</td>
+                                      <td class="pravaTabela">{{zadatak.naslov}}</td>
+                                      <td class="pravaTabela">{{zadatak.opis}}</td>
+                                      <td class="pravaTabela">{{zadatak.status}}</td>
                                       <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="dodajZad(projEntry)"> <img src="images/add.png" height="35"/></button></td>
                                       <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="dodajUser(projEntry)"> <img src="images/users.png" height="35"/></button></td>
-                                      <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="pregledZadataka(projEntry)"> <img src="images/zadaci.png" height="35"/></button></td>
+                                      <td class="pravaTabela"> <a ui-sref="reg"> <button style="background-color:transparent; border-color:transparent;"> <img src="images/zadaci.png" height="35"/></button></a></td>
                                     </tr>
 
                                   </table>

@@ -52,6 +52,14 @@ korisnikRouter
       res.json(entry);
     });
 })
+.delete('/:id', function(req, res, next) {
+    Korisnik.remove({
+      "_id": req.params.id
+    }, function(err, successIndicator) {
+      if (err) next(err);
+      res.json(successIndicator);
+    });
+})
 /*
 .post('/test', function(req, res) {
     var entry={"email": req.body.user};
@@ -98,7 +106,7 @@ korisnikRouter
 })
 .get('/proba', function(req, res, next){
 	var k = req.session.user;
-	console.log(k);
+	console.log(req.session.user);
 });
 
 // router za projekat
@@ -119,6 +127,7 @@ projekatRouter
 .post('/', function(req, res, next) 
 {
     var projekat = new Projekat(req.body);
+
     projekat.save(function(err, entry) 
     {
       if (err)
@@ -133,6 +142,9 @@ projekatRouter
 .post('/zadatak', function(req, res, next) 
 {
   //pitaj zasto ne moze adresa '/:id/zadatak' ??
+    console.log(req.body);
+    console.log(req.body.oznaka);
+
     var zadatak = new Zadatak(req.body);
     console.log('Pocetak  '+zadatak);
     Projekat.findOne({"oznaka":zadatak.oznaka},function (err, entry) {
@@ -142,7 +154,6 @@ projekatRouter
       {
         console.log(err);
         next(err);
-        
       }
       console.log('Kraj  '+ zadatak); 
       Projekat.findByIdAndUpdate(entry._id, {$push:{"zadatak":zadatak}}, function (err, entry) {
@@ -157,6 +168,21 @@ projekatRouter
     Projekat.findOne(entry).populate('korisnici').populate('zadatak').exec(function(err, data, next) {
       console.log(data.zadatak);
       res.json(data.zadatak); 
+    });
+})
+.get('/:id/korisnik', function(req, res) {
+    var entry={"_id":req.params.id};
+    Projekat.findOne(entry).populate('korisnici').populate('zadatak').exec(function(err, data, next) {
+      console.log(data.korisnici);
+      res.json(data.korisnici); 
+    });
+})
+.delete('/:id', function(req, res, next) {
+    Projekat.remove({
+      "_id": req.params.id
+    }, function(err, successIndicator) {
+      if (err) next(err);
+      res.json(successIndicator);
     });
 });
 

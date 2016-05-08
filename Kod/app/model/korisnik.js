@@ -24,7 +24,8 @@ var korShema = new Schema({
   },
   vrsta: String,
   createdAt: Date,
-  zadatak: [{ type: Schema.Types.ObjectId, ref: 'Zadatak' }]
+  zadatak: [{ type: Schema.Types.ObjectId, ref: 'Zadatak' }],
+  projekti: [{ type: Schema.Types.ObjectId, ref: 'Projekat' }]
 });
 
 // prilikom snimanja se postavi datum
