@@ -62,10 +62,15 @@
 		}
 		loadEntries();
 
-		//preuzimanje odgovarajuceg projekta
-		var ProjEntry2 = $resource('/api/projekat/:_id');
-		var projEntryId = $stateParams.id;
-    	$scope.projUser = ProjEntry2.get({_id:projEntryId});
+
+		//preuzimanje odgovarajuceg projekta (provera da li URL ima id)
+		if(!angular.equals({}, $stateParams))
+		{
+			var ProjEntry2 = $resource('/api/projekat/:_id');
+			var projEntryId = $stateParams.id;
+    		$scope.projUser = ProjEntry2.get({_id:projEntryId});
+		}
+		
 
 	};
 
@@ -78,13 +83,17 @@
 			$scope.zadEntry = new ZadEntry();
 
 			//--------------------
-			var ProjEntry = $resource('/api/projekat/:_id');
-			var projEntryId = $stateParams.id;
-		    projZad = ProjEntry.get({_id:projEntryId}, function (userInfo) 
-		    {
-		    	 $scope.zadEntry.oznaka = userInfo.oznaka;
-		    	 $scope.zadEntry.redni_broj = userInfo.zadatak.length+1;
-		    });
+			if(!angular.equals({}, $stateParams))
+			{
+				var ProjEntry = $resource('/api/projekat/:_id');
+				var projEntryId = $stateParams.id;
+			    projZad = ProjEntry.get({_id:projEntryId}, function (userInfo) 
+			    {
+			    	 $scope.zadEntry.oznaka = userInfo.oznaka;
+			    	 $scope.zadEntry.redni_broj = userInfo.zadatak.length+1;
+			    });	
+			}
+			
 
 		}
 		loadEntries();
@@ -96,9 +105,13 @@
 			}
 		} 
 
-		var ProjEntry = $resource('/api/projekat/:_id');
-		var projEntryId = $stateParams.id;
-    	$scope.projZad = ProjEntry.get({_id:projEntryId});
+		if(!angular.equals({}, $stateParams))
+		{
+			var ProjEntry = $resource('/api/projekat/:_id');
+			var projEntryId = $stateParams.id;
+    		$scope.projZad = ProjEntry.get({_id:projEntryId});
+		}
+		
 	};
 
 	var zadatakBrisanjeCtrl = function ($scope, $resource, $stateParams) 
@@ -115,20 +128,23 @@
 
 		$scope.obrisiZad = function (zadatak) 
 		{
+			console.log(zadatak._id);
 			var zad = ZadEntry.get({"_id": zadatak._id},function (userInfo) 
 		    {
 		    	console.log(zad);
 				console.log(zadatak);
-				zad.$delete(loadEntries);
-				
 		    });
 			
-
+			zad.$delete(loadEntries);
 		}
 
-		var ProjEntry = $resource('/api/projekat/:_id');
-		var projEntryId = $stateParams.id;
-    	$scope.projZad = ProjEntry.get({_id:projEntryId});
+		if(!angular.equals({}, $stateParams))
+		{
+			var ProjEntry = $resource('/api/projekat/:_id');
+			var projEntryId = $stateParams.id;
+    		$scope.projZad = ProjEntry.get({_id:projEntryId});
+		}
+		
 	}
 
 

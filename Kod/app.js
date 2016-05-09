@@ -194,7 +194,11 @@ zadatakRouter
     Zadatak.remove({
       "_id": req.params.id
     }, function(err, successIndicator) {
-      if (err) next(err);
+      if (err)
+      {
+        console.log(err);
+        next(err);
+      } 
       res.json(successIndicator);
     });
 });
