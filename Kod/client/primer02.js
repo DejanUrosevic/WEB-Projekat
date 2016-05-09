@@ -114,7 +114,7 @@
 		
 	};
 
-	var zadatakBrisanjeCtrl = function ($scope, $resource, $stateParams) 
+	var zadatakBrisanjeCtrl = function ($scope, $http, $resource, $stateParams, $location) 
 	{
 		var ZadEntry = $resource('/api/zadatak/:id',
 			{id:'@_id'});
@@ -125,17 +125,15 @@
 		}
 		loadEntries();
 
-
+		//brisanje selektovanog zadatka iz liste zadataka odgovarajuceg projekta.
 		$scope.obrisiZad = function (zadatak) 
 		{
-			console.log(zadatak._id);
-			var zad = ZadEntry.get({"_id": zadatak._id},function (userInfo) 
-		    {
-		    	console.log(zad);
-				console.log(zadatak);
-		    });
 			
-			zad.$delete(loadEntries);
+			$http.delete('/api/zadatak/' + zadatak._id)
+			.success(function (data, status, headers) {
+				console.log('U success-u sam!!!');
+				$scope.projZad.zadatak.splice(0, 1);
+            });
 		}
 
 		if(!angular.equals({}, $stateParams))
