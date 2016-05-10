@@ -112,6 +112,7 @@
     		$scope.projZad = ProjEntry.get({_id:projEntryId});
 		}
 		
+		
 	};
 
 	var zadatakBrisanjeCtrl = function ($scope, $http, $resource, $stateParams, $location) 
@@ -147,10 +148,39 @@
 			$http.put('/api/zadatak/' + zadatak._id, {params : {status : zadatak.status} });
 			//$http({ method : 'PUT', url : '/api/zadatak/' + zadatak._id, data : $.param($scope.projZad.zadatak[index])});
 		}
+
+		$scope.komentari = function(zadatakId, projekatId){
+			///projekat/:id/zadatak/:id2/komentari
+			$location.path('/projekat/' + projekatId + '/zadatak/' + zadatakId + '/komentari');
+		}
 		
 	}
 
+	var komentariCtrl = function ($scope, $http, $resource, $stateParams, $location) {
 
+		var CommEntry = $resource('/api/comment/:id',
+			{id:'@_id'});
+		var loadEntries = function () 
+		{
+			$scope.commEntries = CommEntry.query();		
+			$scope.commEntry = new CommEntry();
+		}
+		loadEntries();
+
+		$scope.save = function () 
+		{
+			if(!$scope.commEntry._id)
+			{
+				$scope.commEntry.$save(loadEntries);
+			}
+		}
+
+		var ZadEntry = $resource('/api/zadatak/:_id');
+		var zadEntryId = $stateParams.id2;
+    	$scope.zadatak = ZadEntry.get({_id:zadEntryId});
+
+
+	}
 
 
 
@@ -159,6 +189,7 @@
 	app.controller('projekatCtrl', projekatCtrl);
 	app.controller('zadatakCtrl', zadatakCtrl);
 	app.controller('zadatakBrisanjeCtrl', zadatakBrisanjeCtrl);
+	app.controller('komentariCtrl', komentariCtrl);
 
 	app.config(function($stateProvider, $urlRouterProvider) {
 	    $urlRouterProvider.otherwise('/login');
@@ -197,7 +228,12 @@
 	      url: '/newProject', 
 	      templateUrl: 'projekat-unos.html'
 	    //  controller: 'projekatCtrl'
-	    })    
+	    })
+	    .state('zadKom', {
+	      url: '/projekat/:id/zadatak/:id2/komentari', 
+	      templateUrl: 'zadatak-komentari.html',
+	      controller: 'komentariCtrl'
+	    })   
   	});
 
 }(angular));

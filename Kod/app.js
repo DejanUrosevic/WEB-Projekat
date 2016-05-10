@@ -181,12 +181,20 @@ var zadatakRouter = express.Router();
 zadatakRouter
 .get('/', function(req, res) {
     var entry={};
-    Zadatak.find(entry).exec(function(err, data, next) {
+    Zadatak.find(entry).populate('komentari').exec(function(err, data, next) {
+      if(err){
+        console.log("--"+err);
+        next(err);
+      }
       res.json(data);
     });
 })
 .get('/:id', function(req, res) {
-    Zadatak.findOne({"_id": req.params.id}).exec(function(err, data, next) {
+    Zadatak.findOne({"_id": req.params.id}).populate('komentari').exec(function(err, data, next) {
+      if(err){
+        console.log("+++"+err);
+        next(err);
+      }
       res.json(data);
     });
 })
@@ -211,7 +219,6 @@ zadatakRouter
         next(err);
       }   
       var newEntry = req.body;
-      zadatak.naslov = "proba";
       console.log(newEntry.params.status);
       //{params : {status : zadatak.status}}
       zadatak.status = newEntry.params.status;
@@ -224,7 +231,63 @@ zadatakRouter
         res.json(zadatak);
       });
     });
-  });
+});
+
+
+var komentarRouter = express.Router();
+
+komentarRouter
+.get('/', function(req, res) {
+    var entry={};
+    Comment.find(entry).exec(function(err, data, next) {
+      if(err){
+        console.log(err);
+        next(err);
+      }
+      console.log(data);
+      res.json(data);
+    });
+})
+.get('/:id', function(req, res) {
+    Comment.findOne({"_id": req.params.id}).exec(function(err, data, next) {
+      res.json(data);
+    });
+})
+.delete('/:id', function(req, res, next) {
+    Comment.remove({
+      "_id": req.params.id
+    }, function(err, successIndicator) {
+      if (err)
+      {
+        console.log(err);
+        next(err);
+      } 
+      res.json(successIndicator);
+    });
+})
+.put('/:id', function(req, res, next) {
+    Comment.findOne({
+      "_id": req.params.id
+    }, function(err, zadatak) {
+      if (err){
+        //console.log(err);
+        next(err);
+      }   
+      var newEntry = req.body;
+      console.log(newEntry.params.status);
+      //{params : {status : zadatak.status}}
+      zadatak.status = newEntry.params.status;
+      zadatak.save(function(err, zadatak) {
+        if (err){
+          console.log(err);
+          next(err);
+        } 
+        console.log('+++++++  '+ zadatak); 
+        res.json(zadatak);
+      });
+    });
+});
+
 /*
 
 .post('/', function(req, res, next) 
@@ -254,6 +317,7 @@ zadatakRouter
 app.use('/api/korisnik', korisnikRouter);
 app.use('/api/projekat', projekatRouter);
 app.use('/api/zadatak', zadatakRouter);
+app.use('/api/comment', komentarRouter);
 //klijentsku angular aplikaciju serviramo iz direktorijuma client
 app.use('/blog', express.static(__dirname + '/client'));
 app.use('/lib', express.static(__dirname + '/bower_components'));
