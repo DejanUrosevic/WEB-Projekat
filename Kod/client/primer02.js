@@ -126,13 +126,13 @@
 		loadEntries();
 
 		//brisanje selektovanog zadatka iz liste zadataka odgovarajuceg projekta.
-		$scope.obrisiZad = function (zadatak) 
+		$scope.obrisiZad = function (zadatak, index) 
 		{
 			
 			$http.delete('/api/zadatak/' + zadatak._id)
 			.success(function (data, status, headers) {
 				console.log('U success-u sam!!!');
-				$scope.projZad.zadatak.splice(0, 1);
+				$scope.projZad.zadatak.splice(index, 1);
             });
 		}
 
@@ -141,6 +141,11 @@
 			var ProjEntry = $resource('/api/projekat/:_id');
 			var projEntryId = $stateParams.id;
     		$scope.projZad = ProjEntry.get({_id:projEntryId});
+		}
+
+		$scope.promeniStatus = function(zadatak, index){
+			$http.put('/api/zadatak/' + zadatak._id, {params : {status : zadatak.status} });
+			//$http({ method : 'PUT', url : '/api/zadatak/' + zadatak._id, data : $.param($scope.projZad.zadatak[index])});
 		}
 		
 	}

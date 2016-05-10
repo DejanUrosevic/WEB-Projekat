@@ -30,8 +30,7 @@ var zadatakSchema = new Schema({
   izmeneZadatka: [{ type: Schema.Types.ObjectId, ref: 'Zadatak' }],
   status: 
   {
-    type: String, 
-    enum: ['To Do', 'In Progress', 'Verify', 'Done'],
+    type: String,
     default: 'To Do',
     required: true
   }

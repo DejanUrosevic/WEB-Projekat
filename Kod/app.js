@@ -201,7 +201,30 @@ zadatakRouter
       } 
       res.json(successIndicator);
     });
-});
+})
+.put('/:id', function(req, res, next) {
+    Zadatak.findOne({
+      "_id": req.params.id
+    }, function(err, zadatak) {
+      if (err){
+        //console.log(err);
+        next(err);
+      }   
+      var newEntry = req.body;
+      zadatak.naslov = "proba";
+      console.log(newEntry.params.status);
+      //{params : {status : zadatak.status}}
+      zadatak.status = newEntry.params.status;
+      zadatak.save(function(err, zadatak) {
+        if (err){
+          console.log(err);
+          next(err);
+        } 
+        console.log('+++++++  '+ zadatak); 
+        res.json(zadatak);
+      });
+    });
+  });
 /*
 
 .post('/', function(req, res, next) 
