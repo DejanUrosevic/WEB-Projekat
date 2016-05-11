@@ -215,12 +215,14 @@ zadatakRouter
       "_id": req.params.id
     }, function(err, zadatak) {
       if (err){
-        //console.log(err);
+        console.log(err);
         next(err);
       }   
       var newEntry = req.body;
       console.log(newEntry.params.status);
       //{params : {status : zadatak.status}}
+      zadatak.naslov = newEntry.params.naslov;
+      zadatak.opis = newEntry.params.opis;
       zadatak.status = newEntry.params.status;
       zadatak.save(function(err, zadatak) {
         if (err){

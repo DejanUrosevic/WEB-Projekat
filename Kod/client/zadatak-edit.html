@@ -1,0 +1,47 @@
+
+  <div id="container">
+        <div id="header">
+            <h1>Slick<span class="off">Task</span></h1>       
+        </div>   
+
+        <br/><br/><br/><br/><br/><br/><br/><br/>
+
+
+        <div id="content_top"></div>
+        <div id="content_main">
+          <div id="tableContainer-1">
+            <div id="tableContainer-2">     
+                            <h2 style="text-align: center; color: gray;">Izmena zadatka <u style="color: #10100a;">{{zad.naslov}}</u> </h2>
+                            <br/>                        
+                                <table  id="myTable">
+                                    <tr>
+                                         <td> <input class="sredina" type="text" size="30" value="{{zad.oznaka}}" readonly></input></td>
+                                    </tr>                      
+                                    <tr>
+                                       <td> <input class="sredina" type="text"  size="30" value="{{zad.redni_broj}}" readonly></input></td>                             
+                                    </tr>
+                                <tr>
+                                     <td> <input class="sredina" type="text" size="30" ng-model="zad.naslov" required></input></td>
+                                </tr>
+                                <tr>
+                                   <td> <input class="sredina" type="text" size="30" ng-model="zad.opis"></input required></td>                            
+                                </tr>
+                                  <tr>
+                                   <td class="sredina"> 
+                                     <select ng-model="zad.status">
+                                            <option value="{{zad.status}}">{{zad.status}}</option>
+                                            <option value="In Progress">In Progress</option>
+                                            <option value="Verify">Verify</option>
+                                            <option value="Done">Done</option>
+                                        </select> 
+                                   </td>                            
+                                </tr>
+                                <tr>
+                                   <td style="text-align: center;"> <a ui-sref="main"><button type="submit" style="background-color:transparent; border-color:transparent;" ng-click="izmena()"> <img src="images/submit.jpg" height="35"/></button> </a></td>                            
+                                </tr>                                                          
+                            </table>
+              </div>               
+          </div>
+      </div>
+      <div id="content_bottom"></div>
+  </div>

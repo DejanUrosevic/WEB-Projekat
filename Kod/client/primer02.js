@@ -130,10 +130,8 @@
 		//brisanje selektovanog zadatka iz liste zadataka odgovarajuceg projekta.
 		$scope.obrisiZad = function (zadatak, index) 
 		{
-			console.log(index);
 			$http.delete('/api/zadatak/' + zadatak._id)
 			.success(function (data, status, headers) {
-				console.log('U success-u sam!!!');
 				$scope.projZad.zadatak.splice(index, 1);
             });
 		}
@@ -152,6 +150,11 @@
 		$scope.komentari = function(zadatakId, projekatId){
 			///projekat/:id/zadatak/:id2/komentari
 			$location.path('/projekat/' + projekatId + '/zadatak/' + zadatakId + '/komentari');
+		}
+
+		//slanje na odredjeni URL za edit zadatka
+		$scope.editZadatak = function (zadatakId, projekatId) {
+			$location.path('/projekat/' + projekatId + '/zadatak/' + zadatakId + '/edit');
 		}
 		
 	}
@@ -211,6 +214,26 @@
 
 	}
 
+	var zadatakIzmenaCtrl = function ($scope, $http, $resource, $stateParams, $location)
+	{
+		if(!angular.equals({}, $stateParams))
+		{
+			var ZadEntry = $resource('/api/zadatak/:_id');
+			var zadEntryId = $stateParams.id2;
+    		$scope.zad = ZadEntry.get({_id:zadEntryId});
+    		$scope.projID = $stateParams.id;
+		}
+
+		$scope.izmena = function () 
+		{
+			$http.put('/api/zadatak/' + $scope.zad._id, {params : {naslov: $scope.zad.naslov, opis: $scope.zad.opis,  status : $scope.zad.status} })
+			.success(function (data, status, headers) 
+			{
+				$location.path('/projekat/' + $scope.projID + '/zadaci');
+			})
+		}
+	}
+
 
 
 	var app = angular.module('app',['ui.router', 'ngResource']);
@@ -219,6 +242,7 @@
 	app.controller('zadatakCtrl', zadatakCtrl);
 	app.controller('zadatakBrisanjeCtrl', zadatakBrisanjeCtrl);
 	app.controller('komentariCtrl', komentariCtrl);
+	app.controller('zadatakIzmenaCtrl', zadatakIzmenaCtrl);
 
 	app.config(function($stateProvider, $urlRouterProvider) {
 	    $urlRouterProvider.otherwise('/login');
@@ -252,6 +276,11 @@
 	      url: '/projekat/:id/zadaci', 
 	      templateUrl: 'svi-zadaci-projekat.html',
 	      controller: 'zadatakBrisanjeCtrl'
+	    })
+	    .state('zadaciEdit', {
+	      url: '/projekat/:id/zadatak/:id2/edit', 
+	      templateUrl: 'zadatak-edit.html',
+	      controller: 'zadatakIzmenaCtrl'
 	    }) 
 	    .state('addProjekat', {
 	      url: '/newProject', 

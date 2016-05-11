@@ -11,32 +11,9 @@
         <div id="content_main">
           <div id="tableContainer-1">
             <div id="tableContainer-2">     
-          <!--                   
-                      <div ng-repeat="korEntry in korEntries">
-                        <div>
-                          {{ korEntry.ime }}
-                        </div>
-                        <div>
-                          {{ korEntry.prezime }}
-                        </div>
-                      </div>
 
-                        <div ng-controller="projekatCtrl">            
-                        <select>
-                          <option selected>
-                            Skok na projekat
-                          </option>
-                          <option
-                                  ng-repeat="projEntry in projEntries"
-                                  value="{{projEntry.oznaka}}" >
-                                  
-                            {{projEntry.naziv}}
-                          </option>
-                        </select>
-                      </div>
-                      -->
                           <div ng-controller="zadatakCtrl">
-                            <h2 style="text-align: center; color: gray;">Unos novog zadatka za projekat <span style="color: #10100a;">{{projZad.naziv}}</span> </h2>
+                            <h2 style="text-align: center; color: gray;">Unos novog zadatka za projekat <u style="color: #10100a;">{{projZad.naziv}}</u> </h2>
                             <br/>                        
                                 <table  id="myTable">
                                     <tr>
