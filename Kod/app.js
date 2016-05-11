@@ -260,7 +260,7 @@ komentarRouter
       {
         console.log(err);
         next(err);
-      } 
+      }
       res.json(successIndicator);
     });
 })
@@ -288,7 +288,6 @@ komentarRouter
 })
 .post('/', function(req, res, next) 
 {
-    console.log(req.body);
     var comment = new Comment();
     comment.tekst = req.body.params.tekst;
     Zadatak.findOne({"_id":req.body.params.zadatakID},function (err, entry) {

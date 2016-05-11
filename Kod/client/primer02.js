@@ -147,7 +147,6 @@
 
 		$scope.promeniStatus = function(zadatak, index){
 			$http.put('/api/zadatak/' + zadatak._id, {params : {status : zadatak.status} });
-			//$http({ method : 'PUT', url : '/api/zadatak/' + zadatak._id, data : $.param($scope.projZad.zadatak[index])});
 		}
 
 		$scope.komentari = function(zadatakId, projekatId){
@@ -172,7 +171,6 @@
 
 
 		var ZadEntry = $resource('/api/zadatak/:_id');
-		var ProjZad = $resource('/api/projekat/:_id');
 		var zadEntryId = $stateParams.id2;
 		var projEntryId = $stateParams.id;
     	$scope.zadatak = ZadEntry.get({_id:zadEntryId});
@@ -186,7 +184,6 @@
 		{
 			if(!$scope.commEntry._id)
 			{
-
 				$http.post('/api/comment/', {params:{tekst: $scope.commEntry.tekst, zadatakID: zadatakID}})
 				.success(function(data, status, headers)
 				{
@@ -194,6 +191,21 @@
 				});
 
 			}
+		}
+
+		$scope.nazadNaZadatke = function () 
+		{
+			$location.path('/projekat/' + projEntryId + '/zadaci');	
+		}
+
+		$scope.obrisiKomentar = function (comment, index) 
+		{
+			console.log(index);
+			$http.delete('/api/comment/' + comment._id)
+			.success(function (data, status, headers) {
+				console.log('U success-u sam!!!++');
+				$scope.zadatak.komentari.splice(index, 1);
+            });
 		}
 
 
