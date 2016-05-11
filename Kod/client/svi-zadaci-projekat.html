@@ -4,7 +4,7 @@
         </div>   
         <div id="menu">
             <ul>
-                <li class="menuitem"><a ui-sref="addProjekat"> Novi projekat</a> </li>
+                <li class="menuitem"><a ui-sref="main"> Nazad</a> </li>
                 <li class="menuitem"><a href="#">About</a></li>
                 <li class="menuitem"><a href="#">Products</a></li>
                 <li class="menuitem"><a href="#">Services</a></li>
@@ -19,7 +19,7 @@
         <div id="content_main">
           <div id="tableContainer-1">
                   <div id="tableContainer-2">
-                               <h2 style="text-align: center;">Zadaci na projektu <span style="color: #10100a;">{{projZad.naziv}}</span></h2>
+                               <h2 style="text-align: center;">Zadaci na projektu <u style="color: #10100a;">{{projZad.naziv}}</u></h2>
                                <br/>
 
                                   <table style="border-collapse: collapse; border: 1px solid black;">
@@ -32,6 +32,7 @@
                                       <th class="pravaTabela">Status</th>
                                       <th class="pravaTabela">Brisanje</th>
                                       <th class="pravaTabela">Izmena statusa</th>
+                                      <th class="pravaTabela">Komentari</th>
                                     </tr>
 
                                     <tr ng-repeat="zadatak in projZad.zadatak">
@@ -40,10 +41,17 @@
                                       <td class="pravaTabela">{{zadatak.redni_broj}}</td>
                                       <td class="pravaTabela">{{zadatak.naslov}}</td>
                                       <td class="pravaTabela">{{zadatak.opis}}</td>
-                                      <td class="pravaTabela">{{zadatak.status}}</td>
+                                      <td class="pravaTabela">
+                                        <select ng-model="zadatak.status">
+                                            <option value="{{zadatak.status}}">{{zadatak.status}}</option>
+                                            <option value="In Progress">In Progress</option>
+                                            <option value="Verify">Verify</option>
+                                            <option value="Done">Done</option>
+                                        </select> 
+                                      </td>
                                       <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="obrisiZad(zadatak, $index)"> <img src="images/removeUser.png" height="35"/></button></td>
-                                      <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="dodajUser(projEntry)"> <img src="images/edit.png" height="35"/></button></td>
-                                  
+                                      <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="promeniStatus(zadatak, $index)"> <img src="images/edit.png" height="35"/></button></td>
+                                      <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="komentari(zadatak._id, projZad._id)"> <img src="images/comments.jpg" height="35"/></button></td>
                                     </tr>
 
                                   </table>
