@@ -27,10 +27,11 @@ projekatShema.pre('save', function(next)
   // postavimo trenutni datum poslednju izmenu
   if (!this.createdAt)
     this.createdAt = currentDate;
-  this.brojZadataka = this.zadatak.length+1;
+  this.brojZadataka = 0;
   // predjemo na sledecu funckiju u lancu
   next();
 });
+
 
 // od sheme kreiramo model koji cemo koristiti
 var Projekat = mongoose.model('Projekat', projekatShema);

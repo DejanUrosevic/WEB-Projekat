@@ -77,6 +77,7 @@
 	var zadatakCtrl = function ($scope, $resource, $stateParams, $location) 
 	{
 		var ZadEntry = $resource('/api/projekat/:_id/zadatak/');
+
 		var loadEntries = function () 
 		{
 			$scope.zadEntries = ZadEntry.query();		
@@ -87,10 +88,10 @@
 			{
 				var ProjEntry = $resource('/api/projekat/:_id');
 				var projEntryId = $stateParams.id;
-			    projZad = ProjEntry.get({_id:projEntryId}, function (userInfo) 
+			    projZad = ProjEntry.get({_id:projEntryId}, function (projekatt) 
 			    {
-			    	 $scope.zadEntry.oznaka = userInfo.oznaka;
-			    	 $scope.zadEntry.redni_broj = userInfo.zadatak.length+1;
+			    	 $scope.zadEntry.oznaka = projekatt.oznaka;
+			    	 $scope.zadEntry.redni_broj = projekatt.zadatak.length+1;
 			    });	
 			}
 			
@@ -126,13 +127,13 @@
 		loadEntries();
 
 		//brisanje selektovanog zadatka iz liste zadataka odgovarajuceg projekta.
-		$scope.obrisiZad = function (zadatak) 
+		$scope.obrisiZad = function (zadatak, index) 
 		{
-			
+			console.log(index);
 			$http.delete('/api/zadatak/' + zadatak._id)
 			.success(function (data, status, headers) {
 				console.log('U success-u sam!!!');
-				$scope.projZad.zadatak.splice(0, 1);
+				$scope.projZad.zadatak.splice(index, 1);
             });
 		}
 
