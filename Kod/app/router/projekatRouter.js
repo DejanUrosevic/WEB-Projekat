@@ -1,0 +1,70 @@
+var express = require('express');
+
+var Zadatak = require(__dirname + '/../model/zadatak');
+var Projekat = require(__dirname + '/../model/projekat');
+
+var projekatRouter = express.Router();
+
+projekatRouter
+.get('/', function(req, res) {
+    var entry={};
+    Projekat.find(entry).populate('korisnici').populate('zadatak').exec(function(err, data, next) {
+      res.json(data);
+    });
+})
+.get('/:id', function(req, res) {
+    Projekat.findOne({"_id": req.params.id}).populate('korisnici').populate('zadatak').exec(function(err, data, next) {
+      res.json(data);
+    });
+})
+.post('/', function(req, res, next) 
+{
+    var projekat = new Projekat(req.body);
+
+    projekat.save(function(err, entry) 
+    {
+      if (err)
+      {
+        console.log(err);
+        next(err);
+        return;
+      } 
+      res.json(entry);
+    });
+})
+.post('/zadatak', function(req, res, next) 
+{
+  //pitaj zasto ne moze adresa '/:id/zadatak' ??
+    var zadatak = new Zadatak(req.body);
+    Projekat.findOne({"oznaka":zadatak.oznaka},function (err, entry) {
+    if(err) next(err);
+    zadatak.save(function (err, zadatak) {
+      if(err)
+      {
+        console.log(err);
+        next(err);
+      }
+      console.log('Kraj  '+ zadatak); 
+      Projekat.findByIdAndUpdate(entry._id, {$push:{"zadatak":zadatak}}, function (err, entry) {
+        if(err) next(err);
+        res.json(entry);
+      });
+    });
+  });
+})
+.get('/:id/zadatak', function(req, res) {
+    var entry={"_id":req.params.id};
+    Projekat.findOne(entry).populate('korisnici').populate('zadatak').exec(function(err, data, next) {
+      console.log(data.zadatak);
+      res.json(data.zadatak); 
+    });
+})
+.get('/:id/korisnik', function(req, res) {
+    var entry={"_id":req.params.id};
+    Projekat.findOne(entry).populate('korisnici').populate('zadatak').exec(function(err, data, next) {
+      console.log(data.korisnici);
+      res.json(data.korisnici); 
+    });
+});
+
+module.exports = projekatRouter;
