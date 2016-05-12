@@ -36,22 +36,19 @@ komentarRouter
 .put('/:id', function(req, res, next) {
     Comment.findOne({
       "_id": req.params.id
-    }, function(err, zadatak) {
+    }, function(err, comment) {
       if (err){
-        //console.log(err);
+        console.log(err);
         next(err);
       }   
-      var newEntry = req.body;
-      console.log(newEntry.params.status);
-      //{params : {status : zadatak.status}}
-      zadatak.status = newEntry.params.status;
-      zadatak.save(function(err, zadatak) {
+      var newEntry = req.body.params.tekst;
+      comment.tekst = newEntry;
+      comment.save(function(err, data) {
         if (err){
           console.log(err);
           next(err);
         } 
-        console.log('+++++++  '+ zadatak); 
-        res.json(zadatak);
+        res.json(data);
       });
     });
 })
@@ -81,28 +78,5 @@ komentarRouter
     });
 });
 
-/*
-
-.post('/', function(req, res, next) 
-{
-    var zadatak = new Zadatak(req.body);
-    Projekat.findOne({"oznaka":req.body.sifraOznaka},function (err, entry) {
-    if(err) next(err);
-    zadatak.save(function (err, zadatak) {
-      if(err) next(err);
-      Projekat.findByIdAndUpdate(entry._id, {$push:{"zadatak":zadatak._id}}, function (err, entry) {
-        if(err) next(err);
-        res.json(entry);
-      });
-    });
-  });
-})
-.get('/', function(req, res) {
-    var entry={};
-    Zadatak.find(entry).exec(function(err, data, next) {
-      res.json(data);
-    });
-});
-*/
 
 module.exports = komentarRouter;

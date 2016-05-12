@@ -38,23 +38,14 @@
                                       <td class="pravaTabela">{{komentar.tekst}}</td>
                                       <td class="pravaTabela">{{komentar.createdAt}}</td>
                                       <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="obrisiKomentar(komentar, $index)"> <img src="images/removeUser.png" height="35"/></button></td>
-                                      <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="promeniStatus(komentar, $index)"> <img src="images/edit.png" height="35"/></button></td>
+                                      <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="hitEditComment(komentar._id)"> <img src="images/edit.png" height="35"/></button></td>
                                     </tr>
 
                                   </table>
-                                  <!--
-                                  <select>
-                                    <option selected>
-                                      Skok na projekat
-                                    </option>
-                                    <option
-                                            ng-repeat="projEntry in projEntries"
-                                            value="{{projEntry.oznaka}}" >
-                                            
-                                      {{projEntry.naziv}}
-                                    </option>
-                                  </select>
-                                  -->
+                                  <hr>
+                                  <br/>
+                                  <br/>
+                                  <div ui-view></div>
               </div>
                          
         </div>
