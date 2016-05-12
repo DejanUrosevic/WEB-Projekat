@@ -9,7 +9,7 @@ var zadatakRouter = express.Router();
 zadatakRouter
 .get('/', function(req, res) {
     var entry={};
-    Zadatak.find(entry).populate('komentari').exec(function(err, data, next) {
+    Zadatak.find(entry).populate('komentari').populate('izmeneZadatka').exec(function(err, data, next) {
       if(err){
         console.log("--"+err);
         next(err);
@@ -18,7 +18,7 @@ zadatakRouter
     });
 })
 .get('/:id', function(req, res) {
-    Zadatak.findOne({"_id": req.params.id}).populate('komentari').exec(function(err, data, next) {
+    Zadatak.findOne({"_id": req.params.id}).populate('komentari').populate('izmeneZadatka').exec(function(err, data, next) {
       if(err){
         console.log("+++"+err);
         next(err);
@@ -61,18 +61,21 @@ zadatakRouter
       if (err){
         console.log(err);
         next(err);
-      }   
-      var newEntry = req.body;
-      //{params : {status : zadatak.status}}
-      zadatak.naslov = newEntry.params.naslov;
-      zadatak.opis = newEntry.params.opis;
-      zadatak.status = newEntry.params.status;
-      zadatak.save(function(err, zadatak) {
-        if (err){
-          console.log(err);
-          next(err);
-        } 
-        res.json(zadatak);
+      }
+      Zadatak.findByIdAndUpdate(zadatak._id, {$push:{"izmeneZadatka":zadatak}}, function (err, entry)   
+      {
+        var newEntry = req.body;
+        //{params : {status : zadatak.status}}
+        zadatak.naslov = newEntry.params.naslov;
+        zadatak.opis = newEntry.params.opis;
+        zadatak.status = newEntry.params.status;
+        zadatak.save(function(err, zadatak) {
+          if (err){
+            console.log(err);
+            next(err);
+          } 
+          res.json(zadatak);
+        });
       });
     });
 });

@@ -2,6 +2,7 @@ var express = require('express');
 
 var Zadatak = require(__dirname + '/../model/zadatak');
 var Projekat = require(__dirname + '/../model/projekat');
+var Korisnik = require(__dirname + '/../model/korisnik');
 
 var projekatRouter = express.Router();
 
@@ -34,7 +35,7 @@ projekatRouter
 })
 .post('/zadatak', function(req, res, next) 
 {
-  //pitaj zasto ne moze adresa '/:id/zadatak' ??
+    
     var zadatak = new Zadatak(req.body);
     Projekat.findOne({"oznaka":zadatak.oznaka},function (err, entry) {
     if(err) next(err);
@@ -67,6 +68,25 @@ projekatRouter
     Projekat.findOne(entry).populate('korisnici').populate('zadatak').exec(function(err, data, next) {
       console.log(data.korisnici);
       res.json(data.korisnici); 
+    });
+})
+.put('/:id', function(req, res, next) {
+    Korisnik.findOne({
+      "_id": req.body.params.korisnikID
+    }, function(err, korisnik) {
+      if (err)
+      {
+        console.log(err);
+        next(err);
+      }
+      Projekat.findByIdAndUpdate(req.params.id, {$pull:{"korisnici":korisnik._id}}, function (err, entry) {   
+        if (err)
+        {
+          console.log(err);
+          next(err);
+        } 
+        res.json(entry);
+      });
     });
 });
 

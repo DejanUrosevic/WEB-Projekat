@@ -21,7 +21,7 @@
 		}
 	};
 
-	var projekatCtrl = function ($scope, $resource, $location, $stateParams) 
+	var projekatCtrl = function ($scope, $http, $resource, $location, $stateParams) 
 	{
 		var ProjEntry = $resource('/api/projekat/:id',
 			{id: '@_id'});
@@ -69,6 +69,14 @@
 			var ProjEntry2 = $resource('/api/projekat/:_id');
 			var projEntryId = $stateParams.id;
     		$scope.projUser = ProjEntry2.get({_id:projEntryId});
+		}
+
+		$scope.obrisiUsera = function (korisnik, index) 
+		{
+			$http.put('/api/projekat/' + projEntryId, {params : {korisnikID : korisnik._id} })
+			.success(function (data, status, headers) {
+				$scope.projUser.korisnici.splice(index, 1);
+            });
 		}
 		
 
