@@ -44,9 +44,12 @@ projekatRouter
         console.log(err);
         next(err);
       }
-      console.log('Kraj  '+ zadatak); 
       Projekat.findByIdAndUpdate(entry._id, {$push:{"zadatak":zadatak}}, function (err, entry) {
-        if(err) next(err);
+        if(err)
+        {
+          console.log(err);
+          next(err);
+        } 
         res.json(entry);
       });
     });

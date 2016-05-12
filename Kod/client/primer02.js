@@ -200,19 +200,23 @@
 		{
 			$location.path('/projekat/' + projEntryId + '/zadatak/' + zadEntryId + '/komentar/' + commentID);
 		}
-
+ 
 		$scope.nazadNaZadatke = function () 
 		{
 			$location.path('/projekat/' + projEntryId + '/zadaci');	
 		}
 
+		//pitaj  zasto nece da registruje na backend-u poslati request {params:{zadatakID: ID}} ??
 		$scope.obrisiKomentar = function (comment, index) 
 		{
-			console.log(index);
 			$http.delete('/api/comment/' + comment._id)
 			.success(function (data, status, headers) {
 				console.log('U success-u sam!!!++');
 				$scope.zadatak.komentari.splice(index, 1);
+            })
+            .error(function (data, status, headers) 
+            {
+            	console.log(data + "--" + status + "headers");
             });
 		}
 	}
@@ -272,6 +276,7 @@
 	app.controller('komentariIzmenaCtrl', komentariIzmenaCtrl);
 
 	app.config(function($stateProvider, $urlRouterProvider) {
+
 	    $urlRouterProvider.otherwise('/login');
 
 	    $stateProvider

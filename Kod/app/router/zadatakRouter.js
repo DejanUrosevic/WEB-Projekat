@@ -1,6 +1,7 @@
 var express = require('express');
 
 var Zadatak = require(__dirname + '/../model/zadatak');
+var Projekat = require(__dirname + '/../model/projekat');
 
 var zadatakRouter = express.Router();
 
@@ -26,16 +27,32 @@ zadatakRouter
     });
 })
 .delete('/:id', function(req, res, next) {
-    Zadatak.remove({
-      "_id": req.params.id
-    }, function(err, successIndicator) {
-      if (err)
+  Zadatak.findOne({"_id": req.params.id}).exec(function(err, data, next) {
+      if(err)
       {
         console.log(err);
-        next(err);
-      } 
-      res.json(successIndicator);
+        next();
+      }
+      Projekat.findOne({"oznaka":data.oznaka},function (err, entry) {
+        Zadatak.remove({
+          "_id": req.params.id
+        }, function(err, successIndicator) {
+          if (err)
+          {
+            console.log(err);
+            next(err);
+          } 
+          Projekat.findByIdAndUpdate(entry._id, {$pull:{"zadatak":data._id}}, function (err, entry) {
+            if(err)
+            {
+              console.log(err);
+              next(err);
+            } 
+          });
+          res.json(successIndicator);
+        });
     });
+  });
 })
 .put('/:id', function(req, res, next) {
     Zadatak.findOne({
@@ -46,7 +63,6 @@ zadatakRouter
         next(err);
       }   
       var newEntry = req.body;
-      console.log(newEntry.params.status);
       //{params : {status : zadatak.status}}
       zadatak.naslov = newEntry.params.naslov;
       zadatak.opis = newEntry.params.opis;
@@ -56,7 +72,6 @@ zadatakRouter
           console.log(err);
           next(err);
         } 
-        console.log('+++++++  '+ zadatak); 
         res.json(zadatak);
       });
     });
