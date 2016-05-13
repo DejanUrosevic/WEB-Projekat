@@ -88,6 +88,26 @@ projekatRouter
         res.json(entry);
       });
     });
+})
+.put('/:id/dodajKor', function(req, res, next) {
+    Korisnik.findOne({
+      "_id": req.body.params.korisnikID
+    }, function(err, korisnik) {
+      if (err)
+      {
+        console.log(err);
+        next(err);
+      }
+      console.log(korisnik);
+      Projekat.findByIdAndUpdate(req.params.id, {$push:{"korisnici":korisnik}}, function (err, entry) {   
+        if (err)
+        {
+          console.log(err);
+          next(err);
+        } 
+        res.json(entry);
+      });
+    });
 });
 
 module.exports = projekatRouter;

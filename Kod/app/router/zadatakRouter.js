@@ -47,6 +47,7 @@ zadatakRouter
             {
               console.log(err);
               next(err);
+             
             } 
           });
           res.json(successIndicator);
