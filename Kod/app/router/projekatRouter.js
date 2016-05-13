@@ -79,6 +79,14 @@ projekatRouter
         console.log(err);
         next(err);
       }
+      Korisnik.findByIdAndUpdate(korisnik._id, {$pull:{"projekti":req.params.id}}, function (err) 
+      {
+          if(err)
+          {
+            console.log(err);
+            next(err);
+          }   
+      });
       Projekat.findByIdAndUpdate(req.params.id, {$pull:{"korisnici":korisnik._id}}, function (err, entry) {   
         if (err)
         {
@@ -98,13 +106,21 @@ projekatRouter
         console.log(err);
         next(err);
       }
-      console.log(korisnik);
+      Korisnik.findByIdAndUpdate(korisnik._id, {$push:{"projekti":req.params.id}}, function (err) 
+      {
+          if(err)
+          {
+            console.log(err);
+            next(err);
+          }   
+      });
       Projekat.findByIdAndUpdate(req.params.id, {$push:{"korisnici":korisnik}}, function (err, entry) {   
         if (err)
         {
           console.log(err);
           next(err);
-        } 
+        }
+
         res.json(entry);
       });
     });
