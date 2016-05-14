@@ -6,14 +6,10 @@ var korisnikRouter = express.Router();
 
 korisnikRouter
 .get('/', function(req, res) {
-  //  sess = req.session;
-  //  if(sess.email)
-   // {
       var entry={};
       Korisnik.find(entry).exec(function(err, data, next) {
         res.json(data);
       });
-  //  }
 })
 .post('/', function(req, res, next) 
 {

@@ -1,44 +1,106 @@
+// Uvoz instaliranih modula
 var express = require('express');
-var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var session = require('express-session');
-// koristimo mongoose model koju smo kreirali u folderu model
-var Comment = require(__dirname + '/app/model/comment');
+var passport = require('passport');
+var passport_local = require('passport-local');
+
+// Uvoz modula koji predstavljaju modele baze podataka mongoDB
 var Korisnik = require(__dirname + '/app/model/korisnik');
 var Projekat = require(__dirname + '/app/model/projekat');
 var Zadatak = require(__dirname + '/app/model/zadatak');
+var Comment = require(__dirname + '/app/model/comment');
 
-var komentarRouter = require(__dirname + '/app/router/komentarRouter');
+// Uvoz modula koji predstavljaju rutiranje
 var korisnikRouter = require(__dirname + '/app/router/korisnikRouter');
 var projekatRouter = require(__dirname + '/app/router/projekatRouter');
 var zadatakRouter = require(__dirname + '/app/router/zadatakRouter');
+var komentarRouter = require(__dirname + '/app/router/komentarRouter');
 
+var app = express();
+
+// Spajamo se na bazu podataka
 mongoose.connect('mongodb://localhost/blogApp');
 
-//console.log(session);
+// Podešavanje passport-a
+var LocalStrategy = passport_local.Strategy;
+
+passport.use(new LocalStrategy(
+    {
+      usernameField: 'user',
+      passwordField: 'pass'
+    },
+    function(email, lozinka, done) {
+      Korisnik.findOne({email: email}, function(err, korisnik) {
+        console.log(korisnik);
+        if (err) {
+          return done(err);
+        }
+
+        if (!korisnik) {
+          return done(null, false, {msg: 'Neispravan email.'});
+        }
+
+        if (korisnik.lozinka != lozinka) {
+          return done(null, false, {msg: 'Neispravna lozinka.'})
+        }
+
+        return done(null, korisnik);
+      });
+    }
+));
+
+passport.serializeUser(function(korisnik, done) {
+  done(null, korisnik._id);
+});
+
+passport.deserializeUser(function(_id, done) {
+  Korisnik.findById(_id, function(err, korisnik) {
+    done(err, korisnik);
+  });
+});
+
+
 // konfigurisemo bodyParser()
 // da bismo mogli da preuzimamo podatke iz POST zahteva
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
-var port = process.env.PORT || 8080; // na kom portu slusa server
 
-//inicijalizacija sesije
-var sess;
-app.use(session({secret: 'ssshhhhh'}));
+app.use(passport.initialize());
+app.use(passport.session());
 
-
-// dodavanje rutera za blogEntries /api/blogEntries
+// Dodavanje rutera
 app.use('/api/korisnik', korisnikRouter);
 app.use('/api/projekat', projekatRouter);
 app.use('/api/zadatak', zadatakRouter);
 app.use('/api/comment', komentarRouter);
+
 //klijentsku angular aplikaciju serviramo iz direktorijuma client
 app.use('/blog', express.static(__dirname + '/client'));
-app.use('/lib', express.static(__dirname + '/bower_components'));
 
+app.use('/login', function(req, res, next) {
+  passport.authenticate('local', function(err, korisnik, info) {
+    if (err) {
+      return next(err);
+    }
+
+    if (!korisnik) {
+      return res.redirect('/blog/indexx.html');
+    }
+
+    req.logIn(korisnik, function(err) {
+      if (err) {
+        return next(err);
+      }
+        //    console.log(req.user);      //OVIM DOBIJAMO SAM OBJEKAT KORISNIKA
+        //    console.log(req.session.passport.user);   //OVIM DOBIJAMO SAM ID KOJI SMO SERIJALIZOVALI
+        //return res.redirect('http://www.google.rs');
+      return res.redirect('/blog/indexx.html#/main');
+    });
+  })(req, res, next);
+});
 
 //na kraju dodajemo middleware za obradu gresaka
 app.use(function(err, req, res, next) {
@@ -52,12 +114,10 @@ app.use(function(err, req, res, next) {
   });
 });
 
+// na kom portu slusa server
+var port = process.env.PORT || 30000;
 
 // Pokretanje servera
 app.listen(port);
 
-
-
-
 console.log('Server radi na portu ' + port); 
-
