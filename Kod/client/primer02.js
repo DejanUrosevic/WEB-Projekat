@@ -91,7 +91,15 @@
 			    projZad = ProjEntry.get({_id:projEntryId}, function (projekatt) 
 			    {
 			    	 $scope.zadEntry.oznaka = projekatt.oznaka;
-			    	 $scope.zadEntry.redni_broj = projekatt.zadatak.length+1;
+			    	 if(angular.equals(0, projekatt.zadatak.length))
+			    	 {
+			    	 	$scope.zadEntry.redni_broj = 1;
+			    	 }
+			    	 else
+			    	 {
+			    	 	$scope.zadEntry.redni_broj = projekatt.zadatak[projekatt.zadatak.length-1].redni_broj+1;
+			    	 } 
+			    	 
 			    });	
 			}
 			
@@ -130,6 +138,7 @@
 		//brisanje selektovanog zadatka iz liste zadataka odgovarajuceg projekta.
 		$scope.obrisiZad = function (zadatak, index) 
 		{
+
 			$http.delete('/api/zadatak/' + zadatak._id)
 			.success(function (data, status, headers) {
 				$scope.projZad.zadatak.splice(index, 1);
@@ -138,9 +147,23 @@
 
 		if(!angular.equals({}, $stateParams))
 		{
+			$scope.projZadaci = [];
 			var ProjEntry = $resource('/api/projekat/:_id');
 			var projEntryId = $stateParams.id;
-    		$scope.projZad = ProjEntry.get({_id:projEntryId});
+    		$scope.projZad = ProjEntry.get({_id:projEntryId} , function (projekatt) 
+			{//zasto ovo nece??? Onaj deo Projekat.findByID({"oznaka": data.oznaka})
+			    	for(var i=0; i<projekatt.zadatak.length; i++)
+			    	{		 
+						for(var j=0; j<$scope.zadEntries.length; j++)
+						{						
+							if($scope.zadEntries[j]._id === projekatt.zadatak[i]._id)
+							{
+								$scope.projZadaci.push($scope.zadEntries[j]);
+								break;  	
+							} 
+						}
+					}
+			});
 		}
 
 		$scope.promeniStatus = function(zadatak, index){
@@ -291,7 +314,7 @@
 			}
 
 			
-
+			
 			//ovde u $scope.nizKorisnika stavljamo samo one korisnike koji nisu na selektovanom projektu.
 			if(!angular.equals({}, $stateParams))
 			{
@@ -303,7 +326,7 @@
 			    	{		 
 						for(var j=0; j<$scope.korEntries.length; j++)
 						{						
-							if($scope.korEntries[j]._id !== projekatt.korisnici[i]._id)
+							if($scope.korEntries[j]._id === projekatt.korisnici[i]._id)
 							{
 								$scope.korEntries.splice(j, 1);
 								break;  	
@@ -312,6 +335,7 @@
 					}
 			    });
 			}
+			
 
 			$scope.dodajUsera = function (kor, index)
 			{

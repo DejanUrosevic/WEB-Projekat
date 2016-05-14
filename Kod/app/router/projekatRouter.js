@@ -10,7 +10,8 @@ projekatRouter
 .get('/', function(req, res) {
     var entry={};
     Projekat.find(entry).populate('korisnici').populate('zadatak').exec(function(err, data, next) {
-      res.json(data);
+     
+       res.json(data);
     });
 })
 .get('/:id', function(req, res) {

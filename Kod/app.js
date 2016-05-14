@@ -32,7 +32,7 @@ passport.use(new LocalStrategy(
     },
     function(email, lozinka, done) {
       Korisnik.findOne({email: email}, function(err, korisnik) {
-        console.log(korisnik);
+        //console.log(korisnik);
         if (err) {
           return done(err);
         }
@@ -85,7 +85,7 @@ app.use('/login', function(req, res, next) {
     if (err) {
       return next(err);
     }
-
+    	
     if (!korisnik) {
       return res.redirect('/blog/indexx.html');
     }
@@ -94,8 +94,8 @@ app.use('/login', function(req, res, next) {
       if (err) {
         return next(err);
       }
-        //    console.log(req.user);      //OVIM DOBIJAMO SAM OBJEKAT KORISNIKA
-        //    console.log(req.session.passport.user);   //OVIM DOBIJAMO SAM ID KOJI SMO SERIJALIZOVALI
+          //  console.log("Request: " + req.user +  "\n");      //OVIM DOBIJAMO SAM OBJEKAT KORISNIKA
+          //  console.log("Session: " + req.session.passport.user);   //OVIM DOBIJAMO SAM ID KOJI SMO SERIJALIZOVALI
         //return res.redirect('http://www.google.rs');
       return res.redirect('/blog/indexx.html#/main');
     });
@@ -115,7 +115,7 @@ app.use(function(err, req, res, next) {
 });
 
 // na kom portu slusa server
-var port = process.env.PORT || 30000;
+var port = process.env.PORT || 8080;
 
 // Pokretanje servera
 app.listen(port);

@@ -9,7 +9,7 @@ var zadatakRouter = express.Router();
 zadatakRouter
 .get('/', function(req, res) {
     var entry={};
-    Zadatak.find(entry).populate('komentari').populate('izmeneZadatka').exec(function(err, data, next) {
+    Zadatak.find(entry).populate('komentari').populate('izmeneZadatka').populate('korisnik').exec(function(err, data, next) {
       if(err){
         console.log("--"+err);
         next(err);
@@ -18,7 +18,7 @@ zadatakRouter
     });
 })
 .get('/:id', function(req, res) {
-    Zadatak.findOne({"_id": req.params.id}).populate('komentari').populate('izmeneZadatka').exec(function(err, data, next) {
+    Zadatak.findOne({"_id": req.params.id}).populate('komentari').populate('izmeneZadatka').populate('korisnik').exec(function(err, data, next) {
       if(err){
         console.log("+++"+err);
         next(err);
@@ -33,6 +33,7 @@ zadatakRouter
         console.log(err);
         next();
       }
+      
       Projekat.findOne({"oznaka":data.oznaka},function (err, entry) {
         Zadatak.remove({
           "_id": req.params.id

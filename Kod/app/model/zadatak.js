@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var Zadatak = require(__dirname + '/../model/zadatak');
 
 // kreiramo novu shemu
 var zadatakSchema = new Schema({
@@ -22,12 +23,13 @@ var zadatakSchema = new Schema({
   autor: { type: Schema.Types.ObjectId, ref: 'Korisnik' },
   korisnik: { type: Schema.Types.ObjectId, ref: 'Korisnik' },
   createdAt: Date,
+  updatedAt: Date,
   komentari: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
   prioritet: {
   	type: String, 
   	enum: ['Blocker', 'Critical', 'Major', 'Minor', 'Trivial']
   },
-  izmeneZadatka: [{ type: Schema.Types.ObjectId, ref: 'Zadatak' }],
+  izmeneZadatka: [Zadatak],
   status: 
   {
     type: String,
@@ -43,6 +45,7 @@ zadatakSchema.pre('save', function(next)
   // preuzmemo trenutni datum
   var currentDate = new Date();
   
+  this.updatedAt = currentDate;
 
   // postavimo trenutni datum poslednju izmenu
   if (!this.createdAt)
