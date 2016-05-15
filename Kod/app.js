@@ -83,7 +83,7 @@ app.use('/api/comment', komentarRouter);
 //klijentsku angular aplikaciju serviramo iz direktorijuma client
 app.use('/blog', express.static(__dirname + '/client'));
 
-app.use('/login', function(req, res, next) {
+app.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, korisnik, info) {
     if (err) {
       return next(err);
@@ -105,6 +105,12 @@ app.use('/login', function(req, res, next) {
   })(req, res, next);
 });
 
+app.get('/logout', function(req, res, next) {
+  req.logout();
+
+  res.redirect('/blog/indexx.html#/login');
+});
+
 //na kraju dodajemo middleware za obradu gresaka
 app.use(function(err, req, res, next) {
   var message = err.message;
@@ -118,7 +124,7 @@ app.use(function(err, req, res, next) {
 });
 
 // na kom portu slusa server
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 8080;
 
 // Pokretanje servera
 app.listen(port);
