@@ -1,9 +1,11 @@
 // Uvoz instaliranih modula
 var express = require('express');
+var cookie_parser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
+var express_session = require('express-session');
 var passport = require('passport');
 var passport_local = require('passport-local');
+var mongoose = require('mongoose');
 
 // Uvoz modula koji predstavljaju modele baze podataka mongoDB
 var Korisnik = require(__dirname + '/app/model/korisnik');
@@ -17,6 +19,7 @@ var projekatRouter = require(__dirname + '/app/router/projekatRouter');
 var zadatakRouter = require(__dirname + '/app/router/zadatakRouter');
 var komentarRouter = require(__dirname + '/app/router/komentarRouter');
 
+// Instanciramo
 var app = express();
 
 // Spajamo se na bazu podataka
@@ -61,13 +64,13 @@ passport.deserializeUser(function(_id, done) {
 });
 
 
-// konfigurisemo bodyParser()
-// da bismo mogli da preuzimamo podatke iz POST zahteva
+// Ubacimo neophodne midlewear-e
+app.use(cookie_parser());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
-
+app.use(express_session({secret: 'Hello, here I am'}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -115,7 +118,7 @@ app.use(function(err, req, res, next) {
 });
 
 // na kom portu slusa server
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 3000;
 
 // Pokretanje servera
 app.listen(port);
