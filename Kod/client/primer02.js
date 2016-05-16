@@ -124,7 +124,7 @@
 		
 	};
 
-	var zadatakBrisanjeCtrl = function ($scope, $http, $resource, $stateParams, $location) 
+	var zadatakBrisanjeCtrl = function ($scope, $http, $resource, $stateParams, $location, $filter) 
 	{
 		var ZadEntry = $resource('/api/zadatak/:id',
 			{id:'@_id'});
@@ -136,20 +136,15 @@
 		loadEntries();
 
 		//brisanje selektovanog zadatka iz liste zadataka odgovarajuceg projekta.
-		$scope.obrisiZad = function (zadatak, index) 
+		$scope.obrisiZad = function (zadatakID, index) 
 		{
 
-			$http.delete('/api/zadatak/' + zadatak._id)
+			$http.delete('/api/zadatak/' + zadatakID)
 			.success(function (data, status, headers) {
-				$scope.projZad.zadatak.splice(index, 1);
+				$scope.projZadaci.splice(index, 1);
             });
 		}
 
-
-		// ovde moram da uporedjujem zadatke sa nekog projekta i sve zadatke, 
-		//da bih ispisao korisnika kome je u stvari zadat zadatak.
-		//iz nekog razloga, nije hteo populate korisnika u zadatku, kada se uzme iz liste zadataka tog projekta,
-		//pa sam morao ovako.
 		if(!angular.equals({}, $stateParams))
 		{
 			$scope.projZadaci = [];
@@ -168,6 +163,7 @@
 							} 
 						}
 					}
+				//?? da li ovako treba za filter??	$filter('orderBy')($scope.projZadaci, '-updatedAt');
 			});
 		}
 
@@ -184,6 +180,7 @@
 		$scope.editZadatak = function (zadatakId, projekatId) {
 			$location.path('/projekat/' + projekatId + '/zadatak/' + zadatakId + '/edit');
 		}
+		
 		
 	}
 

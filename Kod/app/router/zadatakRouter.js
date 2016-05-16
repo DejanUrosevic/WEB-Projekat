@@ -31,10 +31,14 @@ zadatakRouter
       if(err)
       {
         console.log(err);
-        next();
+        next(err);
       }
-      
       Projekat.findOne({"oznaka":data.oznaka},function (err, entry) {
+        if(err)
+        {
+          console.log(err);
+          next(err);
+        }
         Zadatak.remove({
           "_id": req.params.id
         }, function(err, successIndicator) {

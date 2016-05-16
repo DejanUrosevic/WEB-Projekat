@@ -37,7 +37,7 @@
                                       <th class="pravaTabela">Komentari</th>
                                     </tr>
 
-                                    <tr ng-repeat="zadatak in projZadaci | orderBy:'updatedAt'">
+                                    <tr ng-repeat="zadatak in projZadaci">
                                       <td class="pravaTabela">{{zadatak.oznaka}}</td>
                                       <td class="pravaTabela">{{zadatak.redni_broj}}</td>
                                       <td class="pravaTabela">{{zadatak.naslov}}</td>
@@ -46,7 +46,7 @@
                                       <td class="pravaTabela">{{zadatak.updatedAt | date:'dd.MM.yyyy. HH:mm:ss'}}</td>
                                       <td class="pravaTabela">{{zadatak.korisnik.ime}} &nbsp {{zadatak.korisnik.prezime}}</td>
                                       <td class="pravaTabela">{{zadatak.status}}</td>
-                                      <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="obrisiZad(zadatak, $index)"> <img src="images/removeUser.png" height="35"/></button></td>
+                                      <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="obrisiZad(zadatak._id, $index)"> <img src="images/removeUser.png" height="35"/></button></td>
                                       <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="editZadatak(zadatak._id, projZad._id)"> <img src="images/edit.png" height="35"/></button>  </td>
                                       <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="komentari(zadatak._id, projZad._id)"> <img src="images/comments.jpg" height="35"/></button></td>
                                     </tr>
