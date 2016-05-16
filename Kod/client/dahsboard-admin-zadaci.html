@@ -9,7 +9,7 @@
                 <li class="menuitem"><a href="#">Products</a></li>
                 <li class="menuitem"><a href="#">Services</a></li>
                 <li class="menuitem"><a href="#">Design</a></li>
-              <li class="menuitem"><a href="/logout">Odjavi se</a></li>
+                <li class="menuitem"><a href="/logout">Odjavi se</a></li>
             </ul>
         </div>
         <br/><br/><br/><br/><br/><br/><br/><br/>
@@ -30,6 +30,7 @@
                                       <th class="pravaTabela">Novi zadatak</th>
                                       <th class="pravaTabela">Korisnici na projektu</th>
                                       <th class="pravaTabela">Svi zadaci</th>
+                                      <th class="pravaTabela">Izveštaji</th>
                                     </tr>
 
                                     <tr ng-repeat="projEntry in projEntries">
@@ -39,22 +40,10 @@
                                       <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="dodajZad(projEntry)"> <img src="images/add.png" height="35"/></button></td>
                                       <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="dodajUser(projEntry)"> <img src="images/users.png" height="35"/></button></td>
                                       <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="pregledZadataka(projEntry)"> <img src="images/zadaci.png" height="35"/></button></td>
+                                      <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="izvestaji(projEntry)"> <img src="images/project-reports.png" height="35"/></button></td>
                                     </tr>
 
                                   </table>
-                                  <!--
-                                  <select>
-                                    <option selected>
-                                      Skok na projekat
-                                    </option>
-                                    <option
-                                            ng-repeat="projEntry in projEntries"
-                                            value="{{projEntry.oznaka}}" >
-                                            
-                                      {{projEntry.naziv}}
-                                    </option>
-                                  </select>
-                                  -->
               </div>
                          
         </div>
