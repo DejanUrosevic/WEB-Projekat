@@ -1,0 +1,56 @@
+<div id="container">
+        <div id="header">
+            <h1>Slick<span class="off">Task</span></h1>       
+        </div>   
+        <div id="menu">
+            <ul>
+                <li class="menuitem"><a ui-sref="addProjekat"> Novi projekat</a> </li>
+                <li class="menuitem"><a href="#">About</a></li>
+                <li class="menuitem"><a href="#">Products</a></li>
+                <li class="menuitem"><a href="#">Services</a></li>
+                <li class="menuitem"><a href="#">Design</a></li>
+              <li class="menuitem"><a href="#">Odjavi se</a></li>
+            </ul>
+        </div>
+        <br/><br/><br/><br/><br/><br/><br/><br/>
+
+
+        <div id="content_top"></div>
+        <div id="content_main">
+          <div id="tableContainer-1">
+                  <div id="tableContainer-2">
+                               <h2 style="text-align: center;">Dostupni projekti</h2>
+                               <br/>
+
+                                  <table style="border-collapse: collapse; border: 1px solid black;">
+                                    <tr>
+                                      <th class="pravaTabela">ID</th>
+                                      <th class="pravaTabela">Ime</th>
+                                      <th class="pravaTabela">Prezime</th>
+                                    </tr>
+                                    <tr>
+                                      <td class="pravaTabela">{{User._id}}</td>
+                                      <td class="pravaTabela">{{User.ime}}</td>
+                                      <td class="pravaTabela">{{User.prezime}}</td>
+                                    </tr>
+
+                                  </table>
+                                  <!--
+                                  <select>
+                                    <option selected>
+                                      Skok na projekat
+                                    </option>
+                                    <option
+                                            ng-repeat="projEntry in projEntries"
+                                            value="{{projEntry.oznaka}}" >
+                                            
+                                      {{projEntry.naziv}}
+                                    </option>
+                                  </select>
+                                  -->
+              </div>
+                         
+        </div>
+      </div>
+      <div id="content_bottom"></div>
+  </div>

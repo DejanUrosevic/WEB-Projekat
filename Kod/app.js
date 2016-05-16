@@ -100,7 +100,14 @@ app.post('/login', function(req, res, next) {
           //  console.log("Request: " + req.user +  "\n");      //OVIM DOBIJAMO SAM OBJEKAT KORISNIKA
           //  console.log("Session: " + req.session.passport.user);   //OVIM DOBIJAMO SAM ID KOJI SMO SERIJALIZOVALI
         //return res.redirect('http://www.google.rs');
-      return res.redirect('/blog/indexx.html#/main');
+      req.session.user = korisnik;
+      if(korisnik.vrsta === 'admin'){
+        return res.redirect('/blog/indexx.html#main');
+      }else if(korisnik.vrsta === 'korisnik'){
+        return res.redirect('/blog/indexx.html#/korisnik/'+korisnik._id);
+      }else{
+        return res.redirect('blog/indexx.html#login');
+      }
     });
   })(req, res, next);
 });

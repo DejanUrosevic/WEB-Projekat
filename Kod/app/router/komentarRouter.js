@@ -7,6 +7,8 @@ var komentarRouter = express.Router();
 
 komentarRouter
 .get('/', function(req, res) {
+  //console.log("Korisnik : " + req.success.user.email);
+  if(req.session.user || (req.session.user !== undefined)){
     var entry={};
     Comment.find(entry).exec(function(err, data, next) {
       if(err){
@@ -15,13 +17,21 @@ komentarRouter
       }
       res.json(data);
     });
+  }else{
+    res.redirect('/blog/indexx.html');
+  }
 })
 .get('/:id', function(req, res) {
+  if(req.session.user || (req.session.user !== undefined)){
     Comment.findOne({"_id": req.params.id}).exec(function(err, data, next) {
       res.json(data);
     });
+  }else{
+    res.redirect('/blog/indexx.com');
+  }
 })
 .delete('/:id', function(req, res, next) {
+  if(req.session.user || (req.session.user !== undefined)){
     Comment.remove({
       "_id": req.params.id
     }, function(err, successIndicator) {
@@ -32,8 +42,12 @@ komentarRouter
       }
       res.json(successIndicator);
     });
+  }else{
+    res.redirect('/blog/indexx.html');
+  }
 })
 .put('/:id', function(req, res, next) {
+  if(req.session.user || (req.session.user !== undefined)){
     Comment.findOne({
       "_id": req.params.id
     }, function(err, comment) {
@@ -51,9 +65,12 @@ komentarRouter
         res.json(data);
       });
     });
+  }else{
+    res.redirect('/blog/indexx.com');
+  }
 })
-.post('/', function(req, res, next) 
-{
+.post('/', function(req, res, next) {
+  if(req.session.user || (req.session.user !== undefined)){
     var comment = new Comment();
     comment.tekst = req.body.params.tekst;
     Zadatak.findOne({"_id":req.body.params.zadatakID},function (err, entry) {
@@ -76,6 +93,9 @@ komentarRouter
        
       });
     });
+  }else{
+    res.redirect('/blog/indexx.html');
+  }
 });
 
 

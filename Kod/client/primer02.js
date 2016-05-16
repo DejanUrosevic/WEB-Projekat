@@ -1,5 +1,5 @@
 (function (angular) {
-	var korisnikCtrl = function ($scope, $resource) 
+	var korisnikCtrl = function ($scope, $resource, $location, $stateParams) 
 	{
 		var KorEntry = $resource('/api/korisnik/');
 		var loadEntries = function () 
@@ -18,6 +18,13 @@
 
 		$scope.delete = function (user) {
 			user.$delete(loadEntries);
+		}
+
+		if(!angular.equals({}, $stateParams))
+		{
+			var KorEntry2 = $resource('/api/korisnik/:_id');
+			var korEntryId = $stateParams.id;
+    		$scope.User = KorEntry2.get({_id:korEntryId});
 		}
 	};
 
@@ -505,7 +512,12 @@
 	      url: '/izvestaj1', 
 	      templateUrl: 'izvestaj-zadaci-dodeljeni-projekat.html'
 	    //  controller: 'komentariCtrl'
-	    })     
+	    })   
+	    .state('korDash', {
+	      url: '/korisnik/:id', 
+	      templateUrl: 'korisnik-dashboard.html',
+	      controller: 'korisnikCtrl'
+	    })  
   	});
 
 }(angular));

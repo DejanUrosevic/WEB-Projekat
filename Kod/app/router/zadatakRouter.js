@@ -8,6 +8,8 @@ var zadatakRouter = express.Router();
 
 zadatakRouter
 .get('/', function(req, res) {
+    //console.log("korisnik " + req.session.user.email);
+  if(req.session.user || (req.session.user !== undefined)){  
     var entry={};
     Zadatak.find(entry).populate('komentari').populate('izmeneZadatka').populate('korisnik').exec(function(err, data, next) {
       if(err){
@@ -16,8 +18,12 @@ zadatakRouter
       }
       res.json(data);
     });
+  }else{
+    res.redirect('/blog/indexx.html');
+  }
 })
 .get('/:id', function(req, res) {
+  if(req.session.user || (req.session.user !== undefined)){
     Zadatak.findOne({"_id": req.params.id}).populate('komentari').populate('izmeneZadatka').populate('korisnik').exec(function(err, data, next) {
       if(err){
         console.log("+++"+err);
@@ -25,9 +31,13 @@ zadatakRouter
       }
       res.json(data);
     });
+  }else{
+    res.redirect('/blog/indexx.html');
+  }
 })
 .delete('/:id', function(req, res, next) {
-  Zadatak.findOne({"_id": req.params.id}).exec(function(err, data, next) {
+  if(req.session.user || (req.session.user !== undefined)){
+    Zadatak.findOne({"_id": req.params.id}).exec(function(err, data, next) {
       if(err)
       {
         console.log(err);
@@ -57,10 +67,14 @@ zadatakRouter
           });
           res.json(successIndicator);
         });
+      });
     });
-  });
+  }else{
+    res.redirect('/blog/indexx.html');
+  }
 })
 .put('/:id', function(req, res, next) {
+  if(req.session.user || (req.session.user !== undefined)){
     Zadatak.findOne({
       "_id": req.params.id
     }, function(err, zadatak) {
@@ -84,6 +98,9 @@ zadatakRouter
         });
       });
     });
+  }else{
+    res.redirect('/blog/indexx.html');
+  }
 });
 
 
