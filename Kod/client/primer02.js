@@ -145,6 +145,11 @@
             });
 		}
 
+
+		// ovde moram da uporedjujem zadatke sa nekog projekta i sve zadatke, 
+		//da bih ispisao korisnika kome je u stvari zadat zadatak.
+		//iz nekog razloga, nije hteo populate korisnika u zadatku, kada se uzme iz liste zadataka tog projekta,
+		//pa sam morao ovako.
 		if(!angular.equals({}, $stateParams))
 		{
 			$scope.projZadaci = [];
@@ -358,9 +363,10 @@
 			console.log(data);
 			for (var i = 0; i < data.length; i++) 
 			{
-				$scope.podaci.push({key:data[i].ime + ' ' + data[i].prezime, 
+				$scope.podaci.push({
+						   key:data[i].ime + ' ' + data[i].prezime, 
 						   y: data[i].zadatak.length
-						  });
+				});
 				
 			}
 

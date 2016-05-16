@@ -40,7 +40,6 @@ projekatRouter
     var zadatak = new Zadatak(req.body);
     if(req.body.korisnik !== null || req.body.korisnik !== undefined)
     {
-      console.log(zadatak);
       Korisnik.findByIdAndUpdate(req.body.korisnik, {$push:{"zadatak":zadatak}}, function (err, entry) 
       {
         if(err)
