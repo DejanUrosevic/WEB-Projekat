@@ -7,7 +7,7 @@ var korisnikRouter = express.Router();
 korisnikRouter
 .get('/', function(req, res) {
       var entry={};
-      Korisnik.find(entry).exec(function(err, data, next) {
+      Korisnik.find(entry).populate('zadatak').exec(function(err, data, next) {
         res.json(data);
       });
 })

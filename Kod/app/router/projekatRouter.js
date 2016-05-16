@@ -38,7 +38,19 @@ projekatRouter
 {
     
     var zadatak = new Zadatak(req.body);
-    Projekat.findOne({"oznaka":zadatak.oznaka},function (err, entry) {
+    if(req.body.korisnik !== null || req.body.korisnik !== undefined)
+    {
+      console.log(zadatak);
+      Korisnik.findByIdAndUpdate(req.body.korisnik, {$push:{"zadatak":zadatak}}, function (err, entry) 
+      {
+        if(err)
+        {
+          console.log(err);
+          next(err);
+        }
+      });
+    }
+    Projekat.findOne({"oznaka": zadatak.oznaka},function (err, entry) {
     if(err) next(err);
     zadatak.save(function (err, zadatak) {
       if(err)

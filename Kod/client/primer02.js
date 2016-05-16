@@ -347,6 +347,85 @@
 			}
 	}
 
+	var ZadaciKorisnicimaCtrl = function ($scope, $http, $resource, $stateParams, $location) 
+	{
+		$scope.podaci = [];
+		
+		$http.get('/api/korisnik/')
+		.success(function(data, status, headers)
+		{
+			
+			console.log(data);
+			for (var i = 0; i < data.length; i++) 
+			{
+				$scope.podaci.push({key:data[i].ime + ' ' + data[i].prezime, 
+						   y: data[i].zadatak.length
+						  });
+				
+			}
+
+
+			//sam kod za pravljenje dijagrama
+
+			var height = 350;
+		    var width = 350;
+
+		    nv.addGraph(function() {
+		        var chart = nv.models.pieChart()
+		            .x(function(d) { return d.key })
+		            .y(function(d) { return d.y })
+		            .width(width)
+		            .height(height)
+		            .showTooltipPercent(true);
+
+		        d3.select("#test1")
+		            .datum($scope.podaci)
+		            .transition().duration(1200)
+		            .attr('width', width)
+		            .attr('height', height)
+		            .call(chart);
+
+		        return chart;
+		    });
+
+		    nv.addGraph(function() {
+		        var chart = nv.models.pieChart()
+		            .x(function(d) { return d.key })
+		            .y(function(d) { return d.y })
+		            //.labelThreshold(.08)
+		            //.showLabels(false)
+		            .color(d3.scale.category20().range().slice(8))
+		            .growOnHover(false)
+		            .labelType('value')
+		            .width(width)
+		            .height(height);
+
+		        // disable and enable some of the sections
+		        var is_disabled = false;
+		        setInterval(function() {
+		            chart.dispatch.changeState({disabled: {2: !is_disabled, 4: !is_disabled}});
+		            is_disabled = !is_disabled;
+		        }, 3000);
+
+		        return chart;
+		    });
+		});
+
+		
+
+		var testdata2 = [
+	        {key: "One", y: 5},
+	        {key: "Two", y: 2},
+	        {key: "Three", y: 9},
+	        {key: "Four", y: 7},
+	        {key: "Five", y: 4},
+	        {key: "Six", y: 3},
+	        {key: "Seven", y: 0.5}
+	    ];
+
+	    
+	}
+
 
 
 	var app = angular.module('app',['ui.router', 'ngResource']);
@@ -358,6 +437,7 @@
 	app.controller('zadatakIzmenaCtrl', zadatakIzmenaCtrl);
 	app.controller('komentariIzmenaCtrl', komentariIzmenaCtrl);
 	app.controller('addRemoveUserProject', addRemoveUserProject);
+	app.controller('ZadaciKorisnicimaCtrl', ZadaciKorisnicimaCtrl);
 
 	app.config(function($stateProvider, $urlRouterProvider) {
 
@@ -417,7 +497,12 @@
 	      url: '/projekat/:id/zadatak/:id2/noviKomentar', 
 	      templateUrl: 'komentari-unos.html',
 	      controller: 'komentariCtrl'
-	    })    
+	    })
+	    .state('izvestajZadaci1', {
+	      url: '/izvestaj1', 
+	      templateUrl: 'izvestaj-zadaci-dodeljeni-projekat.html'
+	    //  controller: 'komentariCtrl'
+	    })     
   	});
 
 }(angular));
