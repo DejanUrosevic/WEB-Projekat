@@ -113,6 +113,8 @@ app.post('/login', function(req, res, next) {
 });
 
 app.get('/logout', function(req, res, next) {
+  delete req.session.user;
+
   req.logout();
 
   res.redirect('/blog/indexx.html#/login');

@@ -6,14 +6,18 @@ var korisnikRouter = express.Router();
 
 korisnikRouter
 .get('/', function(req, res) {
-    if(req.session.user || (req.session.user !== undefined)){
+    /*if(req.session.user || (req.session.user !== undefined)){
       var entry={};
       Korisnik.find(entry).populate('zadatak').exec(function(err, data, next) {
         res.json(data);
       });
     }else{
       res.redirect('/blog/indexx.html#login');
-    }
+    }*/
+     var entry={};
+      Korisnik.find(entry).populate('zadatak').exec(function(err, data, next) {
+        res.json(data);
+      });
 })
 .get('/:id', function(req, res) {
     //console.log(req.session.user)
@@ -26,11 +30,11 @@ korisnikRouter
       //console.log("Nema sesije");
       res.redirect('/blog/indexx.html');
       return;
-    } 
+    }
 })
 .post('/', function(req, res, next) 
 {
-  if(req.session.user || (req.session.user !== undefined)){
+  //if(req.session.user || (req.session.user !== undefined)){
     var korisnik = new Korisnik(req.body);
     korisnik.save(function(err, entry) 
     {
@@ -42,9 +46,9 @@ korisnikRouter
       } 
       res.json(entry);
     });
-  }else{
+  /*}else{
     res.redirect('/blog/indexx.html');
-  }
+  }*/
 })
 .delete('/:id', function(req, res, next) {
   if(req.session.user || (req.session.user !== undefined)){
