@@ -390,16 +390,32 @@
 		
 			if(!angular.equals({}, $stateParams))
 			{
-
+				// ok, sta ovde radimo..
+				//tri for petlje, prva da prikaze koji korsnici rade na tom selektovanom projektu
+				//druga je za da se prodju svi zadaci na kojima korisnici rade, iz svih projekata(jbg tako smo schemu napravili)
+				//treca je da se uporede ti zadaci sa zadacima na trenutnom projektu
+				//oni koji su isti se racunaju kao brojac++, inace se preskacu.
 				$http.get('/api/projekat/' + $stateParams.id)
 				.success(function(data, status, headers)
 				{
 					
 					for (var i = 0; i < data.korisnici.length; i++) 
 					{
+						var brojac = 0;
+						for(var j=0; j<data.zadatak.length; j++)
+						{
+							for(var z=0; z<data.korisnici[i].zadatak.length; z++)
+							{
+								if(data.zadatak[j]._id === data.korisnici[i].zadatak[z])
+								{
+									brojac = brojac + 1;
+									break;
+								}
+							}
+						}
 						$scope.podaci.push({
 								   key:data.korisnici[i].ime + ' ' + data.korisnici[i].prezime, 
-								   y: data.korisnici[i].zadatak.length
+								   y: brojac
 						});
 						
 					}
