@@ -1,5 +1,5 @@
 (function (angular) {
-	var korisnikCtrl = function ($scope, $resource, $location, $stateParams) 
+	var korisnikCtrl = function ($scope, $resource, $location, $stateParams, $http) 
 	{
 		var KorEntry = $resource('/api/korisnik/');
 		var loadEntries = function () 
@@ -26,7 +26,7 @@
 			var KorEntry2 = $resource('/api/korisnik/:_id');
 			var korEntryId = $stateParams.id;
     		$scope.User = KorEntry2.get({_id:korEntryId});
-    		console.log($scope.User);
+    		//console.log($scope.User);
 		}
 	
 		$scope.dodajZad = function (projEntry) {
@@ -35,6 +35,24 @@
 
     	$scope.pregledZadataka = function (projEntry) {
       		$location.path('/projekat/'+ projEntry._id + '/zadaci');
+      	}
+
+      	$scope.myTask = []
+      	$scope.mojiZadaci = function(projEntry){
+      		//console.log(projEntry);
+      		
+      		//console.log($scope.User.zadatak.length);
+      		for(var i = 0; i < $scope.User.zadatak.length; i++){
+      			//console.log($scope.User.zadatak[i]);
+      			if($scope.User.zadatak[i].oznaka === projEntry.oznaka){
+      				$scope.myTask.push($scope.User.zadatak[i]);
+      			}
+      		}
+
+      		console.log($scope.myTask[0]);
+
+      		///korisnik/:id/projekat/:id2/zadaci
+      		$location.path('/korisnik/'+$scope.User._id+'/projekat/'+projEntry._id + '/zadaci');
       	}
 		
 	};
@@ -545,7 +563,12 @@
 	      url: '/korisnik/:id', 
 	      templateUrl: 'korisnik-dashboard.html',
 	      controller: 'korisnikCtrl'
-	    })  
+	    }) 
+	    .state('korZadaci', {
+	    	url: '/korisnik/:id/projekat/:id2/zadaci',
+	    	templateUrl: 'korisnik-zadaci.html',
+	    	controller: 'korisnikCtrl'
+	    }) 
   	});
 
 }(angular));
