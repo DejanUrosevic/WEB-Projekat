@@ -522,7 +522,64 @@
 				    $location.path('/projekat/' + data._id + '/izvestaji/izvestaj1');
 				});
 			}
-		}		
+		}
+
+        $scope.izvestaj3 = function() {
+             var podaci = [];
+
+             if (!angular.equals({}, $stateParams)) {
+                 $http.get('/api/projekat/' + $stateParams.id)
+                      .success(function(data, status, headers) {
+                          var zadaci = data.zadatak;                // Preuzmemo spisak zadataka
+
+                          var currentDate = new Date();            // Preuzmemo trenutni datum
+
+                          var brojZadatakaPoDanu = {};            // Sadrži broj zadataka po danu
+
+                          // Određivanje broja zadataka po danu
+                          for (var i=0; i<zadaci.length; i++) {
+                              var createdAt = zadaci[i].createdAt;
+
+                              var year = createdAt.substr(0,4);
+                              var month = createdAt.substr(5, 2);
+                              var day = createdAt.substr(8, 2);
+
+                              var createdAtFormated =  day+"/"+month+"/"+year;
+                              if (brojZadatakaPoDanu[createdAtFormated]==undefined) {
+                                  brojZadatakaPoDanu[createdAtFormated] = 1;
+                              } else {
+                                  brojZadatakaPoDanu[createdAtFormated]++;
+                              }
+                          }
+
+                          for (var stavka in brojZadatakaPoDanu) {
+                              console.log(stavka);
+                              podaci.push({label: stavka, value: brojZadatakaPoDanu[stavka]});
+                          }
+
+                          var podaciChart = [{key: "Naslov", "color": "#d67777", values: podaci}];
+
+                          //Crtanje grafika
+                          nv.addGraph(function() {
+                              var chart = nv.models.discreteBarChart() /*multiBarHorizontalChart()*/
+                                                    .x(function(d) {return d.label})
+                                                    .y(function(d) {return d.value})
+                                                   // .margin({top: 30, right: 20, bottom: 50, left: 175})
+                                                    //.staggerLabels(true)
+                                                    .showValues(true);
+                              chart.yAxis.tickFormat(d3.format(',f'));
+                              d3.select('#test3')
+                                  .datum(podaciChart)
+                                  .call(chart);
+
+                              return chart;
+                          });
+
+                          $location.path('/projekat/'+data._id+'/izvestaji/izvestaj3');
+
+                      });
+             }
+         }
 	}
 
 	var app = angular.module('app',['ui.router', 'ngResource']);
@@ -604,7 +661,11 @@
 	    .state('izvestaji.izvestaj1', {
 	      url: '/izvestaj1', 
 	      templateUrl: 'izvestaj-izvestaj1.html'
-	    })   
+	    })
+        .state('izvestaji.izvestaj3', {
+          url: '/izvestaj3',
+          templateUrl: 'izvestaj-izvestaj3.html'
+        })
 	    .state('korDash', {
 	      url: '/korisnik/:id', 
 	      templateUrl: 'korisnik-dashboard.html',
