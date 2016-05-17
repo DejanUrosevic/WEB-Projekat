@@ -1,14 +1,13 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// kreiramo novu shemu
+// Kreiramo šemu korisnik
 var korShema = new Schema({
   ime: {
     type: String,
     required: true
   },
-  prezime:
-  {
+  prezime: {
     type: String,
     required: true
   }, 
@@ -17,8 +16,7 @@ var korShema = new Schema({
     required: true,
     unique: true
   },
-  lozinka:
-  {
+  lozinka: {
     type: String,
     required: true
   },
@@ -28,14 +26,14 @@ var korShema = new Schema({
   projekti: [{ type: Schema.Types.ObjectId, ref: 'Projekat' }]
 });
 
-// prilikom snimanja se postavi datum
-korShema.pre('save', function(next) 
-{
-  // preuzmemo trenutni datum
-  var currentDate = new Date();
+// Predradnja prilikom memorisanja
+korShema.pre('save', function(next) {
   this.vrsta = 'korisnik';
 
-  // postavimo trenutni datum poslednju izmenu
+  // preuzmemo trenutni datum
+  var currentDate = new Date();
+
+  // Postavimo datum kriranja
   if (!this.createdAt)
     this.createdAt = currentDate;
 

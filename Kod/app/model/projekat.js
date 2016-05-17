@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// kreiramo novu shemu
+// Kriramo šemu projekta
 var projekatShema = new Schema({
   naziv: {
     type: String,
@@ -18,20 +18,20 @@ var projekatShema = new Schema({
   korisnici: [{ type: Schema.Types.ObjectId, ref: 'Korisnik' }]
 });
 
-// prilikom snimanja se postavi datum
-projekatShema.pre('save', function(next) 
-{
+// Predradnje prilikom memorisanja
+projekatShema.pre('save', function(next) {
   // preuzmemo trenutni datum
   var currentDate = new Date();
 
-  // postavimo trenutni datum poslednju izmenu
+  // Postavimo datum kreiranja
   if (!this.createdAt)
     this.createdAt = currentDate;
-  this.brojZadataka = 0;
+
+  this.brojZadataka = 0;                  // TODO Mogući bug
+
   // predjemo na sledecu funckiju u lancu
   next();
 });
-
 
 // od sheme kreiramo model koji cemo koristiti
 var Projekat = mongoose.model('Projekat', projekatShema);

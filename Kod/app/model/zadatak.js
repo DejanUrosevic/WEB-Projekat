@@ -1,13 +1,14 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+
 var Zadatak = require(__dirname + '/../model/zadatak');
 
-// kreiramo novu shemu
+// Kriramo šemu zadatka
 var zadatakSchema = new Schema({
   oznaka: { 
   	type: String,
   	required: true
-   },
+  },
   redni_broj: {
   	type: Number,
   	required: true
@@ -29,25 +30,22 @@ var zadatakSchema = new Schema({
   	type: String, 
   	enum: ['Blocker', 'Critical', 'Major', 'Minor', 'Trivial']
   },
-  izmeneZadatka: [Zadatak],
-  status: 
-  {
+  izmeneZadatka: [Zadatak],																	// Moglo bi drugačije
+  status: {
     type: String,
     default: 'To Do',
     required: true
   }
-  
 });
 
-// prilikom snimanja se postavi datum
-zadatakSchema.pre('save', function(next) 
-{
+// Predradnje prilikom memorisanja
+zadatakSchema.pre('save', function(next) {
   // preuzmemo trenutni datum
   var currentDate = new Date();
   
   this.updatedAt = currentDate;
 
-  // postavimo trenutni datum poslednju izmenu
+  // Postavimo datum kriranja
   if (!this.createdAt)
     this.createdAt = currentDate;
 

@@ -456,8 +456,6 @@
 		}		
 	}
 
-
-
 	var app = angular.module('app',['ui.router', 'ngResource']);
 	app.controller('korisnikCtrl', korisnikCtrl);
 	app.controller('projekatCtrl', projekatCtrl);
