@@ -37,7 +37,7 @@
       		$location.path('/projekat/'+ projEntry._id + '/zadaci');
       	}
 
-      	$scope.myTask = [];	
+      	/*$scope.myTask = [];	
       	//console.log(projEntry);
       		if(!angular.equals(undefined, $stateParams.id2))
 			{
@@ -55,13 +55,50 @@
 		      			}			
       				}	 	 
 			    });	
-			}
+			}*/
       		//console.log($scope.User.zadatak.length);
       		
       	$scope.mojiZadaci = function(projEntry){
       		///korisnik/:id/projekat/:id2/zadaci
       		$location.path('/korisnik/'+$scope.User._id+'/projekat/'+projEntry._id + '/zadaci');
       	}
+		
+	};
+
+	var mojiZadaciCtrl = function($scope, $http, $resource, $location, $stateParams){
+		$scope.myTask = [];
+
+		/*
+		if(!angular.equals({}, $stateParams))
+		{
+			var ProjEntry = $resource('/api/projekat/:_id');
+			var projEntryId = $stateParams.id2;
+    		$scope.projUser = ProjEntry.get({_id:projEntryId});
+		}	
+
+		if(!angular.equals({}, $stateParams))
+		{
+			var KorEntry = $resource('/api/korisnik/:_id');
+			var korEntryId = $stateParams.id;
+    		$scope.User = KorEntry.get({_id:korEntryId});
+		}*/
+		
+		var korisnik = $http.get('/api/projekat/'+$stateParams.id2)
+		.then(function(response){
+			$scope.projekat = response.data;
+			console.log($scope.projekat);
+			var korId = $stateParams.id;
+			for(var i = 0; i < $scope.projekat.zadatak.length; i++){
+				console.log($scope.projekat.zadatak[i].korisnik + " " +korId);
+				if($scope.projekat.zadatak[i].korisnik === korId){
+					$scope.myTask.push($scope.projekat.zadatak[i]);
+				}
+			}
+		});	
+		
+				
+		//console.log($scope.projUser.naslov);
+		//console.log($scope.User.email);
 		
 	};
 
@@ -498,6 +535,7 @@
 	app.controller('komentariIzmenaCtrl', komentariIzmenaCtrl);
 	app.controller('addRemoveUserProject', addRemoveUserProject);
 	app.controller('ZadaciKorisnicimaCtrl', ZadaciKorisnicimaCtrl);
+	app.controller('mojiZadaciCtrl', mojiZadaciCtrl);
 
 	app.config(function($stateProvider, $urlRouterProvider) {
 
@@ -574,8 +612,8 @@
 	    }) 
 	    .state('korZadaci', {
 	    	url: '/korisnik/:id/projekat/:id2/zadaci',
-	    	templateUrl: 'korisnik-zadaci.html'
-	    //	controller: 'korisnikCtrl'
+	    	templateUrl: 'korisnik-zadaci.html',
+	    	controller: 'mojiZadaciCtrl'
 	    }) 
   	});
 
