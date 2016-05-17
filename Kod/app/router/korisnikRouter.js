@@ -6,15 +6,20 @@ var korisnikRouter = express.Router();
 
 korisnikRouter
 .get('/', function(req, res) {
-	var entry={};
-	Korisnik.find(entry).populate('zadatak').exec(function(err, data, next) {
+  console.log(req.isAuthenticated());
+{
+	 var entry={};
+	 Korisnik.find(entry).populate('zadatak').exec(function(err, data, next) {
 		res.json(data);
-	});
+	 });
+  }
 })
 .get('/:id', function(req, res) {
-	Korisnik.findOne({"_id": req.params.id}).populate('projekat').populate('zadatak').exec(function(err, data, next) {
+  if(req.isAuthenticated()){
+	 Korisnik.findOne({"_id": req.params.id}).populate('projekat').populate('zadatak').exec(function(err, data, next) {
 		res.json(data);
-	});
+	 });
+  }
 })
 .post('/', function(req, res, next) {
     var korisnik = new Korisnik(req.body);
@@ -28,12 +33,14 @@ korisnikRouter
     });
 })
 .delete('/:id', function(req, res, next) {
-	Korisnik.remove({
-		"_id": req.params.id
-	}, function(err, successIndicator) {
-		if (err) next(err);
-		res.json(successIndicator);
-	});
+  if(req.isAuthenticated()){
+  	Korisnik.remove({
+  		"_id": req.params.id
+  	}, function(err, successIndicator) {
+  		if (err) next(err);
+  		res.json(successIndicator);
+  	});
+  }
 })
 /*
 .post('/test', function(req, res) {

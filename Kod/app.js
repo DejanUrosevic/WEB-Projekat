@@ -7,6 +7,7 @@ var passport = require('passport');
 var passport_local = require('passport-local');
 var mongoose = require('mongoose');
 
+
 // Uvoz modula koji predstavljaju modele baze podataka mongoDB
 var Korisnik = require('./app/model/korisnik');
 var Projekat = require('./app/model/projekat');
@@ -82,7 +83,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Dodavanje rutera
-app.use('/api/korisnik', isLoggedInInterceptor, korisnikRouter);
+app.use('/api/korisnik',/* isLoggedInInterceptor,*/ korisnikRouter);
 app.use('/api/projekat', isLoggedInInterceptor, projekatRouter);
 app.use('/api/zadatak', isLoggedInInterceptor, zadatakRouter);
 app.use('/api/comment', isLoggedInInterceptor, komentarRouter);

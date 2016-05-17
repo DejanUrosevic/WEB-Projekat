@@ -9,6 +9,7 @@
   "author": "Dražen Đanić, Aleksandar Manasijević, Marko Striško, Dejan Urošević",
   "license": "MIT",
   "dependencies": {
+    "angular-chart.js": "^1.0.0-alpha6",
     "body-parser": "^1.15.1",
     "cookie-parser": "^1.4.1",
     "d3": "^3.5.17",
