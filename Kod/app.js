@@ -1,23 +1,23 @@
 // Uvoz instaliranih modula
 var express = require('express');
 var cookie_parser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var body_parser = require('body-parser');
 var express_session = require('express-session');
 var passport = require('passport');
 var passport_local = require('passport-local');
 var mongoose = require('mongoose');
 
 // Uvoz modula koji predstavljaju modele baze podataka mongoDB
-var Korisnik = require(__dirname + '/app/model/korisnik');
-var Projekat = require(__dirname + '/app/model/projekat');
-var Zadatak = require(__dirname + '/app/model/zadatak');
-var Comment = require(__dirname + '/app/model/comment');
+var Korisnik = require('./app/model/korisnik');
+var Projekat = require('./app/model/projekat');
+var Zadatak = require('./app/model/zadatak');
+var Comment = require('./app/model/comment');
 
 // Uvoz modula koji predstavljaju rutiranje
-var korisnikRouter = require(__dirname + '/app/router/korisnikRouter');
-var projekatRouter = require(__dirname + '/app/router/projekatRouter');
-var zadatakRouter = require(__dirname + '/app/router/zadatakRouter');
-var komentarRouter = require(__dirname + '/app/router/komentarRouter');
+var korisnikRouter = require('./app/router/korisnikRouter');
+var projekatRouter = require('./app/router/projekatRouter');
+var zadatakRouter = require('./app/router/zadatakRouter');
+var komentarRouter = require('./app/router/komentarRouter');
 
 // Instanciramo
 var app = express();
@@ -35,7 +35,6 @@ passport.use(new LocalStrategy(
     },
     function(email, lozinka, done) {
       Korisnik.findOne({email: email}, function(err, korisnik) {
-        //console.log(korisnik);
         if (err) {
           return done(err);
         }
@@ -45,7 +44,7 @@ passport.use(new LocalStrategy(
         }
 
         if (korisnik.lozinka != lozinka) {
-          return done(null, false, {msg: 'Neispravna lozinka.'})
+          return done(null, false, {msg: 'Neispravna lozinka.'});
         }
 
         return done(null, korisnik);
@@ -63,22 +62,30 @@ passport.deserializeUser(function(_id, done) {
   });
 });
 
+//
+var isLoggedInInterceptor = function(req, res, next) {
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    res.redirect('/blog/indexx.html#/login');
+  }
+};
 
 // Ubacimo neophodne midlewear-e
 app.use(cookie_parser());
-app.use(bodyParser.urlencoded({
+app.use(body_parser.urlencoded({
   extended: true
 }));
-app.use(bodyParser.json());
+app.use(body_parser.json());
 app.use(express_session({secret: 'Hello, here I am'}));
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Dodavanje rutera
-app.use('/api/korisnik', korisnikRouter);
-app.use('/api/projekat', projekatRouter);
-app.use('/api/zadatak', zadatakRouter);
-app.use('/api/comment', komentarRouter);
+app.use('/api/korisnik', isLoggedInInterceptor, korisnikRouter);
+app.use('/api/projekat', isLoggedInInterceptor, projekatRouter);
+app.use('/api/zadatak', isLoggedInInterceptor, zadatakRouter);
+app.use('/api/comment', isLoggedInInterceptor, komentarRouter);
 
 //klijentsku angular aplikaciju serviramo iz direktorijuma client
 app.use('/blog', express.static(__dirname + '/client'));
@@ -97,23 +104,21 @@ app.post('/login', function(req, res, next) {
       if (err) {
         return next(err);
       }
-          //  console.log("Request: " + req.user +  "\n");      //OVIM DOBIJAMO SAM OBJEKAT KORISNIKA
-          //  console.log("Session: " + req.session.passport.user);   //OVIM DOBIJAMO SAM ID KOJI SMO SERIJALIZOVALI
-        //return res.redirect('http://www.google.rs');
-      req.session.user = korisnik;
+
+      req.session.user = korisnik;                                                // TODO proveriti ovo
       if(korisnik.vrsta === 'admin'){
-        return res.redirect('/blog/indexx.html#main');
+        return res.redirect('/blog/indexx.html#/main');
       }else if(korisnik.vrsta === 'korisnik'){
         return res.redirect('/blog/indexx.html#/korisnik/'+korisnik._id);
       }else{
-        return res.redirect('blog/indexx.html#login');
+        return res.redirect('/blog/indexx.html#/login');
       }
     });
   })(req, res, next);
 });
 
 app.get('/logout', function(req, res, next) {
-  delete req.session.user;
+  delete req.session.user;                                                      // TODO proveriti ovo
 
   req.logout();
 
@@ -133,7 +138,7 @@ app.use(function(err, req, res, next) {
 });
 
 // na kom portu slusa server
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 3000;
 
 // Pokretanje servera
 app.listen(port);

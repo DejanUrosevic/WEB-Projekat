@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// kreiramo novu shemu
+// Kreiramo šemu komentara
 var commentSchema = new Schema({
   autor: { type: Schema.Types.ObjectId, ref: 'Korisnik' },
   tekst: {
@@ -11,8 +11,7 @@ var commentSchema = new Schema({
   createdAt: Date
 });
 
-
-// prilikom snimanja se postavi datum
+// Predradnje prilikom snimanja
 commentSchema.pre('save', function(next) {
   // preuzmemo trenutni datum
   var currentDate = new Date();
