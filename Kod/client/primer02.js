@@ -68,37 +68,86 @@
 	var mojiZadaciCtrl = function($scope, $http, $resource, $location, $stateParams){
 		$scope.myTask = [];
 
-		/*
 		if(!angular.equals({}, $stateParams))
 		{
-			var ProjEntry = $resource('/api/projekat/:_id');
-			var projEntryId = $stateParams.id2;
-    		$scope.projUser = ProjEntry.get({_id:projEntryId});
-		}	
-
-		if(!angular.equals({}, $stateParams))
-		{
-			var KorEntry = $resource('/api/korisnik/:_id');
+			var KorEntry2 = $resource('/api/korisnik/:_id');
 			var korEntryId = $stateParams.id;
-    		$scope.User = KorEntry.get({_id:korEntryId});
-		}*/
+    		$scope.User = KorEntry2.get({_id:korEntryId});
+    		//console.log($scope.User);
+		}
 		
-		var korisnik = $http.get('/api/projekat/'+$stateParams.id2)
-		.then(function(response){
-			$scope.projekat = response.data;
-			console.log($scope.projekat);
-			var korId = $stateParams.id;
-			for(var i = 0; i < $scope.projekat.zadatak.length; i++){
-				console.log($scope.projekat.zadatak[i].korisnik + " " +korId);
-				if($scope.projekat.zadatak[i].korisnik === korId){
-					$scope.myTask.push($scope.projekat.zadatak[i]);
+		/*
+		Funkcija koja povlaci projekat sa baze i uporedjuje korisnika kojem je dodjeljen zadatak na tom projektu sa
+		korisnikom koji je ulogovan i dodaje te zadatke na $scope
+		*/
+		var ucitaj = function(){
+			var korisnik = $http.get('/api/projekat/'+$stateParams.id2)
+			.then(function(response){
+				var zadaci = [];
+				$scope.projekat = response.data;
+				console.log($scope.projekat);
+				var korId = $stateParams.id;
+				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
+					console.log($scope.projekat.zadatak[i].korisnik + " " +korId);
+					if($scope.projekat.zadatak[i].korisnik === korId){
+						zadaci.push($scope.projekat.zadatak[i]);
+					}
 				}
-			}
-		});	
-		
-				
-		//console.log($scope.projUser.naslov);
-		//console.log($scope.User.email);
+				$scope.myTask = zadaci;
+			});	
+		}
+
+		//sluzi da mozemo da pozovemo gornju funkiciju sa html-a
+		$scope.ucitavanje = ucitaj;
+
+		//sluzi da odmag ucita sadrzaj
+		ucitaj();
+
+		/*
+		Filtriranje korsnikovih zadataka na osnovu statusa koji je izabrao, sa baze se povlaci projekat i na osnovu njegovih
+		zadataka proverava se koji pripada trenutno ulogovanom korisniku, a nakon toga se proverava da li je i status tog 
+		zadatka isti kao i odabrani. Prvo se dodaje u obican niz ZADACI, koji se nakon svih provera postavlja na $scope 
+		*/
+		$scope.filtriraj = function(status){
+			var zadaci = [];
+			var korisnik = $http.get('/api/projekat/'+$stateParams.id2)
+			.then(function(response){
+				$scope.projekat = response.data;
+				console.log($scope.projekat);
+				var korId = $stateParams.id;
+				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
+					console.log($scope.projekat.zadatak[i].korisnik + " " +korId);
+					if($scope.projekat.zadatak[i].korisnik === korId){
+						if($scope.projekat.zadatak[i].status === status){
+							zadaci.push($scope.projekat.zadatak[i]);
+						}
+					}
+				}
+				$scope.myTask = zadaci;
+			});	
+		}
+
+		/*
+		Isto radi kao i filtriraj samo sto se ovde proverava prioritet zadatka.
+		*/
+		$scope.filtriraj2 = function(prioritet){
+			var zadaci = [];
+			var korisnik = $http.get('/api/projekat/'+$stateParams.id2)
+			.then(function(response){
+				$scope.projekat = response.data;
+				console.log($scope.projekat);
+				var korId = $stateParams.id;
+				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
+					console.log($scope.projekat.zadatak[i].korisnik + " " +korId);
+					if($scope.projekat.zadatak[i].korisnik === korId){
+						if($scope.projekat.zadatak[i].prioritet === prioritet){
+							zadaci.push($scope.projekat.zadatak[i]);
+						}
+					}
+				}
+				$scope.myTask = zadaci;
+			});	
+		}			
 		
 	};
 

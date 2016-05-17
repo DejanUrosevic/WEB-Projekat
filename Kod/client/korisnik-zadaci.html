@@ -4,12 +4,12 @@
         </div>   
         <div id="menu">
             <ul>
-                <li class="menuitem"><a ui-sref="main"> Nazad</a> </li>
+                <li class="menuitem"><a ui-sref="#"> Nazad</a> </li>
                 <li class="menuitem"><a href="#">About</a></li>
                 <li class="menuitem"><a href="#">Products</a></li>
                 <li class="menuitem"><a href="#">Services</a></li>
                 <li class="menuitem"><a href="#">Design</a></li>
-              <li class="menuitem"><a href="#">Odjavi se</a></li>
+              <li class="menuitem"><a href="/logout">Odjavi se</a></li>
             </ul>
         </div>
         <br/><br/><br/><br/><br/><br/><br/><br/>
@@ -19,8 +19,38 @@
         <div id="content_main">
           <div id="tableContainer-1">
                   <div id="tableContainer-2">
-                    <div ng-controller="korisnikCtrl">
-                               <h2 style="text-align: center;">Moji zadaci </h2>
+                    <div>
+                               <h2 style="text-align: center;">Moji zadaci na projektu <u style="color: #10100a;">{{projekat.naziv}}</h2>
+                               <h3>Filtriraj po : <form name="filtracija">
+                                                    <label>
+                                                      <input type="radio" ng-model="filtriraj.tip" value="propritet">Prioritet</input>
+                                                    </label><br/>
+                                                    <label>
+                                                      <input type="radio" ng-model="filtriraj.tip" value="status">Status</input>
+                                                    </label><br/>
+                                                  </form>
+                               </h3>
+
+                               <div  ng-if="filtriraj.tip == 'status'">
+                                       <select ng-model="zad.status" ng-change="filtriraj(zad.status)">                   
+                                                  <option value="To Do">To Do</option>
+                                                  <option value="In Progress">In Progress</option>
+                                                  <option value="Verify">Verify</option>
+                                                  <option value="Done">Done</option>
+                                       </select>
+                                       <button style="background-color:transparent; border-color:transparent;" ng-click="ucitavanje()"> <img src="images/ponisti.png" height="35"/></button>       
+                               </div>
+
+                               <div  ng-if="filtriraj.tip == 'propritet'">
+                                       <select ng-model="zad.prioritet" ng-change="filtriraj2(zad.status)">                   
+                                                  <option value="Blocker">Blocker</option>
+                                                  <option value="Critical">Critical</option>
+                                                  <option value="Major">Major</option>
+                                                  <option value="Minor">Minor</option>
+                                                  <option value="Trivial">Trivial</option>
+                                       </select>  
+                                       <button style="background-color:transparent; border-color:transparent;" ng-click="ucitavanje()"> <img src="images/ponisti.png" height="35"/></button>  
+                               </div>
                                <br/>
 
                                   <table style="border-collapse: collapse; border: 1px solid black;">
@@ -28,12 +58,24 @@
                                       <th class="pravaTabela">Oznaka</th>
                                       <th class="pravaTabela">Redni Broj</th>
                                       <th class="pravaTabela">Naslov</th>
-                                    </tr> 
+                                      <!--<th class="pravaTabela">Autor</th>-->
+                                      <th class="pravaTabela">Opis</th>
+                                      <th class="pravaTabela">Napravljeno</th>
+                                      <th class="pravaTabela">Izmenjeno</th>
+                                      <th class="pravaTabela">Status</th>
+                                      <th class="pravaTabela">Komentari</th>
+                                    </tr>
 
                                     <tr ng-repeat="zadatak in myTask">
                                       <td class="pravaTabela">{{zadatak.oznaka}}</td>
                                       <td class="pravaTabela">{{zadatak.redni_broj}}</td>
                                       <td class="pravaTabela">{{zadatak.naslov}}</td>
+                                      <!--<td class="pravaTabela">{{zadatak.autor}}</td>-->
+                                      <td class="pravaTabela">{{zadatak.opis}}</td>
+                                      <td class="pravaTabela">{{zadatak.createdAt | date:'dd.MM.yyyy. HH:mm:ss'}}</td>
+                                      <td class="pravaTabela">{{zadatak.updatedAt | date:'dd.MM.yyyy. HH:mm:ss'}}</td>
+                                      <td class="pravaTabela">{{zadatak.status}}</td>
+                                      <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="komentari(zadatak._id, projekat._id)"> <img src="images/comments.jpg" height="35"/></button></td>
                                     </tr>
 
                                   </table> 
