@@ -28,12 +28,38 @@
                                 </tr>
                                   <tr>
                                    <td class="sredina"> 
-                                     <select ng-model="zad.status">
-                                            <option value="{{zad.status}}">{{zad.status}}</option>
-                                            <option value="In Progress">In Progress</option>
-                                            <option value="Verify">Verify</option>
-                                            <option value="Done">Done</option>
-                                        </select> 
+                                     <div class="sredina" ng-if="zad.status === 'To Do'">
+                                       <select ng-model="zad.status">                   
+                                                  <option value="{{zad.status}}">{{zad.status}}</option>
+                                                  <option value="In Progress">In Progress</option>
+                                                  <option value="Verify">Verify</option>
+                                                  <option value="Done">Done</option>
+                                       </select>       
+                                    </div>
+                                    <div class="sredina" ng-if="zad.status === 'In Progress'">
+                                       <select ng-model="zad.status">                   
+                                                  <option value="{{zad.status}}">{{zad.status}}</option>
+                                                  <option value="To Do">To Do</option>
+                                                  <option value="Verify">Verify</option>
+                                                  <option value="Done">Done</option>
+                                       </select>       
+                                    </div>
+                                    <div class="sredina" ng-if="zad.status === 'Verify'">
+                                       <select ng-model="zad.status">                   
+                                                  <option value="{{zad.status}}">{{zad.status}}</option>
+                                                  <option value="To Do">To Do</option>
+                                                  <option value="In Progress">In Progress</option>
+                                                  <option value="Done">Done</option>
+                                       </select>       
+                                    </div>
+                                    <div class="sredina" ng-if="zad.status === 'Done'">
+                                       <select ng-model="zad.status">                   
+                                                  <option value="{{zad.status}}">{{zad.status}}</option>
+                                                  <option value="To Do">To Do</option>
+                                                  <option value="In Progress">In Progress</option>
+                                                  <option value="Verify">Verify</option>
+                                       </select>       
+                                    </div>
                                    </td>                            
                                 </tr>
                                 <tr>

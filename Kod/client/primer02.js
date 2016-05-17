@@ -37,27 +37,28 @@
       		$location.path('/projekat/'+ projEntry._id + '/zadaci');
       	}
 
-      	
-      	$scope.mojiZadaci = function(projEntry){
-      		//console.log(projEntry);
-      		$scope.myTask = [];	
+      	$scope.myTask = [];	
+      	//console.log(projEntry);
+      		if(!angular.equals(undefined, $stateParams.id2))
+			{
+				
+			    $http.get('/api/projekat/' +$stateParams.id2)
+			    .success(function (data, status, headers)  
+			    {		
+			    	for(var j = 0; j < data.zadatak.length; j++){
+		      			for(var i = 0; i < $scope.User.zadatak.length; i++){
+		      			//console.log($scope.User.zadatak[i]);
+		      				if($scope.User.zadatak[i]._id === data.zadatak[j]){
+		      					$scope.myTask.push($scope.User.zadatak[i]);
+		      					break;
+		      				}
+		      			}			
+      				}	 	 
+			    });	
+			}
       		//console.log($scope.User.zadatak.length);
-      		for(var j = 0; j < projEntry.zadatak.length; j++){
-      			for(var i = 0; i < $scope.User.zadatak.length; i++){
-      			//console.log($scope.User.zadatak[i]);
-      				if($scope.User.zadatak[i]._id === projEntry.zadatak[j]){
-      					$scope.myTask.push($scope.User.zadatak[i]);
-      					break;
-      				}
-      			}
-
-      			
-      		}
-
-
-
-      		console.log($scope.myTask);
-
+      		
+      	$scope.mojiZadaci = function(projEntry){
       		///korisnik/:id/projekat/:id2/zadaci
       		$location.path('/korisnik/'+$scope.User._id+'/projekat/'+projEntry._id + '/zadaci');
       	}
@@ -573,8 +574,8 @@
 	    }) 
 	    .state('korZadaci', {
 	    	url: '/korisnik/:id/projekat/:id2/zadaci',
-	    	templateUrl: 'korisnik-zadaci.html',
-	    	controller: 'korisnikCtrl'
+	    	templateUrl: 'korisnik-zadaci.html'
+	    //	controller: 'korisnikCtrl'
 	    }) 
   	});
 
