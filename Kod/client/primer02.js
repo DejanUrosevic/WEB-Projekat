@@ -37,19 +37,26 @@
       		$location.path('/projekat/'+ projEntry._id + '/zadaci');
       	}
 
-      	$scope.myTask = []
+      	
       	$scope.mojiZadaci = function(projEntry){
       		//console.log(projEntry);
-      		
+      		$scope.myTask = [];	
       		//console.log($scope.User.zadatak.length);
-      		for(var i = 0; i < $scope.User.zadatak.length; i++){
+      		for(var j = 0; j < projEntry.zadatak.length; j++){
+      			for(var i = 0; i < $scope.User.zadatak.length; i++){
       			//console.log($scope.User.zadatak[i]);
-      			if($scope.User.zadatak[i].oznaka === projEntry.oznaka){
-      				$scope.myTask.push($scope.User.zadatak[i]);
+      				if($scope.User.zadatak[i]._id === projEntry.zadatak[j]){
+      					$scope.myTask.push($scope.User.zadatak[i]);
+      					break;
+      				}
       			}
+
+      			
       		}
 
-      		console.log($scope.myTask[0]);
+
+
+      		console.log($scope.myTask);
 
       		///korisnik/:id/projekat/:id2/zadaci
       		$location.path('/korisnik/'+$scope.User._id+'/projekat/'+projEntry._id + '/zadaci');

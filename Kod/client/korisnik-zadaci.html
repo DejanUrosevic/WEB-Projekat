@@ -19,7 +19,7 @@
         <div id="content_main">
           <div id="tableContainer-1">
                   <div id="tableContainer-2">
-                               <h2 style="text-align: center;">Zadaci na projektu <u style="color: #10100a;">{{projZad.naziv}}</u></h2>
+                               <h2 style="text-align: center;">Zadaci na projektu <u style="color: #10100a;">{{User.ime}}</u></h2>
                                <br/>
 
                                   <table style="border-collapse: collapse; border: 1px solid black;">
@@ -29,11 +29,10 @@
                                       <th class="pravaTabela">Naslov</th>
                                     </tr> 
 
-                                    <tr ng-repeat="zadatak in myTask">
+                                    <tr ng-repeat="zadatak in User.zadatak">
                                       <td class="pravaTabela">{{zadatak.oznaka}}</td>
                                       <td class="pravaTabela">{{zadatak.redni_broj}}</td>
                                       <td class="pravaTabela">{{zadatak.naslov}}</td>
-                                      <td>dasd</td>  
                                     </tr>
 
                                   </table> 
