@@ -30,11 +30,11 @@
                                       <th class="pravaTabela">Novi zadatak</th>
                                       <th class="pravaTabela">Svi zadaci</th>
                                     </tr>
-                                    <tr ng-repeat="proj in UserProjEntries">
+                                    <tr ng-repeat="projEntry in User.projekti">
                                      
-                                      <td class="pravaTabela">{{proj._id}}</td>
-                                      <td class="pravaTabela">{{proj.oznaka}}</td>
-                                      <td class="pravaTabela">{{proj.naziv}}</td>
+                                      <td class="pravaTabela">{{projEntry._id}}</td>
+                                      <td class="pravaTabela">{{projEntry.oznaka}}</td>
+                                      <td class="pravaTabela">{{projEntry.naziv}}</td>
                                       <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="dodajZad(projEntry)"> <img src="images/add.png" height="35"/></button></td>
                                       <td class="pravaTabela"> 
                                         <button style="background-color:transparent; border-color:transparent;" ng-click="pregledZadataka(projEntry)"> <img src="images/zadaci.png" height="35"/></button></td>

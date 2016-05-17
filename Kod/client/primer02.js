@@ -20,32 +20,22 @@
 			user.$delete(loadEntries);
 		}
 
-		var KorisnikSesija;
 		
 		if(!angular.equals({}, $stateParams))
 		{
 			var KorEntry2 = $resource('/api/korisnik/:_id');
 			var korEntryId = $stateParams.id;
-    		KorisnikSesija = KorEntry2.get({_id:korEntryId});
+    		$scope.User = KorEntry2.get({_id:korEntryId});
+    		console.log($scope.User);
 		}
+	
+		$scope.dodajZad = function (projEntry) {
+      		$location.path('/projekat/'+projEntry._id + '/zadatak');
+    	}
 
-		var ProjEntry = $resource('/api/projekat/:id',{id: '@_id'});
-		
-		$scope.UserProjEntries = [];
-
-		var ProjEntries = ProjEntry.query(function(){
-			for (var i = ProjEntries.length - 1; i >= 0; i--) {
-			var ProjKorisnici = ProjEntries[i].korisnici;
-			// $scope.UserProjEntries.push(ProjEntries[i]);
-			for (var j = ProjKorisnici.length - 1; j >= 0; j--) {
-				if(KorisnikSesija.email == ProjKorisnici[j].email){
-					$scope.UserProjEntries.push(ProjEntries[i]);
-				}
-			}
-		}
-
-
-		});	
+    	$scope.pregledZadataka = function (projEntry) {
+      		$location.path('/projekat/'+ projEntry._id + '/zadaci');
+      	}
 		
 	};
 

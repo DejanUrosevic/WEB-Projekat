@@ -16,7 +16,7 @@ korisnikRouter
 })
 .get('/:id', function(req, res) {
   if(req.isAuthenticated()){
-	 Korisnik.findOne({"_id": req.params.id}).populate('projekat').populate('zadatak').exec(function(err, data, next) {
+	 Korisnik.findOne({"_id": req.params.id}).populate('projekti').populate('zadatak').exec(function(err, data, next) {
 		res.json(data);
 	 });
   }
