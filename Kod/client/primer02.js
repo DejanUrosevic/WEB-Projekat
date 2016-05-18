@@ -187,10 +187,14 @@
 		//$location.path('/korisnik/'+$scope.User._id+'/projekat/'+projekatId + '/zadatak/'+ zadatakId+'/komentari');
 		$scope.myComments = [];
 
+		var korEntryId;
+		var zadEntryId;
+		
 		//ucitavanje korisnika
 		if(!angular.equals({}, $stateParams)){
 			var KorEntry = $resource('/api/korisnik/:_id');
-			var korEntryId = $stateParams.id;
+			korEntryId = $stateParams.id;
+			zadEntryId = $stateParams.id3;
     		$scope.User = KorEntry.get({_id:korEntryId});
 		}
 
@@ -224,6 +228,10 @@
 		}
 
 		ucitaj();	
+		$scope.nazadNaZadatke = function(){
+			$location.path('/korisnik/' + korEntryId +'/projekat/' + projEntryId +'/zadaci');
+
+		}
 	};
 
 	var projekatCtrl = function ($scope, $http, $resource, $location, $stateParams) 
