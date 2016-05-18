@@ -30,7 +30,7 @@ var zadatakSchema = new Schema({
   	type: String, 
   	enum: ['Blocker', 'Critical', 'Major', 'Minor', 'Trivial']
   },
-  izmeneZadatka: [Zadatak],																	// Moglo bi drugačije
+  izmeneZadatka: [Zadatak],																	// Moglo bi drugačije // Ovde se čuvajuKompletne izmene a ne reference
   status: {
     type: String,
     default: 'To Do',
