@@ -34,7 +34,7 @@
     	}
 
     	$scope.pregledZadataka = function (projEntry) {
-      		$location.path('/projekat/'+ projEntry._id + '/zadaci');
+      		$location.path('/projekat/'+ projEntry._id + '/zadaci_korisnik');
       	}
       		
       	$scope.mojiZadaci = function(projEntry){
@@ -43,6 +43,40 @@
       	}
 		
 	};
+
+	var korisnikProjekatZadaciCtrl = function ($scope, $resource, $location, $stateParams, $http) 
+	{
+		if(!angular.equals({}, $stateParams))
+		{
+			var KorEntry = $resource('/api/korisnik/:_id');
+			var korEntryId = $stateParams.id2;
+    		$scope.User = KorEntry.get({_id:korEntryId});
+
+    		var projEntry = $resource('/api/projekat/:_id');
+    		var projEntryId = $stateParams.id;
+    		$scope.projZad = projEntry.get({_id:projEntryId});
+		}
+
+		$scope.promeniStatus = function(zadatak, index){
+			$http.put('/api/zadatak/' + zadatak._id, {params : {status : zadatak.status} });
+		}
+
+		$scope.komentari = function(zadatakId, projekatId){
+			///projekat/:id/zadatak/:id2/komentari
+			$location.path('/projekat/' + projekatId + '/zadatak/' + zadatakId + '/komentar');
+		}
+
+		//slanje na odredjeni URL za edit zadatka
+		$scope.editZadatak = function (zadatakId, projekatId) {
+			$location.path('/projekat/' + projekatId + '/zadatak/' + zadatakId + '/edit_korisnik');
+			
+		}
+		
+	};
+
+
+
+
 
 	/*
 	Kontroler zaduzen za preuzimanje zadataka korisnika i njihovo prikazivanje i filtriranje
@@ -664,6 +698,7 @@
 
 	var app = angular.module('app',['ui.router', 'ngResource']);
 	app.controller('korisnikCtrl', korisnikCtrl);
+	app.controller('korisnikProjekatZadaciCtrl', korisnikProjekatZadaciCtrl);
 	app.controller('projekatCtrl', projekatCtrl);
 	app.controller('zadatakCtrl', zadatakCtrl);
 	app.controller('zadatakBrisanjeCtrl', zadatakBrisanjeCtrl);
@@ -709,6 +744,17 @@
 	      templateUrl: 'svi-zadaci-projekat.html',
 	      controller: 'zadatakBrisanjeCtrl'
 	    })
+	    
+
+
+	    .state('zadaciProjKorisnik', {
+	      url: '/projekat/:id/zadaci_korisnik', 
+	      templateUrl: 'korisnik-zadaci-projekat.html',
+	      controller: 'korisnikProjekatZadaciCtrl'
+	    })
+
+
+
 	    .state('zadaciEdit', {
 	      url: '/projekat/:id/zadatak/:id2/edit', 
 	      templateUrl: 'zadatak-edit.html',
