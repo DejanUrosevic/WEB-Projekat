@@ -107,6 +107,7 @@
 				$scope.projekat = response.data;
 				var korId = $stateParams.id;
 				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
+					console.log($scope.projekat.zadatak[i]);
 					if($scope.projekat.zadatak[i].korisnik === korId){
 						zadaci.push($scope.projekat.zadatak[i]);
 					}
@@ -720,6 +721,103 @@
 			}
 		};
 
+		$scope.izvestaj2 = function(){
+			if(!angular.equals({}, $stateParams)){
+				$http.get('/api/projekat/' + $stateParams.id)
+				.success(function(data, status, headers){
+					$scope.projekat = data;
+					function podaci(){
+						var ukupnoZadataka = [];
+						var odradjeniZadaci = [];
+						var podaciUkupno = [];
+						var podaciOdradjeno = [];
+
+						var all = 0;
+						var done = 0;
+						for(var i = 0; i < data.korisnici.length; i++){
+							var all = 0;
+							var done = 0;
+							for(var j = 0; j < data.zadatak.length; j++){
+								if(data.korisnici[i]._id === data.zadatak[j].korisnik){
+									all += 1;
+									if(data.zadatak[j].status === "Done"){
+										done += 1;
+									}
+								}
+							}
+							ukupnoZadataka.push(all);
+							odradjeniZadaci.push(done);
+						}
+
+						for(var i = 0; i < data.korisnici.length; i++){
+							podaciUkupno.push({x: data.korisnici[i].ime+ " "+data.korisnici[i].prezime, y:ukupnoZadataka[i] })
+						}
+
+						for(var i = 0; i < data.korisnici.length; i++){
+							podaciOdradjeno.push({x: data.korisnici[i].ime+ " "+data.korisnici[i].prezime, y:odradjeniZadaci[i] })
+						}
+
+						return [{
+									key: 'Odradjeni zadaci',
+									values : podaciOdradjeno
+								},
+								{
+									key: 'Ukupno zadataka',
+									values: podaciUkupno
+								}]
+
+					}
+
+					console.log(podaci());
+
+					var chart;
+				    nv.addGraph(function() {
+				        chart = nv.models.multiBarChart()
+				            .barColor(d3.scale.category20().range())
+				            .duration(300)
+				            .margin({bottom: 100, left: 70})
+				            .rotateLabels(45)
+				            .groupSpacing(0.1)
+
+				        ;
+
+				        chart.reduceXTicks(false).staggerLabels(true);
+				        //chart.height(500);
+				        chart.xAxis
+				            .axisLabel("Korisnici")
+				            .axisLabelDistance(35)
+				            .showMaxMin(false)
+				        ;
+
+				        chart.yAxis
+				            .axisLabel("Broj zadataka")
+				            .axisLabelDistance(-5)
+				        ;
+
+				        chart.dispatch.on('renderEnd', function(){
+				            nv.log('Render Complete');
+				        });
+
+				        d3.select('#chart1 svg')
+				            .datum(podaci())
+				            .call(chart);
+
+				        nv.utils.windowResize(chart.update);
+
+				        chart.dispatch.on('stateChange', function(e) {
+				            nv.log('New State:', JSON.stringify(e));
+				        });
+				        chart.state.dispatch.on('change', function(state){
+				            nv.log('state', JSON.stringify(state));
+				        });
+
+				        return chart;
+				    });
+				    $location.path('/projekat/' + data._id + '/izvestaji/izvestaj2');
+				});
+			}
+		};
+
         $scope.izvestaj3 = function() {
              var podaci = [];
 
@@ -967,6 +1065,10 @@
 	    .state('izvestaji.izvestaj1', {
 	      url: '/izvestaj1', 
 	      templateUrl: 'izvestaj-izvestaj1.html'
+	    })
+	    .state('izvestaji.izvestaj2', {
+	      url: '/izvestaj2', 
+	      templateUrl: 'izvestaj-izvestaj2.html'
 	    })
         .state('izvestaji.izvestaj3', {
           url: '/izvestaj3',
