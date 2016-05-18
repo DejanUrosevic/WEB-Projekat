@@ -32,7 +32,16 @@
                                </h3>
 
                                <div  ng-if="filtriraj.tip == 'status'">
-                                       <select ng-model="zad.status" ng-change="filtriraj(zad.status)">                   
+                                       <select ng-model="zad.status" ng-change="filtriraj(zad.status)" style=" background: transparent;
+                                         background-color: rgb(); 
+                                         width: 150px;
+                                         padding: 3px;
+                                         font-size: 14px;
+                                         line-height: 1;
+                                         border: 1;
+                                         border-radius: 0;
+                                         height: 20px;
+                                         -webkit-appearance: none;">                   
                                                   <option value="To Do">To Do</option>
                                                   <option value="In Progress">In Progress</option>
                                                   <option value="Verify">Verify</option>
@@ -42,7 +51,16 @@
                                </div>
 
                                <div  ng-if="filtriraj.tip == 'propritet'">
-                                       <select ng-model="zad.prioritet" ng-change="filtriraj2(zad.status)">                   
+                                       <select ng-model="zad.prioritet" ng-change="filtriraj2(zad.status)" style=" background: transparent;
+                                         background-color: rgb(); 
+                                         width: 150px;
+                                         padding: 3px;
+                                         font-size: 14px;
+                                         line-height: 1;
+                                         border: 1;
+                                         border-radius: 0;
+                                         height: 20px;
+                                         -webkit-appearance: none;">                   
                                                   <option value="Blocker">Blocker</option>
                                                   <option value="Critical">Critical</option>
                                                   <option value="Major">Major</option>

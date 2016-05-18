@@ -36,27 +36,6 @@
     	$scope.pregledZadataka = function (projEntry) {
       		$location.path('/projekat/'+ projEntry._id + '/zadaci');
       	}
-
-      	/*$scope.myTask = [];	
-      	//console.log(projEntry);
-      		if(!angular.equals(undefined, $stateParams.id2))
-			{
-				
-			    $http.get('/api/projekat/' +$stateParams.id2)
-			    .success(function (data, status, headers)  
-			    {		
-			    	for(var j = 0; j < data.zadatak.length; j++){
-		      			for(var i = 0; i < $scope.User.zadatak.length; i++){
-		      			//console.log($scope.User.zadatak[i]);
-		      				if($scope.User.zadatak[i]._id === data.zadatak[j]){
-		      					$scope.myTask.push($scope.User.zadatak[i]);
-		      					break;
-		      				}
-		      			}			
-      				}	 	 
-			    });	
-			}*/
-      		//console.log($scope.User.zadatak.length);
       		
       	$scope.mojiZadaci = function(projEntry){
       		///korisnik/:id/projekat/:id2/zadaci
@@ -65,14 +44,16 @@
 		
 	};
 
+	/*
+	Kontroler zaduzen za preuzimanje zadataka korisnika i njihovo prikazivanje i filtriranje
+	*/
 	var mojiZadaciCtrl = function($scope, $http, $resource, $location, $stateParams){
 		$scope.myTask = [];
 
-		if(!angular.equals({}, $stateParams))
-		{
-			var KorEntry2 = $resource('/api/korisnik/:_id');
+		if(!angular.equals({}, $stateParams)){
+			var KorEntry = $resource('/api/korisnik/:_id');
 			var korEntryId = $stateParams.id;
-    		$scope.User = KorEntry2.get({_id:korEntryId});
+    		$scope.User = KorEntry.get({_id:korEntryId});
     		//console.log($scope.User);
 		}
 		
@@ -81,11 +62,10 @@
 		korisnikom koji je ulogovan i dodaje te zadatke na $scope
 		*/
 		var ucitaj = function(){
-			var korisnik = $http.get('/api/projekat/'+$stateParams.id2)
+			var projekat = $http.get('/api/projekat/'+$stateParams.id2)
 			.then(function(response){
 				var zadaci = [];
 				$scope.projekat = response.data;
-				console.log($scope.projekat);
 				var korId = $stateParams.id;
 				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
 					console.log($scope.projekat.zadatak[i].korisnik + " " +korId);
@@ -110,10 +90,9 @@
 		*/
 		$scope.filtriraj = function(status){
 			var zadaci = [];
-			var korisnik = $http.get('/api/projekat/'+$stateParams.id2)
+			var projekat = $http.get('/api/projekat/'+$stateParams.id2)
 			.then(function(response){
 				$scope.projekat = response.data;
-				console.log($scope.projekat);
 				var korId = $stateParams.id;
 				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
 					console.log($scope.projekat.zadatak[i].korisnik + " " +korId);
@@ -132,10 +111,9 @@
 		*/
 		$scope.filtriraj2 = function(prioritet){
 			var zadaci = [];
-			var korisnik = $http.get('/api/projekat/'+$stateParams.id2)
+			var projekat = $http.get('/api/projekat/'+$stateParams.id2)
 			.then(function(response){
 				$scope.projekat = response.data;
-				console.log($scope.projekat);
 				var korId = $stateParams.id;
 				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
 					console.log($scope.projekat.zadatak[i].korisnik + " " +korId);
@@ -147,8 +125,61 @@
 				}
 				$scope.myTask = zadaci;
 			});	
-		}			
+		}
+
+		/*
+		Funkcija zaduzena za prikaz komentara korisnika na zadatku koji je njemu dodeljen
+		*/			
+		$scope.komentari = function(zadatakId, projekatId){
+			$location.path('/korisnik/'+$scope.User._id+'/projekat/'+projekatId + '/zadatak/'+ zadatakId+'/komentari');
+		}
 		
+	};
+
+	/*
+	Kontroler zaduzen za preuzimanje komentara korisnika i njihovo prikazivanje, dodavanje, brisanje
+	*/
+	var korisnikKomentariCtrl = function($scope, $http, $stateParams, $resource, $location){
+		//$location.path('/korisnik/'+$scope.User._id+'/projekat/'+projekatId + '/zadatak/'+ zadatakId+'/komentari');
+		$scope.myComments = [];
+
+		//ucitavanje korisnika
+		if(!angular.equals({}, $stateParams)){
+			var KorEntry = $resource('/api/korisnik/:_id');
+			var korEntryId = $stateParams.id;
+    		$scope.User = KorEntry.get({_id:korEntryId});
+		}
+
+		//ucitavanje projekta
+		if(!angular.equals({}, $stateParams)){
+			var ProjEntry = $resource('/api/projekat/:_id');
+			var projEntryId = $stateParams.id2;
+    		$scope.projekat = ProjEntry.get({_id:projEntryId});
+		}
+		
+		/*
+		//uvitavanje zadatka
+		if(!angular.equals({}, $stateParams)){
+			var ZadEntry = $resource('/api/zadatak/:_id');
+			var zadEntryId = $stateParams.id3;
+    		$scope.zadatak = ZadEntry.get({_id:zadEntryId});
+		}*/
+		var ucitaj = function(){
+			var zadatak = $http.get('/api/zadatak/'+$stateParams.id3)
+			.then(function(response){
+				var komentari = [];
+				$scope.zadatak = response.data;
+				var korId = $stateParams.id;
+				for(var i = 0; i < $scope.zadatak.komentari.length; i++){
+					if($scope.zadatak.komentari[i].autor === korId){
+						komentari.push($scope.zadatak.komentari[i]);
+					}
+				}
+				$scope.myComments = komentari;
+			});	
+		}
+
+		ucitaj();	
 	};
 
 	var projekatCtrl = function ($scope, $http, $resource, $location, $stateParams) 
@@ -642,6 +673,7 @@
 	app.controller('addRemoveUserProject', addRemoveUserProject);
 	app.controller('ZadaciKorisnicimaCtrl', ZadaciKorisnicimaCtrl);
 	app.controller('mojiZadaciCtrl', mojiZadaciCtrl);
+	app.controller('korisnikKomentariCtrl', korisnikKomentariCtrl);
 
 	app.config(function($stateProvider, $urlRouterProvider) {
 
@@ -724,6 +756,12 @@
 	    	url: '/korisnik/:id/projekat/:id2/zadaci',
 	    	templateUrl: 'korisnik-zadaci.html',
 	    	controller: 'mojiZadaciCtrl'
+	    })
+	    .state('korKomentari',{
+	    	//'/korisnik/'+$scope.User._id+'/projekat/'+projekatId + '/zadatak/'+ zadatakId+'/komentari'
+	    	url: '/korisnik/:id/projekat/:id2/zadatak/:id3/komentari',
+	    	templateUrl: 'korisnik-zadatak-komentari.html',
+	    	controller: 'korisnikKomentariCtrl'
 	    }) 
   	});
 
