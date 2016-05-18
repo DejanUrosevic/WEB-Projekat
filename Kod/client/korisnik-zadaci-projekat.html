@@ -32,7 +32,8 @@
                                       <th class="pravaTabela">Izmenjeno</th>
                                       <!-- <th class="pravaTabela">Korisnik</th> -->
                                       <th class="pravaTabela">Status</th>
-                                      <th class="pravaTabela">Izmena statusa</th>
+                                      <th class="pravaTabela">Prioritet</th>
+                                      <th class="pravaTabela">Izmena zadatka</th>
                                       <th class="pravaTabela">Komentari</th>
                                     </tr>
 
@@ -45,6 +46,7 @@
                                       <td class="pravaTabela">{{zadatak.updatedAt | date:'dd.MM.yyyy. HH:mm:ss'}}</td>
                                       <!-- <td class="pravaTabela">{{zadatak.korisnik.ime}} &nbsp {{zadatak.korisnik.prezime}}</td> -->
                                       <td class="pravaTabela">{{zadatak.status}}</td>
+                                      <td class="pravaTabela">{{zadatak.prioritet}}</td>
                                       <td class="pravaTabela"> 
                                         <button style="background-color:transparent; border-color:transparent;" 
                                                 ng-click="editZadatak(zadatak._id, projZad._id)"> 
