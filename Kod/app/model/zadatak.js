@@ -28,7 +28,7 @@ var zadatakSchema = new Schema({
   komentari: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
   prioritet: {
   	type: String, 
-  	enum: ['Blocker', 'Critical', 'Major', 'Minor', 'Trivial']
+    required: true
   },
   izmeneZadatka: [Zadatak],																	// Moglo bi drugačije // Ovde se čuvajuKompletne izmene a ne reference
   status: {
