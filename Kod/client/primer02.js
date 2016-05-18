@@ -1,28 +1,78 @@
 (function (angular) {
-	var korisnikCtrl = function ($scope, $resource, $location, $stateParams, $http) 
-	{
+	var loginCtrl = function($scope, $http, $state) {
+		$scope.loginKor = {};
+		$scope.loginKor.email = "";
+		$scope.loginKor.pass  = "";
+
+		$scope.prijaviSe = function() {
+			var loginKor = $scope.loginKor;
+
+			if (loginKor.email.trim() == '') {
+				alert('Unesite email');
+			} else if (loginKor.pass.trim() == '') {
+				alert('Unesite lozinku');
+			} else {
+				$http.post('/login', {user:loginKor.email.trim(), pass:loginKor.pass.trim()}).success(function(data) {
+					if (data.korisnik) {
+						if (data.korisnik.vrsta == 'admin') {
+							$state.go('main');
+						} else if (data.korisnik.vrsta == 'korisnik') {
+							$state.go('korDash', {id:data.korisnik._id});
+						}
+					} else {
+						alert('Uneti su nesipravni podaci');
+					}
+				});
+			}
+		};
+	};
+
+	var korisnikCtrl = function ($scope, $resource, $location, $state, $stateParams, $http) {
 		var KorEntry = $resource('/api/korisnik/');
-		var loadEntries = function () 
-		{
+
+		var loadEntries = function () {
 			$scope.korEntries = KorEntry.query();		
 			$scope.korEntry = new KorEntry();
-		}
+		};
+
 		loadEntries();
-		$scope.save = function () 
-		{
-			if(!$scope.korEntry._id)
-			{
+
+		$scope.registruj = function() {
+			var korEntry = $scope.korEntry;
+			if (korEntry.ime==undefined || korEntry.ime.trim() == '') {
+				alert('Upišite svoje ime!');
+			} else if (korEntry.prezime==undefined || korEntry.prezime.trim() == '') {
+				alert('Upišite svoje prezime!');
+			} else if (korEntry.email==undefined || korEntry.email.trim() == '' || korEntry.email.indexOf('@')==-1) {
+				alert('Upišite svoj email!');
+			} else if (korEntry.lozinka==undefined || korEntry.lozinka.trim() == '') {
+				alert('Upišite svoju lozinku!');
+			} else {
+				$scope.korEntry.ime = korEntry.ime.trim();
+				$scope.korEntry.prezime = korEntry.prezime.trim();
+				$scope.korEntry.email = korEntry.email.trim();
+				$scope.korEntry.lozinka = korEntry.lozinka.trim();
+
+				$scope.korEntry.$save(function() {
+					$state.go('login');
+				}, function() {
+					console.log('Došlo je do grešeke! Proverite da li ste ispravno uneli podatke.');
+				});
+			}
+		};
+
+		$scope.save = function () {
+			if(!$scope.korEntry._id) {
 				$scope.korEntry.$save(loadEntries);
 			}
 		}
 
 		$scope.delete = function (user) {
 			user.$delete(loadEntries);
-		}
+		};
 
 		var korEntryId;
-		if(!angular.equals({}, $stateParams))
-		{
+		if(!angular.equals({}, $stateParams)) {
 			var KorEntry2 = $resource('/api/korisnik/:_id');
 			korEntryId = $stateParams.id;
     		$scope.User = KorEntry2.get({_id:korEntryId});
@@ -31,17 +81,16 @@
 	
 		$scope.dodajZad = function (projEntry) {
       		$location.path('/projekat/'+projEntry._id + '/zadatak');
-    	}
+    	};
 
     	$scope.pregledZadataka = function (projEntry) {
       		$location.path('/korisnik/' + korEntryId + '/projekat/'+ projEntry._id + '/korisnik_zadaci');
-      	}
+      	};
       		
-      	$scope.mojiZadaci = function(projEntry){
+      	$scope.mojiZadaci = function(projEntry) {
       		///korisnik/:id/projekat/:id2/zadaci
       		$location.path('/korisnik/'+korEntryId +'/projekat/'+projEntry._id + '/zadaci');
-      	}
-		
+      	};
 	};
 
 	var korisnikProjekatZadaciCtrl = function ($scope, $resource, $location, $stateParams, $http) 
@@ -870,6 +919,7 @@
 	}
 
 	var app = angular.module('app',['ui.router', 'ngResource']);
+	app.controller('loginCtrl', loginCtrl);
 	app.controller('korisnikCtrl', korisnikCtrl);
 	app.controller('korisnikProjekatZadaciCtrl', korisnikProjekatZadaciCtrl);
 	app.controller('projekatCtrl', projekatCtrl);
@@ -893,7 +943,8 @@
 	    $stateProvider
 	    .state('login', {//naziv stanja!
 	      url: '/login',
-	      templateUrl: 'logIn.html'
+	      templateUrl: 'logIn.html',
+		  controller: 'loginCtrl'
 	    })
 	    .state('reg', {
 	      url: '/reg', 

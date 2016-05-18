@@ -7,7 +7,6 @@ var passport = require('passport');
 var passport_local = require('passport-local');
 var mongoose = require('mongoose');
 
-
 // Uvoz modula koji predstavljaju modele baze podataka mongoDB
 var Korisnik = require('./app/model/korisnik');
 var Projekat = require('./app/model/projekat');
@@ -98,7 +97,8 @@ app.post('/login', function(req, res, next) {
     }
     	
     if (!korisnik) {
-      return res.redirect('/blog/indexx.html');
+      // return res.redirect('/blog/indexx.html');
+      return res.json({});
     }
 
     req.logIn(korisnik, function(err) {
@@ -107,6 +107,8 @@ app.post('/login', function(req, res, next) {
       }
 
       req.session.user = korisnik;                                                // TODO proveriti ovo
+
+      /*
       if(korisnik.vrsta === 'admin'){
         return res.redirect('/blog/indexx.html#/main');
       }else if(korisnik.vrsta === 'korisnik'){
@@ -114,6 +116,9 @@ app.post('/login', function(req, res, next) {
       }else{
         return res.redirect('/blog/indexx.html#/login');
       }
+      */
+
+      return res.json({status: true, korisnik: korisnik});
     });
   })(req, res, next);
 });
@@ -139,7 +144,7 @@ app.use(function(err, req, res, next) {
 });
 
 // na kom portu slusa server
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 3000;
 
 // Pokretanje servera
 app.listen(port);
