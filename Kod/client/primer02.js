@@ -229,6 +229,23 @@
 			$location.path('/korisnik/' + korEntryId +'/projekat/' + projEntryId +'/zadaci');
 
 		}
+
+		$scope.obrisiKomentar = function (comment, index) 
+		{
+			$http.delete('/api/comment/' + comment._id)
+			.success(function (data, status, headers) {
+				console.log('U success-u sam!!!++');
+				$scope.zadatak.komentari.splice(index, 1);
+            })
+            .error(function (data, status, headers) 
+            {
+            	console.log(data + "--" + status + "headers");
+            });
+		}
+
+		
+
+
 	};
 
 	var projekatCtrl = function ($scope, $http, $resource, $location, $stateParams) 
