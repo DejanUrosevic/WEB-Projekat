@@ -24,31 +24,31 @@
 
                                   <table style="border-collapse: collapse; border: 1px solid black;">
                                     <tr>
-                                      <th class="pravaTabela">Oznaka</th>
                                       <th class="pravaTabela">Redni Broj</th>
                                       <th class="pravaTabela">Naslov</th>
                                       <th class="pravaTabela">Opis</th>
                                       <th class="pravaTabela">Napravljeno</th>
-                                      <th class="pravaTabela">Izmenjeno</th>
                                       <th class="pravaTabela">Korisnik</th>
                                       <th class="pravaTabela">Status</th>
+                                      <th class="pravaTabela">Prioritet</th>
                                       <th class="pravaTabela">Brisanje</th>
                                       <th class="pravaTabela">Izmena</th>
                                       <th class="pravaTabela">Komentari</th>
+                                      <th class="pravaTabela">Izmene zadatka</th>
                                     </tr>
 
                                     <tr ng-repeat="zadatak in projZadaci">
-                                      <td class="pravaTabela">{{zadatak.oznaka}}</td>
                                       <td class="pravaTabela">{{zadatak.redni_broj}}</td>
                                       <td class="pravaTabela">{{zadatak.naslov}}</td>
                                       <td class="pravaTabela">{{zadatak.opis}}</td>
                                       <td class="pravaTabela">{{zadatak.createdAt | date:'dd.MM.yyyy. HH:mm:ss' }}</td>
-                                      <td class="pravaTabela">{{zadatak.updatedAt | date:'dd.MM.yyyy. HH:mm:ss'}}</td>
                                       <td class="pravaTabela">{{zadatak.korisnik.ime}} &nbsp {{zadatak.korisnik.prezime}}</td>
                                       <td class="pravaTabela">{{zadatak.status}}</td>
+                                      <td class="pravaTabela">{{zadatak.prioritet}}</td>
                                       <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="obrisiZad(zadatak._id, $index)"> <img src="images/removeUser.png" height="35"/></button></td>
                                       <td class="pravaTabela" > <button style="background-color:transparent; border-color:transparent;" ng-click="editZadatak(zadatak._id, projZad._id)" ng-if="zadatak.status !== 'Done'"> <img src="images/edit.png" height="35"/></button>  </td>
                                       <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="komentari(zadatak._id, projZad._id)"> <img src="images/comments.jpg" height="35"/></button></td>
+                                      <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="izmeneZadatka(zadatak._id, projZad._id)"> <img src="images/changes.png" height="35"/></button></td>
                                     </tr>
 
                                   </table> 

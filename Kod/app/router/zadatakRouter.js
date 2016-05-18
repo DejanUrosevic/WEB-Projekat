@@ -74,6 +74,7 @@ zadatakRouter
       zadatak.naslov = newEntry.params.naslov;
       zadatak.opis = newEntry.params.opis;
       zadatak.status = newEntry.params.status;
+      zadatak.prioritet = newEntry.params.prioritet;
       zadatak.save(function(err, zadatak) {
         if (err){
           console.log(err);

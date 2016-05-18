@@ -1,0 +1,52 @@
+  <div id="container">
+        <div id="header">
+            <h1>Slick<span class="off">Task</span></h1>       
+        </div>   
+        <div id="menu">
+            <ul>
+                <li class="menuitem"><a ui-sref="main"> Nazad</a> </li>
+                <li class="menuitem"><a href="#">About</a></li>
+                <li class="menuitem"><a href="#">Products</a></li>
+                <li class="menuitem"><a href="#">Services</a></li>
+                <li class="menuitem"><a href="#">Design</a></li>
+              <li class="menuitem"><a href="#">Odjavi se</a></li>
+            </ul>
+        </div>
+        <br/><br/><br/><br/><br/><br/><br/><br/>
+
+
+        <div id="content_top"></div>
+        <div id="content_main">
+          <div id="tableContainer-1">
+                  <div id="tableContainer-2">
+                               <h2 style="text-align: center;">Sve izmene na zadatku</h2>
+                               <br/>
+
+                                  <table style="border-collapse: collapse; border: 1px solid black;">
+                                    <tr>
+                                      <th class="pravaTabela">Oznaka</th>
+                                      <th class="pravaTabela">Redni Broj</th>
+                                      <th class="pravaTabela">Naslov</th>
+                                      <th class="pravaTabela">Opis</th>
+                                      <th class="pravaTabela">Napravljeno</th>
+                                      <th class="pravaTabela">Izmenjeno</th>
+                                      <th class="pravaTabela">Status</th>
+                                    </tr>
+
+                                    <tr ng-repeat="zadatak in sveIzmene | orderBy:'updatedAt'">
+                                      <td class="pravaTabela">{{zadatak.oznaka}}</td>
+                                      <td class="pravaTabela">{{zadatak.redni_broj}}</td>
+                                      <td class="pravaTabela">{{zadatak.naslov}}</td>
+                                      <td class="pravaTabela">{{zadatak.opis}}</td>
+                                      <td class="pravaTabela"><b>{{zadatak.createdAt | date:'dd.MM.yyyy. HH:mm:ss' }}</b></td>
+                                      <td class="pravaTabela"><b>{{zadatak.updatedAt | date:'dd.MM.yyyy. HH:mm:ss'}}</b></td>
+                                      <td class="pravaTabela">{{zadatak.status}}</td>
+                                    </tr>
+
+                                  </table> 
+
+                          </div>
+                      </div>
+        </div>
+      <div id="content_bottom"></div>
+  </div>
