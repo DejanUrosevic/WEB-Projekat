@@ -51,7 +51,7 @@
                                </div>
 
                                <div  ng-if="filtriraj.tip == 'propritet'">
-                                       <select ng-model="zad.prioritet" ng-change="filtriraj2(zad.status)" style=" background: transparent;
+                                       <select ng-model="zad.prioritet" ng-change="filtriraj2(zad.prioritet)" style="background: transparent;
                                          background-color: rgb(); 
                                          width: 150px;
                                          padding: 3px;
@@ -81,6 +81,7 @@
                                       <th class="pravaTabela">Napravljeno</th>
                                       <th class="pravaTabela">Izmenjeno</th>
                                       <th class="pravaTabela">Status</th>
+                                      <th class="pravaTabela">Prioritet</th>
                                       <th class="pravaTabela">Komentari</th>
                                     </tr>
 
@@ -93,6 +94,7 @@
                                       <td class="pravaTabela">{{zadatak.createdAt | date:'dd.MM.yyyy. HH:mm:ss'}}</td>
                                       <td class="pravaTabela">{{zadatak.updatedAt | date:'dd.MM.yyyy. HH:mm:ss'}}</td>
                                       <td class="pravaTabela">{{zadatak.status}}</td>
+                                      <td class="pravaTabela">{{zadatak.priotitet}}</td>
                                       <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="komentari(zadatak._id, projekat._id)"> <img src="images/comments.jpg" height="35"/></button></td>
                                     </tr>
 

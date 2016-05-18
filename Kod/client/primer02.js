@@ -107,7 +107,6 @@
 				$scope.projekat = response.data;
 				var korId = $stateParams.id;
 				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
-					console.log($scope.projekat.zadatak[i].korisnik + " " +korId);
 					if($scope.projekat.zadatak[i].korisnik === korId){
 						zadaci.push($scope.projekat.zadatak[i]);
 					}
@@ -134,7 +133,6 @@
 				$scope.projekat = response.data;
 				var korId = $stateParams.id;
 				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
-					console.log($scope.projekat.zadatak[i].korisnik + " " +korId);
 					if($scope.projekat.zadatak[i].korisnik === korId){
 						if($scope.projekat.zadatak[i].status === status){
 							zadaci.push($scope.projekat.zadatak[i]);
@@ -155,7 +153,6 @@
 				$scope.projekat = response.data;
 				var korId = $stateParams.id;
 				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
-					console.log($scope.projekat.zadatak[i].korisnik + " " +korId);
 					if($scope.projekat.zadatak[i].korisnik === korId){
 						if($scope.projekat.zadatak[i].prioritet === prioritet){
 							zadaci.push($scope.projekat.zadatak[i]);

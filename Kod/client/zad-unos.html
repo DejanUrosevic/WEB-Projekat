@@ -41,6 +41,20 @@
                                    </td>                            
                                 </tr>
                                 <tr>
+                                  <td class="celija">
+                                    <p>Prioritet :</p> 
+                                  </td>
+                                  <td>
+                                    <select ng-model="zadEntry.prioritet">                   
+                                      <option value="Blocker">Blocker</option>
+                                      <option value="Critical">Critical</option>
+                                      <option value="Major">Major</option>
+                                      <option value="Minor">Minor</option>
+                                      <option value="Trivial">Trivial</option>
+                                    </select>
+                                  </td>
+                                </tr>
+                                <tr>
                                    <td style="text-align: center;"> <a ui-sref="main"><button type="submit" style="background-color:transparent; border-color:transparent;" ng-click="save()"> <img src="images/submit.jpg" height="35"/></button> </a></td>                            
                                 </tr>                                                          
                             </table>
