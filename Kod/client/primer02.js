@@ -476,7 +476,7 @@
 
 		$scope.izmena = function () 
 		{
-			$http.put('/api/zadatak/' + $scope.zad._id, {params : {naslov: $scope.zad.naslov, opis: $scope.zad.opis,  status : $scope.zad.status} })
+			$http.put('/api/zadatak/' + $scope.zad._id, {params : {naslov: $scope.zad.naslov, opis: $scope.zad.opis,  status : $scope.zad.status, prioritet: $scope.zad.prioritet } })
 			.success(function (data, status, headers) 
 			{
 				$location.path('/projekat/' + $scope.projID + '/zadaci');
