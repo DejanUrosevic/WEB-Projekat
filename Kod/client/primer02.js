@@ -397,6 +397,10 @@
 		$scope.editZadatak = function (zadatakId, projekatId) {
 			$location.path('/projekat/' + projekatId + '/zadatak/' + zadatakId + '/edit');
 		}
+
+		$scope.izmeneZadatka = function (zadatakId, projekatId) {
+			$location.path('/projekat/' + projekatId + '/zadatak/' + zadatakId + '/izmene');
+		}
 		
 		
 	}
@@ -856,7 +860,16 @@
 						 $location.path('/projekat/'+data._id+'/izvestaji/izvestaj4');
 					 });
 			}
-		};
+		};	
+	}
+
+	var izmeneZadatkaCtrl = function ($scope, $http, $resource, $stateParams, $location) 
+	{
+			$http.get('/api/zadatak/' + $stateParams.id2)
+			.success(function(data, status, headers)
+			{
+				$scope.sveIzmene = data.izmeneZadatka;
+			});
 	}
 
 	var app = angular.module('app',['ui.router', 'ngResource']);
@@ -874,6 +887,7 @@
 	app.controller('ZadaciKorisnicimaCtrl', ZadaciKorisnicimaCtrl);
 	app.controller('mojiZadaciCtrl', mojiZadaciCtrl);
 	app.controller('korisnikKomentariCtrl', korisnikKomentariCtrl);
+	app.controller('izmeneZadatkaCtrl', izmeneZadatkaCtrl);
 
 	app.config(function($stateProvider, $urlRouterProvider) {
 
@@ -925,6 +939,14 @@
 	      templateUrl: 'zadatak-edit.html',
 	      controller: 'zadatakIzmenaCtrl'
 	    }) 
+
+	    .state('zadaciIzmene', {
+	      url: '/projekat/:id/zadatak/:id2/izmene', 
+	      templateUrl: 'izmene-zadatak.html',
+	      controller: 'izmeneZadatkaCtrl'
+	    }) 
+
+	    
 
 	    .state('zadaciKorisnikEdit', {
 	      url: '/korisnik/:id3/projekat/:id/zadatak/:id2/edit_korisnik', 
