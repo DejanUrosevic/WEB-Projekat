@@ -20,11 +20,11 @@
 			user.$delete(loadEntries);
 		}
 
-		
+		var korEntryId;
 		if(!angular.equals({}, $stateParams))
 		{
 			var KorEntry2 = $resource('/api/korisnik/:_id');
-			var korEntryId = $stateParams.id;
+			korEntryId = $stateParams.id;
     		$scope.User = KorEntry2.get({_id:korEntryId});
     		//console.log($scope.User);
 		}
@@ -34,42 +34,46 @@
     	}
 
     	$scope.pregledZadataka = function (projEntry) {
-      		$location.path('/projekat/'+ projEntry._id + '/zadaci_korisnik');
+      		$location.path('/korisnik/' + korEntryId + '/projekat/'+ projEntry._id + '/korisnik_zadaci');
       	}
       		
       	$scope.mojiZadaci = function(projEntry){
       		///korisnik/:id/projekat/:id2/zadaci
-      		$location.path('/korisnik/'+$scope.User._id+'/projekat/'+projEntry._id + '/zadaci');
+      		$location.path('/korisnik/'+korEntryId +'/projekat/'+projEntry._id + '/zadaci');
       	}
 		
 	};
 
 	var korisnikProjekatZadaciCtrl = function ($scope, $resource, $location, $stateParams, $http) 
 	{
+		console.log('USAO');
+		var korEntryId;
 		if(!angular.equals({}, $stateParams))
 		{
-			var KorEntry = $resource('/api/korisnik/:_id');
-			var korEntryId = $stateParams.id2;
-    		$scope.User = KorEntry.get({_id:korEntryId});
-
     		var projEntry = $resource('/api/projekat/:_id');
     		var projEntryId = $stateParams.id;
     		$scope.projZad = projEntry.get({_id:projEntryId});
-		}
 
-		$scope.promeniStatus = function(zadatak, index){
-			$http.put('/api/zadatak/' + zadatak._id, {params : {status : zadatak.status} });
+    		var korEntry = $resource('/api/korisnik/:_id');
+    		korEntryId = $stateParams.id2;
+    		$scope.korEntry = korEntry.get({_id:korEntryId});
 		}
 
 		$scope.komentari = function(zadatakId, projekatId){
 			///projekat/:id/zadatak/:id2/komentari
-			$location.path('/projekat/' + projekatId + '/zadatak/' + zadatakId + '/komentar');
+			$location.path('/korisnik/' + korEntryId + '/projekat/' + projekatId + '/zadatak/' + zadatakId + '/komentar_korisnik');
 		}
 
 		//slanje na odredjeni URL za edit zadatka
 		$scope.editZadatak = function (zadatakId, projekatId) {
-			$location.path('/projekat/' + projekatId + '/zadatak/' + zadatakId + '/edit_korisnik');
-			
+			$location.path('/korisnik/' + korEntryId + '/projekat/' + projekatId + '/zadatak/' + zadatakId + '/edit_korisnik');
+			 
+		}
+
+		$scope.nazadNaProjekte = function () 
+		{
+
+			$location.path('/korisnik/' + korEntryId);	
 		}
 		
 	};
@@ -83,10 +87,11 @@
 	*/
 	var mojiZadaciCtrl = function($scope, $http, $resource, $location, $stateParams){
 		$scope.myTask = [];
+		var korEntryId;
 
 		if(!angular.equals({}, $stateParams)){
 			var KorEntry = $resource('/api/korisnik/:_id');
-			var korEntryId = $stateParams.id;
+			korEntryId = $stateParams.id;
     		$scope.User = KorEntry.get({_id:korEntryId});
     		//console.log($scope.User);
 		}
@@ -165,7 +170,12 @@
 		Funkcija zaduzena za prikaz komentara korisnika na zadatku koji je njemu dodeljen
 		*/			
 		$scope.komentari = function(zadatakId, projekatId){
-			$location.path('/korisnik/'+$scope.User._id+'/projekat/'+projekatId + '/zadatak/'+ zadatakId+'/komentari');
+			$location.path('/korisnik/' + korEntryId + '/projekat/'+projekatId + '/zadatak/'+ zadatakId+'/komentari');
+		}
+
+		$scope.nazadNaProjekte = function () 
+		{
+			$location.path('/korisnik/' + korEntryId);	
 		}
 		
 	};
@@ -427,7 +437,7 @@
  
 		$scope.nazadNaZadatke = function () 
 		{
-			$location.path('/projekat/' + projEntryId + '/zadaci');	
+			$location.path('/projekat/' + projEntryId + '/komentar_korisnik');	
 		}
 
 		//pitaj  zasto nece da registruje na backend-u poslati request {params:{zadatakID: ID}} ??
@@ -461,6 +471,28 @@
 			.success(function (data, status, headers) 
 			{
 				$location.path('/projekat/' + $scope.projID + '/zadaci');
+			})
+		}
+	}
+
+	var zadatakIzmenaKorisnikCtrl = function ($scope, $http, $resource, $stateParams, $location)
+	{
+		if(!angular.equals({}, $stateParams))
+		{
+			var ZadEntry = $resource('/api/zadatak/:_id');
+			var zadEntryId = $stateParams.id2;
+			var korEntryId = $stateParams.id3;
+    		$scope.zad = ZadEntry.get({_id:zadEntryId});
+    		$scope.projID = $stateParams.id;
+		}
+
+		$scope.izmena = function () 
+		{
+			$http.put('/api/zadatak/' + $scope.zad._id, {params : {naslov: $scope.zad.naslov, opis: $scope.zad.opis,  status : $scope.zad.status} })
+			.success(function (data, status, headers) 
+			{
+				console.log('USPEO');
+				$location.path('/korisnik/' + korEntryId + '/projekat/' + $scope.projID + '/korisnik_zadaci');
 			})
 		}
 	}
@@ -546,6 +578,51 @@
 					$scope.projUser.korisnici.push(kor);
 	            });
 			}
+	}
+
+	var komentariKorisnikCtrl = function ($scope, $http, $resource, $stateParams, $location) {
+
+		var CommEntry = $resource('/api/comment/:id', {id:'@_id'});
+
+		var loadEntries = function () 
+		{
+			$scope.commEntries = CommEntry.query();		
+			$scope.commEntry = new CommEntry();
+		}
+		loadEntries();
+
+		var ZadEntry = $resource('/api/zadatak/:_id');
+		var zadEntryId = $stateParams.id2;
+		var projEntryId = $stateParams.id;
+		var korEntryId = $stateParams.id3;
+    	$scope.zadatak = ZadEntry.get({_id:zadEntryId});
+
+    	//da se u URL-u nalazi id projekta i id zadatka prilikom dodavanja komentara
+    	$scope.noviKom = function() {
+    		$location.path('/projekat/' + projEntryId + '/zadatak/' + zadEntryId + '/noviKomentar');
+    	}
+
+    	$scope.zapamti = function (zadatakID) 
+		{
+			if(!$scope.commEntry._id)
+			{
+				$http.post('/api/comment/', {params:{tekst: $scope.commEntry.tekst, zadatakID: zadatakID}})
+				.success(function(data, status, headers)
+				{
+					$location.path('/projekat/' + projEntryId + '/zadatak/' + zadEntryId + '/komentar');
+				});
+
+			}
+		}
+
+ 
+		$scope.nazadNaZadatke = function () 
+		{
+			$location.path('/korisnik/' + korEntryId +'/projekat/' + projEntryId + '/korisnik_zadaci');	
+		}
+
+		//pitaj  zasto nece da registruje na backend-u poslati request {params:{zadatakID: ID}} ??
+		
 	}
 
 	var ZadaciKorisnicimaCtrl = function ($scope, $http, $resource, $stateParams, $location) 
@@ -782,6 +859,8 @@
 	app.controller('zadatakBrisanjeCtrl', zadatakBrisanjeCtrl);
 	app.controller('komentariCtrl', komentariCtrl);
 	app.controller('zadatakIzmenaCtrl', zadatakIzmenaCtrl);
+	app.controller('zadatakIzmenaKorisnikCtrl', zadatakIzmenaKorisnikCtrl);
+	app.controller('komentariKorisnikCtrl', komentariKorisnikCtrl);
 	app.controller('komentariIzmenaCtrl', komentariIzmenaCtrl);
 	app.controller('addRemoveUserProject', addRemoveUserProject);
 	app.controller('ZadaciKorisnicimaCtrl', ZadaciKorisnicimaCtrl);
@@ -826,7 +905,7 @@
 
 
 	    .state('zadaciProjKorisnik', {
-	      url: '/projekat/:id/zadaci_korisnik', 
+	      url: '/korisnik/:id2/projekat/:id/korisnik_zadaci', 
 	      templateUrl: 'korisnik-zadaci-projekat.html',
 	      controller: 'korisnikProjekatZadaciCtrl'
 	    })
@@ -838,6 +917,23 @@
 	      templateUrl: 'zadatak-edit.html',
 	      controller: 'zadatakIzmenaCtrl'
 	    }) 
+
+	    .state('zadaciKorisnikEdit', {
+	      url: '/korisnik/:id3/projekat/:id/zadatak/:id2/edit_korisnik', 
+	      templateUrl: 'zadatak-edit-korisnik.html',
+	      controller: 'zadatakIzmenaKorisnikCtrl'
+	    }) 
+
+
+
+	    .state('zadKomKor', {
+	      url: '/korisnik/:id3/projekat/:id/zadatak/:id2/komentar_korisnik', 
+	      templateUrl: 'zadatak-komentari-korisnik.html',
+	      controller: 'komentariKorisnikCtrl'
+	    })
+
+
+
 	    .state('addProjekat', {
 	      url: '/newProject', 
 	      templateUrl: 'projekat-unos.html'

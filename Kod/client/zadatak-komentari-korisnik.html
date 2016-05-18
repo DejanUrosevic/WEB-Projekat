@@ -1,0 +1,47 @@
+  <div id="container">
+        <div id="header">
+            <h1>Slick<span class="off">Task</span></h1>       
+        </div>   
+        <div id="menu">
+            <ul>
+                <!-- <li class="menuitem"><a ng-click="noviKom()"> Novi komentar</a> </li> -->
+                <li class="menuitem"><a ng-click="nazadNaZadatke()">Nazad</a></li>
+                <li class="menuitem"><a href="#">Products</a></li>
+                <li class="menuitem"><a href="#">Services</a></li>
+                <li class="menuitem"><a href="#">Design</a></li>
+              <li class="menuitem"><a href="#">Odjavi se</a></li>
+            </ul>
+        </div>
+        <br/><br/><br/><br/><br/><br/><br/><br/>
+
+
+        <div id="content_top"></div>
+        <div id="content_main">
+          <div id="tableContainer-1">
+                  <div id="tableContainer-2">
+                               <h2 style="text-align: center;">Komentari na zadatku <u style="color: #10100a;">{{zadatak.naslov}}</u></h2>
+                               <br/>
+
+                                  <table style="border-collapse: collapse; border: 1px solid black;">
+                                    <tr>
+                                      <!-- <th class="pravaTabela">ID</th> -->
+                                      <th class="pravaTabela">Autor</th>
+                                      <th class="pravaTabela">Tekst</th>
+                                      <th class="pravaTabela">Datum kreiranja</th>
+                                    </tr>
+
+                                    <tr ng-repeat="komentar in zadatak.komentari">
+                                      <!-- <td class="pravaTabela">{{komentar._id}}</td> -->
+                                      <td class="pravaTabela">{{komentar.autor.ime}} &nbsp {{komentar.autor.prezime}}</td>
+                                      <td class="pravaTabela">{{komentar.tekst}}</td>
+                                      <td class="pravaTabela">{{komentar.createdAt}}</td>
+                                    </tr>
+
+                                  </table>
+
+              </div>
+                         
+        </div>
+      </div>
+      <div id="content_bottom"></div>
+  </div>
