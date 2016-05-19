@@ -1,76 +1,77 @@
+<div id="container">
+    <div id="header">
+        <h1>Slick<span class="off">Task</span></h1>
+    </div>
 
-  <div id="container">
-        <div id="header">
-            <h1>Slick<span class="off">Task</span></h1>       
-        </div>   
+    <br/><br/><br/><br/><br/><br/><br/><br/>
 
-        <br/><br/><br/><br/><br/><br/><br/><br/>
+    <div id="content_top">
+    </div>
+
+    <div id="content_main">
+        <div id="tableContainer-1">
+            <div id="tableContainer-2">
+                <div ng-controller="zadatakCtrl">
+                    <h2 style="text-align: center; color: gray;">Unos novog zadatka za projekat <u style="color: #10100a;">{{projZad.naziv}}</u> </h2>
+                    <br/>
+                    <table  id="myTable">
+                        <tr>
+                            <td> <input class="sredina" type="text" size="30" value="{{zadEntry.oznaka}}" readonly /></td>
+                        </tr>
+                        <tr>
+                            <td> <input class="sredina" type="text"  size="30" value="{{zadEntry.redni_broj}}" readonly /></td>
+                        </tr>
+                        <tr>
+                            <td> <input class="sredina" type="text" placeholder="Unesite naslov zadatka" size="30" ng-model="zadEntry.naslov" required /></td>
+                        </tr>
+                        <tr>
+                            <td> <input class="sredina" type="text" placeholder="Opis zadatka" size="30" ng-model="zadEntry.opis" required /></td>
+                        </tr>
+                        <tr>
+                            <td class="sredina">
+                                <select ng-model="zadEntry.korisnik">
+                                    <option
+                                            ng-repeat="user in projZad.korisnici"
+                                            value="{{user._id}}">
+                                        {{user.ime}} &nbsp {{user.prezime}}
+                                    </option>
+                                    <option value="">- Izaberite korisnika za zadatak -</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <!--
+                                                        <tr style="float: left;">
+                                                          <td style="width: 100px;">
+                                                            <p style="font-size: 21px;">Prioritet :</p>
+                                                          </td>
+                                                          <td>
+                                                            <select ng-model="zadEntry.prioritet" style="width: 150px;">         -->
+
+                        <tr>
+                            <td class="sredina">
+                                <select ng-model="zadEntry.prioritet">
+                                    <option value="">- Izaberite prioritet zadatka -</option>
+
+                                    <option value="Blocker">Blocker</option>
+                                    <option value="Critical">Critical</option>
+                                    <option value="Major">Major</option>
+                                    <option value="Minor">Minor</option>
+                                    <option value="Trivial">Trivial</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                         <!--   <td style="text-align: center;"> <a ui-sref="main"><button type="submit" style="background-color:transparent; border-color:transparent;" ng-click="save()"> <img src="images/submit.jpg" height="35"/></button> </a></td> -->
+                            <td style="text-align: center;"> <button type="submit" style="background-color:transparent; border-color:transparent;" ng-click="save()"> <img src="images/submit.jpg" height="35"/></button> </td>
+                        </tr>
+                    </table>
 
 
-        <div id="content_top"></div>
-        <div id="content_main">
-          <div id="tableContainer-1">
-            <div id="tableContainer-2">     
+                </div>
+            </div>
+        </div>
+    </div>
 
-                          <div ng-controller="zadatakCtrl">
-                            <h2 style="text-align: center; color: gray;">Unos novog zadatka za projekat <u style="color: #10100a;">{{projZad.naziv}}</u> </h2>
-                            <br/>                        
-                                <table  id="myTable">
-                                    <tr>
-                                         <td> <input class="sredina" type="text" size="30" value="{{zadEntry.oznaka}}" readonly></input></td>
-                                    </tr>                      
-                                    <tr>
-                                       <td> <input class="sredina" type="text"  size="30" value="{{zadEntry.redni_broj}}" readonly></input></td>                             
-                                    </tr>
-                                <tr>
-                                     <td> <input class="sredina" type="text" placeholder="Unesite naslov zadatka" size="30" ng-model="zadEntry.naslov" required></input></td>
-                                </tr>
-                                <tr>
-                                   <td> <input class="sredina" type="text" placeholder="Opis zadatka" size="30" ng-model="zadEntry.opis" required></input></td>                            
-                                </tr>
-                                  <tr>
-                                   <td class="sredina"> 
-                                     <select ng-model="zadEntry.korisnik">
-                                        <option
-                                                ng-repeat="user in projZad.korisnici"
-                                                value="{{user._id}}">
-                                          {{user.ime}} &nbsp {{user.prezime}}
-                                        </option>
-                                        <option value="">- Izaberite korisnika za zadatak -</option>
-                                    </select>
-                                   </td>                            
-                                </tr>
-<!--
-                                <tr style="float: left;">
-                                  <td style="width: 100px;">
-                                    <p style="font-size: 21px;">Prioritet :</p> 
-                                  </td>
-                                  <td>
-                                    <select ng-model="zadEntry.prioritet" style="width: 150px;">         -->          
-
-                                <tr>
-                                  <td class="sredina">
-                                    <select ng-model="zadEntry.prioritet">
-                                      <option value="">- Izaberite prioritet zadatka -</option>                   
-
-                                      <option value="Blocker">Blocker</option>
-                                      <option value="Critical">Critical</option>
-                                      <option value="Major">Major</option>
-                                      <option value="Minor">Minor</option>
-                                      <option value="Trivial">Trivial</option>
-                                    </select>
-                                  </td>
-                                </tr>
-                                <tr>
-                                   <td style="text-align: center;"> <a ui-sref="main"><button type="submit" style="background-color:transparent; border-color:transparent;" ng-click="save()"> <img src="images/submit.jpg" height="35"/></button> </a></td>                            
-                                </tr>                                                          
-                            </table>
-
-                          
-                        </div>
-                      </div>
-              </div>               
-          </div>
-      </div>
-      <div id="content_bottom"></div>
-  </div>
+    <div id="content_bottom">
+    </div>
+</div>

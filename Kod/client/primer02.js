@@ -382,47 +382,64 @@
 		}
 	};
 
-	var zadatakCtrl = function ($scope, $resource, $stateParams, $location) 
-	{
+	var zadatakCtrl = function ($scope, $resource, $stateParams, $state, $location) {
 		var ZadEntry = $resource('/api/projekat/:_id/zadatak/');
 
 		var korEntryId = $stateParams.id2;
-		var loadEntries = function () 
-		{
+		var loadEntries = function () {
 			$scope.zadEntries = ZadEntry.query();		
 			$scope.zadEntry = new ZadEntry();
 
 			//--------------------
-			if(!angular.equals({}, $stateParams))
-			{
+			if(!angular.equals({}, $stateParams)) {
 				var ProjEntry = $resource('/api/projekat/:_id');
 				var projEntryId = $stateParams.id;
-			    projZad = ProjEntry.get({_id:projEntryId}, function (projekatt) 
-			    {
+
+			    projZad = ProjEntry.get({_id:projEntryId}, function (projekatt) {
 			    	 $scope.zadEntry.oznaka = projekatt.oznaka;
-			    	 if(angular.equals(0, projekatt.zadatak.length))
-			    	 {
+			    	 if(angular.equals(0, projekatt.zadatak.length)) {
 			    	 	$scope.zadEntry.redni_broj = 1;
 			    	 }
-			    	 else
-			    	 {
+			    	 else {
 			    	 	$scope.zadEntry.redni_broj = projekatt.zadatak[projekatt.zadatak.length-1].redni_broj+1;
 			    	 } 
 			    	 
 			    });	
 			}
-			
-
 		}
+
 		loadEntries();
-		$scope.save = function () 
-		{
-			if(!$scope.zadEntry._id)
-			{
-				$scope.zadEntry.$save(loadEntries);
+		$scope.save = function () {
+			if(!$scope.zadEntry._id) {
+				var tempZad = $scope.zadEntry;
+
+				if (tempZad.oznaka.trim() == '') {
+					alert('Nije uneta oznaka projekta kome zadatak pripada!');
+				} else if (tempZad.redni_broj == undefined) {
+					alert('Nije unet redni broj zadatka u projektu!');
+				} else if (tempZad.naslov==undefined || tempZad.naslov.trim()=='') {
+					alert('Nije unet naslov zadatka!');
+				} else if (tempZad.opis==undefined || tempZad.opis.trim()=='') {
+					alert('Nije unet opis zadatka!')
+				} else if (tempZad.prioritet==undefined || tempZad.prioritet.trim()=='') {
+					alert('Nije unet prioritet zadatka!');
+				} else {
+					$scope.zadEntry.oznaka = tempZad.oznaka.trim();
+					$scope.zadEntry.redniBroj = tempZad.redni_broj;
+					$scope.zadEntry.naslov = tempZad.naslov.trim();
+					$scope.zadEntry.opis = tempZad.opis.trim();
+					$scope.zadEntry.prioritet = tempZad.prioritet.trim();
+
+					$scope.zadEntry.$save(function() {
+						$state.go('main', {id2:korEntryId});
+						//$location.path('/admin/' + krojEntryId + '/projekat/' + projekatId + '/zadatak/' + zadatakId + '/komentar');
+					});
+				}
+
+				// $scope.zadEntry.$save(loadEntries);
 			}
 
-			$location.path('/admin/' + krojEntryId + '/projekat/' + projekatId + '/zadatak/' + zadatakId + '/komentar');
+			// $location.path('/admin/' + krojEntryId + '/projekat/' + projekatId + '/zadatak/' + zadatakId + '/komentar');
 		} 
 
 		if(!angular.equals({}, $stateParams))
@@ -431,8 +448,6 @@
 			var projEntryId = $stateParams.id;
     		$scope.projZad = ProjEntry.get({_id:projEntryId});
 		}
-		
-		
 	};
 
 	var zadatakBrisanjeCtrl = function ($scope, $http, $resource, $stateParams, $location, $filter) 
