@@ -113,7 +113,6 @@
 
 		$scope.nazadNaProjekte = function () 
 		{
-
 			$location.path('/korisnik/' + korEntryId);	
 		}
 
@@ -414,6 +413,7 @@
 		loadEntries();
 		$scope.save = function () {
 			if(!$scope.zadEntry._id) {
+				/*
 				var tempZad = $scope.zadEntry;
 
 				if (tempZad.oznaka.trim() == '') {
@@ -451,10 +451,31 @@
 				}
 
 				// $scope.zadEntry.$save(loadEntries);
+				*/
+
+				$scope.zadEntry.$save(function() {
+					if (!angular.equals({}, $stateParams)) {
+						$http.get('/api/korisnik/' + korEntryId)
+							 .then(function(response) {
+								 if (response.data.vrsta == 'admin') {
+									$state.go('main', {id2: korEntryId});
+								 } else if (response.data.vrsta == 'korisnik') {
+									 // $location.path('/korisnik/' + korisnikID);
+									 $location.path('/korisnik/' + korEntryId);
+								 }
+							 });
+					}
+				});
 			}
 
 			// $location.path('/admin/' + krojEntryId + '/projekat/' + projekatId + '/zadatak/' + zadatakId + '/komentar');
-		} 
+		}
+
+		$scope.kreirajZad = function(isValid) {
+			if (isValid) {
+				$scope.save();
+			}
+		};
 
 		if(!angular.equals({}, $stateParams))
 		{
