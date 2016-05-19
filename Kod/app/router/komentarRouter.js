@@ -8,7 +8,7 @@ var komentarRouter = express.Router();
 komentarRouter
 .get('/', function(req, res) {
   var entry={};
-  Comment.find(entry).exec(function(err, data, next) {
+  Comment.find(entry).populate('autor').exec(function(err, data, next) {
     if(err){
       console.log(err);
       next(err);
@@ -17,7 +17,7 @@ komentarRouter
   });
 })
 .get('/:id', function(req, res) {
-  Comment.findOne({"_id": req.params.id}).exec(function(err, data, next) {
+  Comment.findOne({"_id": req.params.id}).populate('autor').exec(function(err, data, next) {
     res.json(data);
   });
 })
@@ -55,6 +55,7 @@ komentarRouter
 .post('/', function(req, res, next) {
   var comment = new Comment();
   comment.tekst = req.body.params.tekst;
+  comment.autor = req.body.params.autor;
   Zadatak.findOne({"_id":req.body.params.zadatakID},function (err, entry) {
     comment.save(function(err, comment)
     {
