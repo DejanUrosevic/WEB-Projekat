@@ -663,6 +663,12 @@
 				$location.path('/admin/' + korEntryId + '/projekat/' + $scope.projID + '/zadaci');
 			})
 		}
+
+		$scope.izmeniZad = function(isValid) {
+			if (isValid) {
+				$scope.izmena();
+			}
+		};
 	}
 
 	var zadatakIzmenaKorisnikCtrl = function ($scope, $http, $resource, $stateParams, $location)
