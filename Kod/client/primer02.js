@@ -6,34 +6,6 @@
 	 * @param $state
 	 */
 	var loginCtrl = function($scope, $http, $state) {
-		/*
-		$scope.loginKor = {};
-		$scope.loginKor.email = "";
-		$scope.loginKor.pass  = "";
-
-		$scope.prijaviSe = function() {
-			var loginKor = $scope.loginKor;
-
-			if (loginKor.email.trim() == '') {
-				alert('Unesite email');
-			} else if (loginKor.pass.trim() == '') {
-				alert('Unesite lozinku');
-			} else {
-				$http.post('/login', {user:loginKor.email.trim(), pass:loginKor.pass.trim()}).success(function(data) {
-					if (data.korisnik) {
-						if (data.korisnik.vrsta == 'admin') {
-							$state.go('main', {id2:data.korisnik._id});
-						} else if (data.korisnik.vrsta == 'korisnik') {
-							$state.go('korDash', {id:data.korisnik._id});
-						}
-					} else {
-						alert('Uneti su nesipravni podaci');
-					}
-				});
-			}
-		};
-		*/
-
 		$scope.loginKor = {};
 		$scope.loginKor.email = "";
 		$scope.loginKor.pass = "";
@@ -67,26 +39,19 @@
 
 		loadEntries();
 
-		$scope.registruj = function() {
+		$scope.registrujSe = function(isValid) {
 			var korEntry = $scope.korEntry;
-			if (korEntry.ime==undefined || korEntry.ime.trim() == '') {
-				alert('Upišite svoje ime!');
-			} else if (korEntry.prezime==undefined || korEntry.prezime.trim() == '') {
-				alert('Upišite svoje prezime!');
-			} else if (korEntry.email==undefined || korEntry.email.trim() == '' || korEntry.email.indexOf('@')==-1) {
-				alert('Upišite svoj email!');
-			} else if (korEntry.lozinka==undefined || korEntry.lozinka.trim() == '') {
-				alert('Upišite svoju lozinku!');
-			} else {
+			if (isValid) {
+				/*
 				$scope.korEntry.ime = korEntry.ime.trim();
 				$scope.korEntry.prezime = korEntry.prezime.trim();
 				$scope.korEntry.email = korEntry.email.trim();
-				$scope.korEntry.lozinka = korEntry.lozinka.trim();
-
+				*/
+				
 				$scope.korEntry.$save(function() {
 					$state.go('login');
 				}, function() {
-					console.log('Došlo je do grešeke! Proverite da li ste ispravno uneli podatke.');
+					console.log('Došlo je do greške! Prvo proverite da i su ispravno uneti podaci.')
 				});
 			}
 		};

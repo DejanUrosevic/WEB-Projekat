@@ -15,34 +15,54 @@
 
                 <br/>
 
-                <table  id="myTable">
-                    <tr>
-                        <td> <input class="sredina" type="text" placeholder="Vaše ime" size="30" ng-model="korEntry.ime" required /></td>
-                    </tr>
-                    <tr>
-                        <td> <input class="sredina" type="text" placeholder="Vaše prezime" size="30" ng-model="korEntry.prezime" required /></td>
-                    </tr>
-                    <tr>
-                        <td> <input class="sredina" type="email" placeholder="Vaš E-mail" size="30" ng-model="korEntry.email" required /></td>
-                    </tr>
-                    <tr>
-                        <td> <input class="sredina" type="password" placeholder="Vaša lozinka" size="30" ng-model="korEntry.lozinka" required /></td>
-                    </tr>
-                    <!--
-                    <tr>
-                         <td> <input class="sredina" type="text" placeholder="Repeat password" size="30"></input></td>
-                    </tr>
-                    -->
-                    <tr>
-                      <!--  <td style="text-align: center;"> <a ui-sref="login"> <button style="background-color:transparent; border-color:transparent;" ng-click="registruj()"> <img src="images/submit.jpg" height="35"/></button> </a> </td> -->
-                        <td style="text-align: center;"> <a> <button style="background-color:transparent; border-color:transparent;" ng-click="registruj()"> <img src="images/submit.jpg" height="35"/></button> </a> </td>
-</tr>
-</table>
+                <form name="RegisterForm" ng-submit="registrujSe(RegisterForm.$valid)" novalidate>
+                    <table id="myTable">
+                        <tr>
+                            <td>
+                                <input type="text" ng-model="korEntry.ime" name="ime" class="sredina" placeholder="Vaše ime" size="30" required />
+                                <br /><p ng-show="RegisterForm.ime.$invalid && !RegisterForm.ime.$pristine" style="color: red">Morate uneti vaše ime</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" ng-model="korEntry.prezime" name="prezime" class="sredina" placeholder="Vaše prezime" size="30" required />
+                                <br /><p ng-show="RegisterForm.prezime.$invalid && !RegisterForm.prezime.$pristine" style="color: red">Morate uneti vaše prezime</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="email" ng-model="korEntry.email" name="email" class="sredina" placeholder="Vaš E-mail" size="30" required />
+                                <br /><p ng-show="RegisterForm.email.$invalid && !RegisterForm.email.$pristine" style="color:red">Morate uneti vaš email u ispravnom obliku</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="password" ng-model="korEntry.lozinka" name="lozinka" class="sredina" placeholder="Vaša lozinka" size="30" required />
+                                <br /><p ng-show="RegisterForm.lozinka.$invalid && !RegisterForm.lozinka.$pristine" style="color:red">Morate uneti vašu lozinku.</p>
+                            </td>
+                        </tr>
+                        <!--
+                        <tr>
+                             <td>
+                                 <input type="password" name="repeatLozinka" class="sredina" placeholder="Repeat password" size="30" required />
+                                 <br /><p></p>
+                             </td>
+                        </tr>
+                        -->
+                        <tr>
+                            <!--  <td style="text-align: center;"> <a ui-sref="login"> <button style="background-color:transparent; border-color:transparent;" ng-click="registruj()"> <img src="images/submit.jpg" height="35"/></button> </a> </td> -->
+                            <!--  <td style="text-align: center;"> <a> <button style="background-color:transparent; border-color:transparent;" ng-click="registruj()"> <img src="images/submit.jpg" height="35"/></button> </a> </td>-->
+                            <td style="text-align: center;">
+                                <button type="submit" ng-disabled="RegisterForm.$invalid">Registruj se</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
 
-</div>
-</div>
-</div>
+            </div>
+        </div>
+    </div>
 
-<div id="content_bottom">
-</div>
+    <div id="content_bottom">
+    </div>
 </div>
