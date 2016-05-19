@@ -1,4 +1,10 @@
 (function (angular) {
+	/**
+	 * Kontroler zadužen za prijavljivanje korisnika na sistem.
+	 * @param $scope
+	 * @param $http
+	 * @param $state
+	 */
 	var loginCtrl = function($scope, $http, $state) {
 		$scope.loginKor = {};
 		$scope.loginKor.email = "";
@@ -126,10 +132,6 @@
 		}
 		
 	};
-
-
-
-
 
 	/*
 	Kontroler zaduzen za preuzimanje zadataka korisnika i njihovo prikazivanje i filtriranje
@@ -308,13 +310,10 @@
 
 	};
 
-	var projekatCtrl = function ($scope, $http, $resource, $location, $stateParams) 
-	{
+	var projekatCtrl = function ($scope, $http, $resource, $location, $stateParams, $state) {
 		var ProjEntry = $resource('/api/projekat');
 
-		var loadEntries2 = function () 
-		{
-
+		var loadEntries2 = function () {
 			$scope.projEntries = ProjEntry.query();		
 			$scope.projEntry = new ProjEntry();
 		}
@@ -323,16 +322,28 @@
 
 		var korEntryId;
 		
-		if(!angular.equals({}, $stateParams))
-		{
+		if(!angular.equals({}, $stateParams)) {
 			korEntryId = $stateParams.id2;
 		}	
 
-		$scope.save = function () 
-		{
-			if(!$scope.projEntry._id)
-			{
-				$scope.projEntry.$save(loadEntries2);
+		$scope.save = function () {
+			if(!$scope.projEntry._id) {
+				// Validacija prilikom kreiranja/memorisanja projekta
+				var tempProj = $scope.projEntry;
+				
+				if (tempProj.oznaka==undefined || tempProj.oznaka.trim()=='') {
+					alert('Morate uneti oznaku projekta!');
+				} else if (tempProj.naziv==undefined || tempProj.naziv.trim()=='') {
+					alert('Morate uneti naziv projekta!');
+				} else {
+					$scope.projEntry.oznaka = tempProj.oznaka.trim();
+					$scope.projEntry.naziv = tempProj.naziv.trim();
+
+					// $scope.projEntry.$save(loadEntries2);
+					$scope.projEntry.$save(function() {
+						$state.go('main', {id2: $stateParams.id2});
+					});
+				}
 			}
 		}
 
@@ -355,11 +366,9 @@
 
     	//za korisnike
     	var KorEntry = $resource('/api/korisnik');
-		var loadEntries = function () 
-		{
+		var loadEntries = function () {
 			$scope.korEntries = KorEntry.query();		
 			$scope.korEntry = new KorEntry();
-
 		}
 		loadEntries();
 
@@ -370,8 +379,7 @@
 			var ProjEntry2 = $resource('/api/projekat');
 			var projEntryId = $stateParams.id;
     		$scope.projUser = ProjEntry2.get({_id:projEntryId});
-		}	
-
+		}
 	};
 
 	var zadatakCtrl = function ($scope, $resource, $stateParams, $location) 
@@ -1203,47 +1211,31 @@
 	      templateUrl: 'svi-zadaci-projekat.html',
 	      controller: 'zadatakBrisanjeCtrl'
 	    })
-	    
-
-
 	    .state('zadaciProjKorisnik', {
 	      url: '/korisnik/:id2/projekat/:id/korisnik_zadaci', 
 	      templateUrl: 'korisnik-zadaci-projekat.html',
 	      controller: 'korisnikProjekatZadaciCtrl'
 	    })
-
-
-
 	    .state('zadaciEdit', {
 	      url: '/admin/:id3/projekat/:id/zadatak/:id2/edit', 
 	      templateUrl: 'zadatak-edit.html',
 	      controller: 'zadatakIzmenaCtrl'
-	    }) 
-
+	    })
 	    .state('zadaciIzmene', {
 	      url: '/admin/:id3/projekat/:id/zadatak/:id2/izmene', 
 	      templateUrl: 'izmene-zadatak.html',
 	      controller: 'izmeneZadatkaCtrl'
-	    }) 
-
-	    
-
+	    })
 	    .state('zadaciKorisnikEdit', {
 	      url: '/korisnik/:id3/projekat/:id/zadatak/:id2/edit_korisnik', 
 	      templateUrl: 'zadatak-edit-korisnik.html',
 	      controller: 'zadatakIzmenaKorisnikCtrl'
-	    }) 
-
-
-
+	    })
 	    .state('zadKomKor', {
 	      url: '/korisnik/:id3/projekat/:id/zadatak/:id2/komentar_korisnik', 
 	      templateUrl: 'zadatak-komentari-korisnik.html',
 	      controller: 'komentariKorisnikCtrl'
 	    })
-
-
-
 	    .state('addProjekat', {
 	      url: '/newProject', 
 	      templateUrl: 'projekat-unos.html'
