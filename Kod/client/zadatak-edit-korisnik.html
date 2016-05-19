@@ -1,122 +1,147 @@
+<div id="container">
+    <div id="header">
+        <h1>Slick<span class="off">Task</span></h1>
+    </div>
 
-  <div id="container">
-        <div id="header">
-            <h1>Slick<span class="off">Task</span></h1>       
-        </div>   
+    <br/><br/><br/><br/><br/><br/><br/><br/>
 
-        <br/><br/><br/><br/><br/><br/><br/><br/>
+    <div id="content_top">
+    </div>
 
+    <div id="content_main">
+        <div id="tableContainer-1">
+            <div id="tableContainer-2">
+                <h2 style="text-align: center; color: gray;">Izmena zadatka <u style="color: #10100a;">{{zad.naslov}}</u> </h2>
 
-        <div id="content_top"></div>
-        <div id="content_main">
-          <div id="tableContainer-1">
-            <div id="tableContainer-2">     
-                            <h2 style="text-align: center; color: gray;">Izmena zadatka <u style="color: #10100a;">{{zad.naslov}}</u> </h2>
-                            <br/>                        
-                                <table  id="myTable">
-                                    <tr>
-                                         <td> <input class="sredina" type="text" size="30" value="{{zad.oznaka}}" readonly></input></td>
-                                    </tr>                      
-                                    <tr>
-                                       <td> <input class="sredina" type="text"  size="30" value="{{zad.redni_broj}}" readonly></input></td>                             
-                                    </tr>
-                                <tr>
-                                     <td> <input class="sredina" type="text" size="30" ng-model="zad.naslov" required></input></td>
-                                </tr>
-                                <tr>
-                                   <td> <input class="sredina" type="text" size="30" ng-model="zad.opis" required></input></td>                            
-                                </tr>
-                                  <tr>
-                                   <td class="sredina"> 
-                                     <div class="sredina" ng-if="zad.status === 'To Do'">
-                                       <select ng-model="zad.status">                   
-                                                  <option value="{{zad.status}}">{{zad.status}}</option>
-                                                  <option value="In Progress">In Progress</option>
-                                                  <option value="Verify">Verify</option>
-                                                  <option value="Done">Done</option>
-                                       </select>       
-                                    </div>
-                                    <div class="sredina" ng-if="zad.status === 'In Progress'">
-                                       <select ng-model="zad.status">                   
-                                                  <option value="{{zad.status}}">{{zad.status}}</option>
-                                                  <option value="To Do">To Do</option>
-                                                  <option value="Verify">Verify</option>
-                                                  <option value="Done">Done</option>
-                                       </select>       
-                                    </div>
-                                    <div class="sredina" ng-if="zad.status === 'Verify'">
-                                       <select ng-model="zad.status">                   
-                                                  <option value="{{zad.status}}">{{zad.status}}</option>
-                                                  <option value="To Do">To Do</option>
-                                                  <option value="In Progress">In Progress</option>
-                                                  <option value="Done">Done</option>
-                                       </select>       
-                                    </div>
-                                    <div class="sredina" ng-if="zad.status === 'Done'">
-                                       <select ng-model="zad.status">                   
-                                                  <option value="{{zad.status}}">{{zad.status}}</option>
-                                                  <option value="To Do">To Do</option>
-                                                  <option value="In Progress">In Progress</option>
-                                                  <option value="Verify">Verify</option>
-                                       </select>       
-                                    </div>
-                                   </td>                            
-                                </tr>
-                                 <tr>
-                                   <td class="sredina"> 
-                                     <div class="sredina" ng-if="zad.prioritet === 'Blocker'">
-                                       <select ng-model="zad.prioritet">                   
-                                                  <option value="{{zad.prioritet}}">{{zad.prioritet}}</option>
-                                                  <option value="Critical">Critical</option>
-                                                  <option value="Major">Major</option>
-                                                  <option value="Minor">Minor</option>
-                                                  <option value="Trivial">Trivial</option>
-                                       </select>       
-                                    </div>
-                                    <div class="sredina" ng-if="zad.prioritet === 'Critical'">
-                                       <select ng-model="zad.prioritet">                   
-                                                  <option value="{{zad.prioritet}}">{{zad.prioritet}}</option>
-                                                  <option value="Blocker">Blocker</option>
-                                                  <option value="Major">Major</option>
-                                                  <option value="Minor">Minor</option>
-                                                  <option value="Trivial">Trivial</option>
-                                       </select>       
-                                    </div>
-                                    <div class="sredina" ng-if="zad.prioritet === 'Major'">
-                                       <select ng-model="zad.prioritet">                   
-                                                  <option value="{{zad.prioritet}}">{{zad.prioritet}}</option>
-                                                  <option value="Blocker">Critical</option>
-                                                  <option value="Critical">Critical</option>
-                                                  <option value="Minor">Minor</option>
-                                                  <option value="Trivial">Trivial</option>
-                                       </select>       
-                                    </div>
-                                    <div class="sredina" ng-if="zad.prioritet === 'Minor'">
-                                       <select ng-model="zad.prioritet">                   
-                                                  <option value="{{zad.prioritet}}">{{zad.prioritet}}</option>
-                                                  <option value="Blocker">Critical</option>
-                                                  <option value="Critical">Critical</option>
-                                                  <option value="Major">Major</option>
-                                                  <option value="Trivial">Trivial</option>
-                                       </select>       
-                                    </div>
-                                    <div class="sredina" ng-if="zad.prioritet === 'Trivial'">
-                                       <select ng-model="zad.prioritet">                   
-                                                  <option value="{{zad.prioritet}}">{{zad.prioritet}}</option>
-                                                  <option value="Blocker">Critical</option>
-                                                  <option value="Critical">Critical</option>
-                                                  <option value="Major">Major</option>
-                                                  <option value="Minor">Minor</option>
-                                       </select>       
-                                    </div>
-                                   </td>                            
-                                </tr>
-                                <tr>
-                                   <td style="text-align: center;"> <a ui-sref="main"><button type="submit" style="background-color:transparent; border-color:transparent;" ng-click="izmena()"> <img src="images/submit.jpg" height="35"/></button> </a></td>                            
-                                </tr>                                                          
-                            </table>
-              </div>               
-          </div>
-      </div>
-      <div id="content_bottom"></div>
-  </div>
+                <br/>
+
+                <form name="IzmenaZadatkaForm" ng-submit="izmeniZad(IzmenaZadatkaForm.$valid)" novalidate>
+                    <table  id="myTable">
+                        <tr>
+                            <td>
+                                <input type="text" value="{{zad.oznaka}}" name="oznaka" class="sredina" size="30" readonly />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <input type="text" value="{{zad.redni_broj}}" class="sredina" size="30" readonly />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <input type="text" ng-model="zad.naslov" name="naslov" class="sredina" size="30" required />
+                                <br /><p ng-show="IzmenaZadatkaForm.naslov.$invalid && !IzmenaZadatkaForm.naslov.$pristine" style="color: red">Morate uneti naslov zadatka</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <input type="text" ng-model="zad.opis" name="opis" class="sredina" size="30" required />
+                                <br /><p ng-show="IzmenaZadatkaForm.opis.$invalid && !IzmenaZadatkaForm.opis.$pristine" style="color: red">Morate uneti opis zadatka</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="sredina">
+                                <div class="sredina" ng-if="zad.status === 'To Do'">
+                                    <select ng-model="zad.status">
+                                        <option value="{{zad.status}}">{{zad.status}}</option>
+                                        <option value="In Progress">In Progress</option>
+                                        <option value="Verify">Verify</option>
+                                        <option value="Done">Done</option>
+                                    </select>
+                                </div>
+                                <div class="sredina" ng-if="zad.status === 'In Progress'">
+                                    <select ng-model="zad.status">
+                                        <option value="{{zad.status}}">{{zad.status}}</option>
+                                        <option value="To Do">To Do</option>
+                                        <option value="Verify">Verify</option>
+                                        <option value="Done">Done</option>
+                                    </select>
+                                </div>
+                                <div class="sredina" ng-if="zad.status === 'Verify'">
+                                    <select ng-model="zad.status">
+                                        <option value="{{zad.status}}">{{zad.status}}</option>
+                                        <option value="To Do">To Do</option>
+                                        <option value="In Progress">In Progress</option>
+                                        <option value="Done">Done</option>
+                                    </select>
+                                </div>
+                                <div class="sredina" ng-if="zad.status === 'Done'">
+                                    <select ng-model="zad.status">
+                                        <option value="{{zad.status}}">{{zad.status}}</option>
+                                        <option value="To Do">To Do</option>
+                                        <option value="In Progress">In Progress</option>
+                                        <option value="Verify">Verify</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="sredina">
+                                <div class="sredina" ng-if="zad.prioritet === 'Blocker'">
+                                    <select ng-model="zad.prioritet">
+                                        <option value="{{zad.prioritet}}">{{zad.prioritet}}</option>
+                                        <option value="Critical">Critical</option>
+                                        <option value="Major">Major</option>
+                                        <option value="Minor">Minor</option>
+                                        <option value="Trivial">Trivial</option>
+                                    </select>
+                                </div>
+                                <div class="sredina" ng-if="zad.prioritet === 'Critical'">
+                                    <select ng-model="zad.prioritet">
+                                        <option value="{{zad.prioritet}}">{{zad.prioritet}}</option>
+                                        <option value="Blocker">Blocker</option>
+                                        <option value="Major">Major</option>
+                                        <option value="Minor">Minor</option>
+                                        <option value="Trivial">Trivial</option>
+                                    </select>
+                                </div>
+                                <div class="sredina" ng-if="zad.prioritet === 'Major'">
+                                    <select ng-model="zad.prioritet">
+                                        <option value="{{zad.prioritet}}">{{zad.prioritet}}</option>
+                                        <option value="Blocker">Critical</option>
+                                        <option value="Critical">Critical</option>
+                                        <option value="Minor">Minor</option>
+                                        <option value="Trivial">Trivial</option>
+                                    </select>
+                                </div>
+                                <div class="sredina" ng-if="zad.prioritet === 'Minor'">
+                                    <select ng-model="zad.prioritet">
+                                        <option value="{{zad.prioritet}}">{{zad.prioritet}}</option>
+                                        <option value="Blocker">Critical</option>
+                                        <option value="Critical">Critical</option>
+                                        <option value="Major">Major</option>
+                                        <option value="Trivial">Trivial</option>
+                                    </select>
+                                </div>
+                                <div class="sredina" ng-if="zad.prioritet === 'Trivial'">
+                                    <select ng-model="zad.prioritet">
+                                        <option value="{{zad.prioritet}}">{{zad.prioritet}}</option>
+                                        <option value="Blocker">Critical</option>
+                                        <option value="Critical">Critical</option>
+                                        <option value="Major">Major</option>
+                                        <option value="Minor">Minor</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <!-- <td style="text-align: center;"> <a ui-sref="main"><button type="submit" style="background-color:transparent; border-color:transparent;" ng-click="izmena()"> <img src="images/submit.jpg" height="35"/></button> </a></td>-->
+                            <td style="text-align: center;">
+                                <button type="submit" ng-disabled="IzmenaZadatkaForm.$invalid">Izmeni zadatak</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="content_bottom">
+    </div>
+</div>

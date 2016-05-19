@@ -691,6 +691,12 @@
 				$location.path('/korisnik/' + korEntryId + '/projekat/' + $scope.projID + '/korisnik_zadaci');
 			})
 		}
+
+		$scope.izmeniZad = function(isValid) {
+			if (isValid) {
+				$scope.izmena();
+			}
+		};
 	}
 
 	var komentariIzmenaCtrl = function ($scope, $http, $resource, $stateParams, $location)
