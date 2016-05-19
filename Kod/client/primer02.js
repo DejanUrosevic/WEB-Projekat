@@ -224,7 +224,11 @@
 		{
 			$location.path('/korisnik/' + korEntryId);	
 		}
-		
+
+		$scope.hitEditComment = function (commentID) 
+		{
+			$location.path('/korisnik/' + korEntryId +'/projekat/' + projEntryId + '/zadatak/' + zadEntryId + '/komentar/' + commentID);
+		}
 	};
 
 	/*
@@ -295,7 +299,10 @@
             	console.log(data + "--" + status + "headers");
             });
 		}
-
+		$scope.hitEditComment = function (commentID) 
+		{
+			$location.path('/korisnik/' + korEntryId +'/projekat/' + projEntryId + '/zadatak/' + zadEntryId + '/komentar/' + commentID);
+		}
 		
 
 
@@ -595,6 +602,30 @@
 			.success(function(data, status, headers)
 			{
 				$location.path('/projekat/' + projID + '/zadatak/' + zadID + '/komentar');
+			});
+		}
+	}
+
+	var komentariIzmenaKorisnikCtrl = function ($scope, $http, $resource, $stateParams, $location)
+	{
+		if(!angular.equals({}, $stateParams))
+		{
+			var CommEntry = $resource('/api/comment/:_id');
+			var commEntryId = $stateParams.id4;
+			console.log(commEntryId);
+    		$scope.comm = CommEntry.get({_id:commEntryId});
+    		var projID = $stateParams.id;
+    		var zadID = $stateParams.id2;
+    		var korID = $stateParams.id3;
+
+		}
+
+		$scope.izmeniKomentar = function(comment)
+		{
+			$http.put('/api/comment/' + comment._id, {params : {tekst : $scope.comm.tekst} })
+			.success(function(data, status, headers)
+			{
+				$location.path('/korisnik/' + korID +'/projekat/' + projID + '/zadatak/' + zadID + '/komentari');
 			});
 		}
 	}
@@ -1113,6 +1144,7 @@
 	app.controller('zadatakIzmenaKorisnikCtrl', zadatakIzmenaKorisnikCtrl);
 	app.controller('komentariKorisnikCtrl', komentariKorisnikCtrl);
 	app.controller('komentariIzmenaCtrl', komentariIzmenaCtrl);
+	app.controller('komentariIzmenaKorisnikCtrl', komentariIzmenaKorisnikCtrl);
 	app.controller('addRemoveUserProject', addRemoveUserProject);
 	app.controller('ZadaciKorisnicimaCtrl', ZadaciKorisnicimaCtrl);
 	app.controller('mojiZadaciCtrl', mojiZadaciCtrl);
@@ -1209,6 +1241,11 @@
 	      url: '/projekat/:id/zadatak/:id2/komentar/:id3', 
 	      templateUrl: 'komentari-izmena.html',
 	      controller: 'komentariIzmenaCtrl'
+	    })
+	    .state('izmenaKomKor', {
+	      url: '/korisnik/:id3/projekat/:id/zadatak/:id2/komentar/:id4', 
+	      templateUrl: 'komentari-izmena-korisnik.html',
+	      controller: 'komentariIzmenaKorisnikCtrl'
 	    })
 	    .state('addComment', {
 	      url: '/projekat/:id/zadatak/:id2/noviKomentar', 
