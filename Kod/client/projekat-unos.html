@@ -11,56 +11,35 @@
     <div id="content_main">
         <div id="tableContainer-1">
             <div id="tableContainer-2">
-                <!--
-                            <div ng-repeat="korEntry in korEntries">
-                              <div>
-                                {{ korEntry.ime }}
-                              </div>
-                              <div>
-                                {{ korEntry.prezime }}
-                              </div>
-                            </div>
 
-                              <div ng-controller="projekatCtrl">
-                              <select>
-                                <option selected>
-                                  Skok na projekat
-                                </option>
-                                <option
-                                        ng-repeat="projEntry in projEntries"
-                                        value="{{projEntry.oznaka}}" >
-
-                                  {{projEntry.naziv}}
-                                </option>
-                              </select>
-                            </div>
-                            -->
                 <div ng-controller="projekatCtrl">
                     <h2 style="text-align: center; color: gray;">Unos novog projekta </h2>
+
                     <br/>
-                    <table  id="myTable">
-                        <tr>
-                            <td class="sredina"> <input  type="text" size="30" placeholder="Unesite oznaku projekta" ng-model="projEntry.oznaka" /></td>
-                        </tr>
-                        <tr>
-                            <td class="sredina"> <input  type="text"  size="30" placeholder="Unesite naziv projekta" ng-model="projEntry.naziv" /></td>
-                        </tr>
-                        <!--
-                        <tr>
-                              <td class="sredina">
-                                <select style="width: 150px;" ng-model="projEntry.korisnici">
-                                    <option ng-repeat="korEntry in korEntries" ng-value="korEntry">
-                                          {{korEntry.ime}} &nbsp {{korEntry.prezime}}
-                                    </option>
-                                </select>
-                              </td>
-                          </tr>
-                        -->
-                        <tr>
-                           <!-- <td style="text-align: center;"> <a ui-sref="main"><button type="submit" style="background-color:transparent; border-color:transparent;" ng-click="save()"> <img src="images/submit.jpg" height="35"/></button> </a></td> -->
-                            <td style="text-align: center;"> <button type="submit" style="background-color:transparent; border-color:transparent;" ng-click="save()"> <img src="images/submit.jpg" height="35"/></button> </td>
-                        </tr>
-                    </table>
+
+                    <form name="NoviProjekatForm" ng-submit="kreirajProj(NoviProjekatForm.$valid)" novalidate>
+                        <table  id="myTable">
+                            <tr>
+                                <td class="sredina">
+                                    <input type="text" ng-model="projEntry.oznaka" name="oznaka" size="30" placeholder="Unesite oznaku projekta" required />
+                                    <br /><p ng-show="NoviProjekatForm.oznaka.$invalid && !NoviProjekatForm.oznaka.$pristine" style="color: red">Morate uneti oznaku projekta.</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="sredina">
+                                    <input type="text" ng-model="projEntry.naziv" name="naziv" size="30" placeholder="Unesite naziv projekta" required />
+                                    <br /><p ng-show="NoviProjekatForm.naziv.$invalid && !NoviProjekatForm.naziv.$pristine" style="color: red">Morate uneti naziv projekta</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <!-- <td style="text-align: center;"> <a ui-sref="main"><button type="submit" style="background-color:transparent; border-color:transparent;" ng-click="save()"> <img src="images/submit.jpg" height="35"/></button> </a></td> -->
+                                <td style="text-align: center;">
+                                    <button type="submit" ng-disabled="NoviProjekatForm.$invalid">Kreirajte</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+
                 </div>
             </div>
         </div>

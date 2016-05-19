@@ -311,6 +311,7 @@
 
 		$scope.save = function () {
 			if(!$scope.projEntry._id) {
+				/*
 				// Validacija prilikom kreiranja/memorisanja projekta
 				var tempProj = $scope.projEntry;
 				
@@ -327,8 +328,19 @@
 						$state.go('main', {id2: projEntryID});
 					});
 				}
+				*/
+
+				$scope.projEntry.$save(function() {
+					$state.go('main', {id2: korEntryId});
+				});
 			}
 		}
+
+		$scope.kreirajProj = function(isValid) {
+			if (isValid) {
+				$scope.save();
+			}
+		};
 
 		$scope.dodajZad = function (projEntry) {
       		$location.path('/admin/' + korEntryId + '/projekat/'+projEntry._id + '/zadatak');
