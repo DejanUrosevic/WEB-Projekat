@@ -35,6 +35,7 @@
                                       <th class="pravaTabela">Prioritet</th>
                                       <th class="pravaTabela">Izmena zadatka</th>
                                       <th class="pravaTabela">Komentari</th>
+                                      <th class="pravaTabela">Izmene zadatka</th>
                                     </tr>
 
                                     <tr ng-repeat="zadatak in projZad.zadatak">
@@ -53,6 +54,7 @@
                                                   <img src="images/edit.png" height="35"/></button>  
                                       </td>
                                       <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="komentari(zadatak._id, projZad._id)"> <img src="images/comments.jpg" height="35"/></button></td>
+                                      <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="izmeneZadatka(zadatak._id, projZad._id)"> <img src="images/changes.png" height="35"/></button></td>
                                     </tr>
 
                                   </table> 
