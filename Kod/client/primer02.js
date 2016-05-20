@@ -619,6 +619,12 @@
 			}
 		}
 
+		$scope.zapamtiKom = function(isValid, zadatakID) {
+			if (isValid) {
+				$scope.zapamti(zadatakID);
+			}
+		}
+
 		$scope.hitEditComment = function (commentID) 
 		{
 			$location.path('/admin/' + korEntryId + '/projekat/' + projEntryId + '/zadatak/' + zadEntryId + '/komentar/' + commentID);
