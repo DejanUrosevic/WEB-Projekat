@@ -1,0 +1,10 @@
+<div>
+    <h2 style="text-align: center;">Aktivnost korisnika na projektu</h2>
+    <div ng-repeat="korisnik in Users">
+
+    	<h2>Korisnik {{korisnik.ime}} &nbsp {{korisnik.prezime}} </h2>
+    	<div id="korisnik{{$index}}">
+    		<svg class="mypiechart"></svg>
+    	</div>
+    </div>
+</div>
