@@ -1202,6 +1202,123 @@
 			}
 		};	
 
+
+		$scope.izvestaj5 = function() {
+			var podaciKorisnika = {};
+			var redniBrojKorisnika = 0;
+			$http.get('/api/projekat/').success(function(projekti, status, headers) {
+				$http.get('/api/korisnik/').success(function(svi_korisnici, status1, headers1) {
+					
+					var zadaci = [];
+					var korisnici = [];
+					
+					for (var i = 0; i < svi_korisnici.length; i++) {
+						if(svi_korisnici[i].vrsta =='korisnik'){
+							korisnici.push(svi_korisnici[i]);
+						}
+					}
+
+					$scope.Users = korisnici;
+
+					for (var i = 0; i < projekti.length; i++) {
+						for (var j = 0; j < projekti[i].zadatak.length; j++) {
+							zadaci.push( projekti[i].zadatak[j]);
+						}	
+					}
+
+					var zadaciSvihKorisnika = {};
+
+
+					for (var i = 0; i < korisnici.length; i++) {
+						var zadaciKorisnika = [];
+						var korisnik = korisnici[i];
+						for (var j = 0; j < zadaci.length; j++) {
+							var zadatak = zadaci[j];
+							if(korisnik._id == zadatak.korisnik){
+								zadaciKorisnika.push(zadaci[j]);
+							}
+						}
+						zadaciSvihKorisnika[korisnici[i]._id] = zadaciKorisnika;
+					}
+						
+					var redniBrojKorisnika = 0;
+					for (var korisnik in zadaciSvihKorisnika) {
+						var zadaci = zadaciSvihKorisnika[korisnik];
+						var podaci = [];
+						var brojZadatakaPoDanu = {};						// Sadrži broj završenih zadataka po danu
+
+						 // Određivanje broja završenih zadataka po danu
+						for (var i = 0; i < zadaci.length; i++) {
+							 var zadatak = zadaci[i];
+
+							 if (zadatak.status == 'Done') {
+								 var updatedAt = zadatak.updatedAt;
+
+								 var year = updatedAt.substr(0, 4);
+								 var month = updatedAt.substr(5, 2);
+								 var day = updatedAt.substr(8, 2);
+
+								 var updatedAtFormated = day+"/"+month+"/"+year;
+								 if (brojZadatakaPoDanu[updatedAtFormated] == undefined) {
+									 brojZadatakaPoDanu[updatedAtFormated] = 1;
+								 } else {
+									 brojZadatakaPoDanu[updatedAtFormated]++;
+								 }
+							 }
+						}
+
+						for (var stavka in brojZadatakaPoDanu) {
+							 podaci.push({label: stavka, value: brojZadatakaPoDanu[stavka]});
+						}
+
+						 podaci.sort(function(a, b) {
+							 var daya = a.label.substr(0, 2);
+							 var dayb = b.label.substr(0, 2);
+							 var montha = a.label.substr(3, 2);
+							 var monthb = b.label.substr(3, 2);
+							 var yeara = a.label.substr(6, 4);
+							 var yearb = b.label.substr(6, 4);
+
+							 var datea = new Date(yeara, montha, daya);
+							 var dateb = new Date(yearb, monthb, dayb);
+
+							 // console.log(datea+"||"+dateb);
+							 if (datea > dateb) {
+								 return 1;
+							 }
+							 if (datea < dateb)
+								 return -1;
+
+							 return 0;
+						 });
+
+						 var podaciChart = [{key: "Naslov", values: podaci}];
+
+						  nv.addGraph(function() {
+							 var chart = nv.models.discreteBarChart()
+								 .x(function(d) {return d.label;})
+								 .y(function(d) {return d.value;})
+								 .showValues(true);
+							var id_grafika = "#korisnik" + redniBrojKorisnika + " svg";
+							 d3.select(id_grafika)
+								 .datum(podaciChart)
+								 .call(chart);
+
+
+								 var proba = 5;
+
+							redniBrojKorisnika++;	
+							 return chart;
+
+						 });
+						
+					}
+
+					 $location.path('/admin/' + korEntryId + '/projekat/'+ $stateParams.id +'/izvestaji/izvestaj5');
+				 });
+				 });	
+		};	
+
 		$scope.nazadNaZadatke = function(){
 			$location.path('/admin/' + korEntryId + '/main' );
 		}
@@ -1464,6 +1581,10 @@
 		.state('izvestaji.izvestaj4', {
 			url: '/izvestaj4',
 			templateUrl: 'izvestaj-izvestaj4.html'
+		})
+		.state('izvestaji.izvestaj5', {
+			url: '/izvestaj5',
+			templateUrl: 'izvestaj-izvestaj5.html'
 		})
 	   
   	});
