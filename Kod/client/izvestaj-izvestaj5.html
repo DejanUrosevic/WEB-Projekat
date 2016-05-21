@@ -1,9 +1,35 @@
 <div>
     <h2 style="text-align: center;">Aktivnost korisnika na projektu</h2>
-    <div ng-repeat="korisnik in Users">
+    	<br/>
+    	<br/>
+    	<br/>
+   		<div>
+   			<tr>
+    			<h4 style="text-align: left;">Izaberite korisnika čiju aktivnost želite videti</h4>
 
-    	<h2>Korisnik {{korisnik.ime}} &nbsp {{korisnik.prezime}} </h2>
-    	<div id="korisnik{{$index}}">
+    		<br/>
+			</tr>
+			<tr>
+	    		<td class="sredina">
+				    <select ng-model="selektovanKorisnik" ng-change="selektuj(selektovanKorisnik)">
+				        <option
+				                ng-repeat="user in Users"
+				                value="{{user._id}}">
+				            {{user.ime}} &nbsp {{user.prezime}}
+				        </option>
+				        <option value="">- Izaberite korisnika -</option>
+				        <h2>Korisnik {{selektovanKorisnik.ime}} &nbsp {{selektovanKorisnik.prezime}} </h2>
+    	
+				    </select>
+				</td>
+			</tr>
+		</div>
+		<br/>
+
+    <div>
+
+    	<h2>Grafik odabranog korisnika </h2>
+    	<div id="test5">
     		<svg class="mypiechart"></svg>
     	</div>
     </div>

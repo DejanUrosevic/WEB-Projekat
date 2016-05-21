@@ -887,11 +887,26 @@
 
 	var ZadaciKorisnicimaCtrl = function ($scope, $http, $resource, $stateParams, $location) 
 	{
+		var projEntryId;
 		if(!angular.equals({}, $stateParams)){
 			var korEntryId = $stateParams.id2;
-			var projEntryId = $stateParams.id;	
+			projEntryId = $stateParams.id;	
 		}
-			
+		
+		$scope.Users = [];
+
+		$http.get('/api/korisnik/').success(function(korisnici, status, headers1) {
+
+			for(var i = 0; i < korisnici.length; i++){
+				var korisnik = korisnici[i];
+				if(korisnik.vrsta == 'korisnik'){
+					$scope.Users.push(korisnik);
+				}
+			}
+		});
+
+    	
+
 		
 		$scope.izvestaj1 = function () 
 		{
@@ -1213,47 +1228,50 @@
 		};	
 
 
-		$scope.izvestaj5 = function() {
+		$scope.izvestaj5 = function(prosledjeniKorisnik) {
 			var podaciKorisnika = {};
 			var redniBrojKorisnika = 0;
 			$http.get('/api/projekat/').success(function(projekti, status, headers) {
 				$http.get('/api/korisnik/').success(function(svi_korisnici, status1, headers1) {
 					
-					var zadaci = [];
-					var korisnici = [];
 					
+					
+					// OVDE SU SVI KORISNICI----> ONI KOJI NISU ADMINI
+					var korisnici = [];
 					for (var i = 0; i < svi_korisnici.length; i++) {
 						if(svi_korisnici[i].vrsta =='korisnik'){
 							korisnici.push(svi_korisnici[i]);
 						}
 					}
 
+					// STAVLJAMO SVE KORISNIKE NA SCOPE
 					$scope.Users = korisnici;
 
+					// OVDE SU SVU MOGUCI ZADACI NA SVIM PROJEKTIMA
+					var zadaci = [];
 					for (var i = 0; i < projekti.length; i++) {
 						for (var j = 0; j < projekti[i].zadatak.length; j++) {
 							zadaci.push( projekti[i].zadatak[j]);
 						}	
 					}
 
-					var zadaciSvihKorisnika = {};
-
-
-					for (var i = 0; i < korisnici.length; i++) {
-						var zadaciKorisnika = [];
-						var korisnik = korisnici[i];
-						for (var j = 0; j < zadaci.length; j++) {
-							var zadatak = zadaci[j];
-							if(korisnik._id == zadatak.korisnik){
-								zadaciKorisnika.push(zadaci[j]);
-							}
+					// OVDE SU ZADACI NASEG KORISNIKA KOJEG SMO SELEKTOVALI U COMBOBOX-U U HTML-U
+					var zadaciOdabranogKorisnika = [];
+					// for (var i = 0; i < korisnici.length; i++) {
+					// 	var zadaciKorisnika = [];
+					// 	var korisnik = korisnici[i];
+					for (var j = 0; j < zadaci.length; j++) {
+						var zadatak = zadaci[j];
+						if(prosledjeniKorisnik == zadatak.korisnik){
+							zadaciOdabranogKorisnika.push(zadatak);
 						}
-						zadaciSvihKorisnika[korisnici[i]._id] = zadaciKorisnika;
 					}
+					// 	zadaciSvihKorisnika[korisnici[i]._id] = zadaciKorisnika;
+					// }
 						
-					var redniBrojKorisnika = 0;
-					for (var korisnik in zadaciSvihKorisnika) {
-						var zadaci = zadaciSvihKorisnika[korisnik];
+					// var redniBrojKorisnika = 0;
+					// for (var korisnik in zadaciSvihKorisnika) {
+						var zadaci = zadaciOdabranogKorisnika;
 						var podaci = [];
 						var brojZadatakaPoDanu = {};						// Sadrži broj završenih zadataka po danu
 
@@ -1309,25 +1327,35 @@
 								 .x(function(d) {return d.label;})
 								 .y(function(d) {return d.value;})
 								 .showValues(true);
-							var id_grafika = "#korisnik" + redniBrojKorisnika + " svg";
+							var id_grafika = "#test5" + " svg";
 							 d3.select(id_grafika)
 								 .datum(podaciChart)
 								 .call(chart);
 
 
-								 var proba = 5;
+							// 	 var proba = 5;
 
-							redniBrojKorisnika++;	
+							// redniBrojKorisnika++;	
 							 return chart;
 
 						 });
 						
-					}
+					// }
 
 					 $location.path('/admin/' + korEntryId + '/projekat/'+ $stateParams.id +'/izvestaji/izvestaj5');
 				 });
 				 });	
 		};	
+
+		$scope.selektuj = function(selektovanKorisnik){
+
+    		$scope.izvestaj5(selektovanKorisnik);
+    	}
+
+    	$scope.prikaz = function(){
+
+    		$location.path('/admin/' + korEntryId + '/projekat/' + projEntryId + '/izvestaji/izvestaj5');
+    	}
 
 		$scope.nazadNaZadatke = function(){
 			$location.path('/admin/' + korEntryId + '/main' );
