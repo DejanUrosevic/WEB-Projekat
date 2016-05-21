@@ -1371,6 +1371,12 @@
 			}
 		}
 
+		$scope.zapamtiKom = function(isValid, zadatakID) {
+			if (isValid) {
+				$scope.zapamti(zadatakID);
+			}
+		}
+
 		$scope.hitEditComment = function (commentID) 
 		{
 			$location.path('/korisnik/' + korEntryId +'/projekat/' + projEntryId + '/zadatak/' + zadEntryId + '/komentar/' + commentID);
