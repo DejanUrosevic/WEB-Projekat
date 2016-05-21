@@ -149,7 +149,7 @@
 				var korId = $stateParams.id;
 				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
 					console.log($scope.projekat.zadatak[i]);
-					if($scope.projekat.zadatak[i].korisnik === korId){
+					if($scope.projekat.zadatak[i].korisnik._id === korId){
 						zadaci.push($scope.projekat.zadatak[i]);
 					}
 				}
@@ -175,7 +175,7 @@
 				$scope.projekat = response.data;
 				var korId = $stateParams.id;
 				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
-					if($scope.projekat.zadatak[i].korisnik === korId){
+					if($scope.projekat.zadatak[i].korisnik._id === korId){
 						if($scope.projekat.zadatak[i].status === status){
 							zadaci.push($scope.projekat.zadatak[i]);
 						}
@@ -195,7 +195,7 @@
 				$scope.projekat = response.data;
 				var korId = $stateParams.id;
 				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
-					if($scope.projekat.zadatak[i].korisnik === korId){
+					if($scope.projekat.zadatak[i].korisnik._id === korId){
 						if($scope.projekat.zadatak[i].prioritet === prioritet){
 							zadaci.push($scope.projekat.zadatak[i]);
 						}
@@ -220,6 +220,12 @@
 		$scope.hitEditComment = function (commentID) 
 		{
 			$location.path('/korisnik/' + korEntryId +'/projekat/' + projEntryId + '/zadatak/' + zadEntryId + '/komentar/' + commentID);
+		}
+
+		$scope.izmeneZadatka = function (zadatakID, projekatID) 
+		{
+			$location.path('korisnik/' + korEntryId + '/projekat/' + projekatID + '/zadatak/' + zadatakID + '/izmene');
+				
 		}
 
 	};
@@ -1045,7 +1051,7 @@
 							var all = 0;
 							var done = 0;
 							for(var j = 0; j < data.zadatak.length; j++){
-								if(data.korisnici[i]._id === data.zadatak[j].korisnik){
+								if(data.korisnici[i]._id === data.zadatak[j].korisnik._id){
 									all += 1;
 									if(data.zadatak[j].status === "Done"){
 										done += 1;
