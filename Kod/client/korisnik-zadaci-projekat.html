@@ -9,7 +9,7 @@
                 <li class="menuitem"><a href="#">Products</a></li>
                 <li class="menuitem"><a href="#">Services</a></li>
                 <li class="menuitem"><a href="#">Design</a></li>
-              <li class="menuitem"><a href="#">Odjavi se</a></li>
+              <li class="menuitem"><a href="/logout">Odjavi se</a></li>
             </ul>
         </div>
         <br/><br/><br/><br/><br/><br/><br/><br/>
@@ -28,9 +28,10 @@
                                       <th class="pravaTabela">Redni Broj</th>
                                       <th class="pravaTabela">Naslov</th>
                                       <th class="pravaTabela">Opis</th>
+                                      <th class="pravaTabela">Autor</th>
                                       <th class="pravaTabela">Napravljeno</th>
                                       <th class="pravaTabela">Izmenjeno</th>
-                                      <!-- <th class="pravaTabela">Korisnik</th> -->
+                                      <th class="pravaTabela">Korisnik</th>
                                       <th class="pravaTabela">Status</th>
                                       <th class="pravaTabela">Prioritet</th>
                                       <th class="pravaTabela">Izmena zadatka</th>
@@ -43,9 +44,10 @@
                                       <td class="pravaTabela">{{zadatak.redni_broj}}</td>
                                       <td class="pravaTabela">{{zadatak.naslov}}</td>
                                       <td class="pravaTabela">{{zadatak.opis}}</td>
+                                      <td class="pravaTabela">{{zadatak.autor.ime}} {{zadatak.autor.prezime}}</td>
                                       <td class="pravaTabela">{{zadatak.createdAt | date:'dd.MM.yyyy. HH:mm:ss' }}</td>
                                       <td class="pravaTabela">{{zadatak.updatedAt | date:'dd.MM.yyyy. HH:mm:ss'}}</td>
-                                      <!-- <td class="pravaTabela">{{zadatak.korisnik.ime}} &nbsp {{zadatak.korisnik.prezime}}</td> -->
+                                      <td class="pravaTabela">{{zadatak.korisnik.ime}} &nbsp {{zadatak.korisnik.prezime}}</td>
                                       <td class="pravaTabela">{{zadatak.status}}</td>
                                       <td class="pravaTabela">{{zadatak.prioritet}}</td>
                                       <td class="pravaTabela"> 

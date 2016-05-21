@@ -381,6 +381,37 @@
 		}
 	};
 
+	/**
+	 * Funckcija koja predstavlja kontroler zadužen za kreiranje projekta
+	 * @param $scope
+	 * @param $resource
+	 * @param $stateParams
+	 * @param $state
+	 */
+	var projekatUnosCtrl = function($scope, $resource, $stateParams, $state) {
+		if(!angular.equals({}, $stateParams)) {
+			var korEntryId = $stateParams.id;
+		}
+
+		var ProjEntry = $resource('/api/projekat');
+
+		$scope.projEntry = new ProjEntry();
+
+		$scope.save = function () {
+			if(!$scope.projEntry._id) {
+					$scope.projEntry.$save(function() {
+					$state.go('main', {id2: korEntryId});
+				});
+			}
+		}
+
+		$scope.kreirajProj = function(isValid) {
+			if (isValid) {
+				$scope.save();
+			}
+		};
+	};
+
 	var zadatakCtrl = function ($scope, $resource, $stateParams, $state, $location, $http) {
 		var ZadEntry = $resource('/api/projekat/:_id/zadatak/');
 
@@ -491,7 +522,9 @@
 			{id:'@_id'});
 		var loadEntries = function () 
 		{
-			$scope.zadEntries = ZadEntry.query();		
+			$scope.zadEntries = ZadEntry.query(function(data) {
+				console.log(data);
+			});
 			$scope.zadEntry = new ZadEntry();
 		}
 		loadEntries();
@@ -1474,6 +1507,7 @@
 	app.controller('korisnikCtrl', korisnikCtrl);
 	app.controller('korisnikProjekatZadaciCtrl', korisnikProjekatZadaciCtrl);
 	app.controller('projekatCtrl', projekatCtrl);
+	app.controller('projekatUnosCtrl', projekatUnosCtrl);
 	app.controller('zadatakCtrl', zadatakCtrl);
 	app.controller('zadatakBrisanjeCtrl', zadatakBrisanjeCtrl);
 
@@ -1527,8 +1561,8 @@
 	    })
 	    .state('addProjekat', {
 	      url: '/admin/:id/dodajProjekat', 
-	      templateUrl: 'projekat-unos.html'
-	    //  controller: 'projekatCtrl'
+	      templateUrl: 'projekat-unos.html',
+	      controller: 'projekatUnosCtrl'
 	    })
 	    .state('zadKom', {
 	      url: '/admin/:id3/projekat/:id/zadatak/:id2/komentar', 

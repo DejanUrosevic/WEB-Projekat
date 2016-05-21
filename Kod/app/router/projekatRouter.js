@@ -15,7 +15,10 @@ projekatRouter
   });
 })
 .get('/:id', function(req, res) {
-  Projekat.findOne({"_id": req.params.id}).populate('korisnici').populate('zadatak').exec(function(err, data, next) {
+ /* Projekat.findOne({"_id": req.params.id}).populate('korisnici').populate('zadatak').exec(function(err, data, next) {
+    res.json(data);
+  }); */
+  Projekat.findOne({"_id": req.params.id}).populate('korisnici').populate({path:'zadatak', populate: {path: 'autor'}}).populate({path:'zadatak', populate: {path: 'korisnik'}}).exec(function(err, data, next) {
     res.json(data);
   });
 })
@@ -35,6 +38,7 @@ projekatRouter
 })
 .post('/zadatak', function(req, res, next) {
   var zadatak = new Zadatak(req.body);
+  zadatak.autor = req.user;
 
   if(req.body.korisnik !== null || req.body.korisnik !== undefined) {
     Korisnik.findByIdAndUpdate(req.body.korisnik, {$push:{"zadatak":zadatak}}, function (err, entry) {
