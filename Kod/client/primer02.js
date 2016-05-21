@@ -720,13 +720,15 @@
 
 		}
 
-		$scope.izmeniKomentar = function(comment)
+		$scope.izmeniKomentar = function(isValid, comment)
 		{
-			$http.put('/api/comment/' + comment._id, {params : {tekst : $scope.comm.tekst} })
-			.success(function(data, status, headers)
-			{
-				$location.path('/admin/' + korEntryId + '/projekat/' + projID + '/zadatak/' + zadID + '/komentar');
-			});
+			if(isValid){
+				$http.put('/api/comment/' + comment._id, {params : {tekst : $scope.comm.tekst} })
+				.success(function(data, status, headers)
+				{
+					$location.path('/admin/' + korEntryId + '/projekat/' + projID + '/zadatak/' + zadID + '/komentar');
+				});
+			}
 		}
 	}
 
