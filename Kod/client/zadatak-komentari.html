@@ -24,7 +24,7 @@
 
                                   <table style="border-collapse: collapse; border: 1px solid black;">
                                     <tr>
-                                      <th class="pravaTabela">ID</th>
+                                      <!-- <th class="pravaTabela">ID</th> -->
                                       <th class="pravaTabela">Autor</th>
                                       <th class="pravaTabela">Tekst</th>
                                       <th class="pravaTabela">Datum kreiranja</th>
@@ -33,10 +33,10 @@
                                     </tr>
 
                                     <tr ng-repeat="komentar in listaKomentara">
-                                      <td class="pravaTabela">{{komentar._id}}</td>
+                                      <!-- <td class="pravaTabela">{{komentar._id}}</td> -->
                                       <td class="pravaTabela">{{komentar.autor.ime}} &nbsp {{komentar.autor.prezime}}</td>
                                       <td class="pravaTabela">{{komentar.tekst}}</td>
-                                      <td class="pravaTabela">{{komentar.createdAt}}</td>
+                                      <td class="pravaTabela">{{komentar.createdAt | date:'dd.MM.yyyy. HH:mm:ss'}}</td>
                                       <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="obrisiKomentar(komentar, $index)"> <img src="images/removeUser.png" height="35"/></button></td>
                                       <td class="pravaTabela"> <button style="background-color:transparent; border-color:transparent;" ng-click="hitEditComment(komentar._id)"> <img src="images/edit.png" height="35"/></button></td>
                                     </tr>
