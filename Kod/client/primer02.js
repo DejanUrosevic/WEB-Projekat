@@ -746,13 +746,15 @@
 
 		}
 
-		$scope.izmeniKomentar = function(comment)
+		$scope.izmeniKomentar = function(isValid, comment)
 		{
-			$http.put('/api/comment/' + comment._id, {params : {tekst : $scope.comm.tekst} })
-			.success(function(data, status, headers)
-			{
-				$location.path('/korisnik/' + korID +'/projekat/' + projID + '/zadatak/' + zadID + '/komentari');
-			});
+			if(isValid){
+				$http.put('/api/comment/' + comment._id, {params : {tekst : $scope.comm.tekst} })
+				.success(function(data, status, headers)
+				{
+					$location.path('/korisnik/' + korID +'/projekat/' + projID + '/zadatak/' + zadID + '/komentari');
+				});
+			}
 		}
 	}
 
