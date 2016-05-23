@@ -39,6 +39,21 @@
                             </td>
                         </tr>
 
+                         <!--Izmena korisnika zadatka, treba dodati da bude selektovan onaj kome je taj zadatak vec dodeljen -->
+                                <tr>
+                                  <td class="sredina">
+                                    <select ng-model="zad.korisnik" name="korisnik" ng-options="user.key as user.value for user in optionValue" >
+                                    <!--
+                                        <option
+                                                ng-repeat="user in optionValue"
+                                                value="{{user.key}}">
+                                            {{user.value}}
+                                        </option>-->
+                                        <option value="">- Izaberite korisnika za zadatak -</option>
+                                    </select>
+                                  </td>
+                                </tr>
+
                         <tr>
                             <td class="sredina">
                                 <div class="sredina" ng-if="zad.status === 'To Do'">

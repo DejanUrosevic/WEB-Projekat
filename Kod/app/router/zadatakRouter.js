@@ -2,6 +2,7 @@ var express = require('express');
 
 var Zadatak = require('./../model/zadatak');
 var Projekat = require('./../model/projekat');
+var Korisnik = require('./../model/korisnik');
 
 var zadatakRouter = express.Router();
 
@@ -75,11 +76,18 @@ zadatakRouter
       zadatak.opis = newEntry.params.opis;
       zadatak.status = newEntry.params.status;
       zadatak.prioritet = newEntry.params.prioritet;
+      zadatak.korisnik = newEntry.params.korisnik;
       zadatak.save(function(err, zadatak) {
         if (err){
           console.log(err);
           next(err);
         }
+        Korisnik.findByIdAndUpdate(newEntry.params.korisnik, {$push: {"zadatak": zadatak}}, function(err){
+          if(err){
+            console.log(err);
+            next(err);
+          }
+        });
         res.json(zadatak);
       });
     });
