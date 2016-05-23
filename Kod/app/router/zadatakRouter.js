@@ -82,7 +82,14 @@ zadatakRouter
           console.log(err);
           next(err);
         }
-        Korisnik.findByIdAndUpdate(newEntry.params.korisnik, {$push: {"zadatak": zadatak}}, function(err){
+        Korisnik.findByIdAndUpdate(newEntry.params.korisnik, {$push: {"zadatak": zadatak._id}}, function(err){
+          if(err){
+            console.log(err);
+            next(err);
+          }
+        });
+
+        Korisnik.findByIdAndUpdate(entry.korisnik, {$pull: {"zadatak": zadatak._id}}, function(err){
           if(err){
             console.log(err);
             next(err);

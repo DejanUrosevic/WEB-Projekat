@@ -714,6 +714,7 @@
     		$http.get('/api/zadatak/'+zadEntryId)
     		.then(function(response){
     			if((response.data.korisnik !== null) && (response.data.korisnik !== undefined)){
+    				$scope.stariKorisnik = response.data.korisnik;
     				$scope.optionValue.push({key: response.data.korisnik._id, value: response.data.korisnik.ime + " " + response.data.korisnik.prezime});	
     				for(var i = 0; i < $scope.projZad.korisnici.length; i++){
     					if($scope.projZad.korisnici[i]._id !== response.data.korisnik._id){
@@ -729,9 +730,11 @@
     		
 		}
 
+		
 		$scope.izmena = function () 
 		{
-			$http.put('/api/zadatak/' + $scope.zad._id, {params : {naslov: $scope.zad.naslov, opis: $scope.zad.opis,  status : $scope.zad.status, prioritet: $scope.zad.prioritet, korisnik: $scope.zad.korisnik } })
+
+			$http.put('/api/zadatak/' + $scope.zad._id, {params : {naslov: $scope.zad.naslov, opis: $scope.zad.opis,  status : $scope.zad.status, prioritet: $scope.zad.prioritet, korisnik: $scope.zad.korisnik, stariKor: $scope.stariKorisnik } })
 			.success(function (data, status, headers) 
 			{
 				//$location.path('/admin/' + korEntryId + '/projekat/' + $scope.projID + '/zadaci');
