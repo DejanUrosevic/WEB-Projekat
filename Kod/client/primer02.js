@@ -142,19 +142,21 @@
 		korisnikom koji je ulogovan i dodaje te zadatke na $scope
 		*/
 		var ucitaj = function(){
-			var projekat = $http.get('/api/projekat/'+projEntryId)
+			var korisnik = $http.get('/api/projekat/'+$stateParams.id2)
 			.then(function(response){
 				var zadaci = [];
 				$scope.projekat = response.data;
 				var korId = $stateParams.id;
 				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
-					console.log($scope.projekat.zadatak[i]);
-					if($scope.projekat.zadatak[i].korisnik._id === korId){
-						zadaci.push($scope.projekat.zadatak[i]);
+					if($scope.projekat.zadatak[i].korisnik !== null){
+						if($scope.projekat.zadatak[i].korisnik._id === korId){
+							zadaci.push($scope.projekat.zadatak[i]);
+						}
 					}
-				}
-				$scope.myTask = zadaci;
-			});	
+					
+ 				}
+ 				$scope.myTask = zadaci;
+ 			});
 		}
 
 		//sluzi da mozemo da pozovemo gornju funkiciju sa html-a
@@ -175,9 +177,11 @@
 				$scope.projekat = response.data;
 				var korId = $stateParams.id;
 				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
-					if($scope.projekat.zadatak[i].korisnik._id === korId){
-						if($scope.projekat.zadatak[i].status === status){
-							zadaci.push($scope.projekat.zadatak[i]);
+					if($scope.projekat.zadatak[i].korisnik !== null){
+						if($scope.projekat.zadatak[i].korisnik._id === korId){
+							if($scope.projekat.zadatak[i].status === status){
+								zadaci.push($scope.projekat.zadatak[i]);
+							}
 						}
 					}
 				}
@@ -195,9 +199,11 @@
 				$scope.projekat = response.data;
 				var korId = $stateParams.id;
 				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
-					if($scope.projekat.zadatak[i].korisnik._id === korId){
-						if($scope.projekat.zadatak[i].prioritet === prioritet){
-							zadaci.push($scope.projekat.zadatak[i]);
+					if($scope.projekat.zadatak[i].korisnik !== null){
+						if($scope.projekat.zadatak[i].korisnik._id === korId){
+							if($scope.projekat.zadatak[i].prioritet === prioritet){
+								zadaci.push($scope.projekat.zadatak[i]);
+							}
 						}
 					}
 				}
