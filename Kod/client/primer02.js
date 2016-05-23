@@ -695,7 +695,7 @@
 		}
 	}
 
-	var zadatakIzmenaCtrl = function ($scope, $http, $resource, $stateParams, $location)
+	var zadatakIzmenaCtrl = function ($scope, $http, $resource, $stateParams, $location, $state)
 	{
 		if(!angular.equals({}, $stateParams))
 		{
@@ -703,6 +703,10 @@
 			var zadEntryId = $stateParams.id2;
     		$scope.zad = ZadEntry.get({_id:zadEntryId});
     		$scope.projID = $stateParams.id;
+    		var ProjEntry = $resource('/api/projekat/:id');
+    		console.log($scope.projID);
+    		$scope.projZad = ProjEntry.get({id:$scope.projID}); 
+    		console.log($scope.projZad);
     		var korEntryId = $stateParams.id3;
 		}
 
@@ -711,7 +715,8 @@
 			$http.put('/api/zadatak/' + $scope.zad._id, {params : {naslov: $scope.zad.naslov, opis: $scope.zad.opis,  status : $scope.zad.status, prioritet: $scope.zad.prioritet } })
 			.success(function (data, status, headers) 
 			{
-				$location.path('/admin/' + korEntryId + '/projekat/' + $scope.projID + '/zadaci');
+				//$location.path('/admin/' + korEntryId + '/projekat/' + $scope.projID + '/zadaci');
+				$state.go('zadaciProj', {id2: korEntryId, id: $scope.projID});
 			})
 		}
 
@@ -1057,12 +1062,15 @@
 							var all = 0;
 							var done = 0;
 							for(var j = 0; j < data.zadatak.length; j++){
-								if(data.korisnici[i]._id === data.zadatak[j].korisnik._id){
-									all += 1;
-									if(data.zadatak[j].status === "Done"){
-										done += 1;
+								if(data.zadatak[j].korisnik !== null){
+									if(data.korisnici[i]._id === data.zadatak[j].korisnik._id){
+										all += 1;
+										if(data.zadatak[j].status === "Done"){
+											done += 1;
+										}
 									}
 								}
+								
 							}
 							ukupnoZadataka.push(all);
 							odradjeniZadaci.push(done);
