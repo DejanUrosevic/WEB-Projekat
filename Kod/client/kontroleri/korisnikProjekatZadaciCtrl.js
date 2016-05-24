@@ -36,7 +36,7 @@
 
 		$scope.izmeneZadatka = function (zadatakID, projekatID) 
 		{
-			$state.go('zadaciIzmeneKorisnik', {id3: korEntryId, id: projEntryID, id2: zadatakID});
+			$state.go('zadaciIzmeneKorisnik', {id3: korEntryId, id: projekatID, id2: zadatakID});
 			//$location.path('korisnik/' + korEntryId + '/projekat/' + projekatID + '/zadatak/' + zadatakID + '/izmene');
 				
 		}
