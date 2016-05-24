@@ -5,7 +5,7 @@
 	/*
 	Kontroler zaduzen za preuzimanje komentara korisnika i njihovo prikazivanje, dodavanje, brisanje
 	*/
-	var korisnikKomentariCtrl = function($scope, $http, $stateParams, $resource, $location){
+	var korisnikKomentariCtrl = function($scope, $http, $stateParams, $resource, $location, $state){
 		$scope.myComments = [];
 
 		//ucitavanje korisnika
@@ -41,12 +41,14 @@
 		ucitaj();	
 
 		$scope.nazadNaZadatke = function(){
-			$location.path('/korisnik/' + $stateParams.id +'/projekat/' + $stateParams.id2 +'/zadaci');
+			$state.go('korZadaci', {id: $stateParams.id, id2: $stateParams.id2});
+			//$location.path('/korisnik/' + $stateParams.id +'/projekat/' + $stateParams.id2 +'/zadaci');
 
 		}
 		
 		$scope.noviKom = function() {
-    		$location.path('/korisnik/' + $stateParams.id +'/projekat/' + $stateParams.id2 + '/zadatak/' + $stateParams.id3 + '/noviKomentarKorisnik');
+			$state.go('addCommentKorisnikUnos', {id3: $stateParams.id, id: $stateParams.id2, id2: $stateParams.id3 });
+    		//$location.path('/korisnik/' + $stateParams.id +'/projekat/' + $stateParams.id2 + '/zadatak/' + $stateParams.id3 + '/noviKomentarKorisnik');
     	}
 
 		$scope.obrisiKomentar = function (comment, index) 
@@ -63,7 +65,8 @@
 
 		$scope.hitEditComment = function (commentID) 
 		{
-			$location.path('/korisnik/' + $stateParams.id +'/projekat/' + $stateParams.id2 + '/zadatak/' + $stateParams.id3 + '/komentar/' + commentID);
+			$state.go('izmenaKomKor', {id3: $stateParams.id, id: $stateParams.id2, id2: $stateParams.id3, id4: commentID});
+			//$location.path('/korisnik/' + $stateParams.id +'/projekat/' + $stateParams.id2 + '/zadatak/' + $stateParams.id3 + '/komentar/' + commentID);
 		}
 	};
 

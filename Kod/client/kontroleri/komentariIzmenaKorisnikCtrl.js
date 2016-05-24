@@ -2,7 +2,7 @@
 
 	var app = angular.module('app');
 
-	var komentariIzmenaKorisnikCtrl = function ($scope, $http, $resource, $stateParams, $location)
+	var komentariIzmenaKorisnikCtrl = function ($scope, $http, $resource, $stateParams, $location, $state)
 	{
 		if(!angular.equals({}, $stateParams))
 		{
@@ -22,7 +22,8 @@
 				$http.put('/api/comment/' + comment._id, {params : {tekst : $scope.comm.tekst} })
 				.success(function(data, status, headers)
 				{
-					$location.path('/korisnik/' + korID +'/projekat/' + projID + '/zadatak/' + zadID + '/komentari');
+					$state.go('korKomentari', {id: korID, id2: projID, id3: zadID});
+					//$location.path('/korisnik/' + korID +'/projekat/' + projID + '/zadatak/' + zadID + '/komentari');
 				});
 			}
 		}

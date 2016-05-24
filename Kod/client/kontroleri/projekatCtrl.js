@@ -32,19 +32,23 @@
 		};
 
 		$scope.dodajZad = function (projEntry) {
-      		$location.path('/admin/' + korEntryId + '/projekat/'+projEntry._id + '/zadatak');
+			$state.go('addZad', {id2: korEntryId, id: projEntry._id});
+      		//$location.path('/admin/' + korEntryId + '/projekat/'+projEntry._id + '/zadatak');
     	}
 
     	$scope.dodajUser = function (projEntry) {
-      		$location.path('/admin/' + korEntryId + '/projekat/'+ projEntry._id + '/korisnik');	
+    		$state.go('spisakUserProjekat', {id2: korEntryId, id: projEntry._id});
+      		//$location.path('/admin/' + korEntryId + '/projekat/'+ projEntry._id + '/korisnik');	
     	}
 
     	$scope.pregledZadataka = function (projEntry) {
-      		$location.path('/admin/' + korEntryId + '/projekat/'+ projEntry._id + '/zadaci');
+    		$state.go('zadaciProj', {id2: korEntryId, id: projEntry._id});
+      		//$location.path('/admin/' + korEntryId + '/projekat/'+ projEntry._id + '/zadaci');
       	}
 
       	$scope.izvestaji = function (projEntry) {
-      		$location.path('/admin/' + korEntryId + '/projekat/'+ projEntry._id + '/izvestaji');
+      		$state.go('izvestaji', {id2: korEntryId, id: projEntry._id});
+      		//$location.path('/admin/' + korEntryId + '/projekat/'+ projEntry._id + '/izvestaji');
       	}
 
       	$scope.dodajProjekat = function(){

@@ -2,7 +2,7 @@
 
 	var app = angular.module('app');
 
-	var komentariCtrl = function ($scope, $http, $resource, $stateParams, $location) {
+	var komentariCtrl = function ($scope, $http, $resource, $stateParams, $location, $state) {
 
 		var CommEntry = $resource('/api/comment/:id',
 			{id:'@_id'});
@@ -40,7 +40,8 @@
 
     	//da se u URL-u nalazi id projekta i id zadatka prilikom dodavanja komentara
     	$scope.noviKom = function() {
-    		$location.path('/admin/' + korEntryId + '/projekat/' + projEntryId + '/zadatak/' + zadEntryId + '/noviKomentar');
+    		$state.go('addComment', {id3: korEntryId, id: projEntryId, id2: zadEntryId});
+    		//$location.path('/admin/' + korEntryId + '/projekat/' + projEntryId + '/zadatak/' + zadEntryId + '/noviKomentar');
     	}
 
     	$scope.zapamti = function (zadatakID) 
@@ -50,7 +51,8 @@
 				$http.post('/api/comment/', {params:{tekst: $scope.commEntry.tekst, autor: korEntryId, zadatakID: zadatakID}})
 				.success(function(data, status, headers)
 				{
-					$location.path('/admin/' + korEntryId + '/projekat/' + projEntryId + '/zadatak/' + zadEntryId + '/komentar');
+					$state.go('zadKom', {id3: korEntryId, id: projEntryId, id2: zadEntryId});
+					//$location.path('/admin/' + korEntryId + '/projekat/' + projEntryId + '/zadatak/' + zadEntryId + '/komentar');
 				});
 
 			}
@@ -64,12 +66,14 @@
 
 		$scope.hitEditComment = function (commentID) 
 		{
-			$location.path('/admin/' + korEntryId + '/projekat/' + projEntryId + '/zadatak/' + zadEntryId + '/komentar/' + commentID);
+			$state.go('izmenaKom', {id4: korEntryId, id: projEntryId, id2: zadEntryId, id3: commentID});
+			//$location.path('/admin/' + korEntryId + '/projekat/' + projEntryId + '/zadatak/' + zadEntryId + '/komentar/' + commentID);
 		}
  
 		$scope.nazadNaZadatke = function () 
 		{
-			$location.path('/admin/' + korEntryId + '/projekat/' + projEntryId + '/zadaci');	
+			$state.go('zadaciProj', {id2: korEntryId, id: projEntryId});
+			//$location.path('/admin/' + korEntryId + '/projekat/' + projEntryId + '/zadaci');	
 		}
 
 		//pitaj  zasto nece da registruje na backend-u poslati request {params:{zadatakID: ID}} ??

@@ -2,7 +2,7 @@
 
 	var app = angular.module('app');
 
-	var zadatakIzmenaKorisnikCtrl = function ($scope, $http, $resource, $stateParams, $location)
+	var zadatakIzmenaKorisnikCtrl = function ($scope, $http, $resource, $stateParams, $location, $state)
 	{
 		if(!angular.equals({}, $stateParams))
 		{
@@ -15,10 +15,11 @@
 
 		$scope.izmena = function () 
 		{
-			$http.put('/api/zadatak/' + $scope.zad._id, {params : {naslov: $scope.zad.naslov, opis: $scope.zad.opis,  status : $scope.zad.status, prioritet: $scope.zad.prioritet} })
+			$http.put('/api/zadatak/' + $scope.zad._id, {params : {naslov: $scope.zad.naslov, opis: $scope.zad.opis,  status : $scope.zad.status, prioritet: $scope.zad.prioritet, korisnik: $scope.zad.korisnik._id}})
 			.success(function (data, status, headers) 
 			{
-				$location.path('/korisnik/' + korEntryId + '/projekat/' + $scope.projID + '/korisnik_zadaci');
+				$state.go('zadaciProjKorisnik', {id2: korEntryId, id: $scope.projID});
+				//$location.path('/korisnik/' + korEntryId + '/projekat/' + $scope.projID + '/korisnik_zadaci');
 			})
 		}
 

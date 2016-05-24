@@ -5,7 +5,7 @@
 	/*
 	Kontroler zaduzen za preuzimanje zadataka korisnika i njihovo prikazivanje i filtriranje
 	*/
-	var mojiZadaciCtrl = function($scope, $http, $resource, $location, $stateParams){
+	var mojiZadaciCtrl = function($scope, $http, $resource, $location, $stateParams, $state){
 		$scope.myTask = [];
 
 		if(!angular.equals({}, $stateParams)){
@@ -26,7 +26,7 @@
 				$scope.projekat = response.data;
 				var korId = $stateParams.id;
 				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
-					if($scope.projekat.zadatak[i].korisnik !== null){
+					if($scope.projekat.zadatak[i].korisnik !== null && $scope.projekat.zadatak[i].korisnik !== undefined){
 						if($scope.projekat.zadatak[i].korisnik._id === korId){
 							zadaci.push($scope.projekat.zadatak[i]);
 						}
@@ -55,7 +55,7 @@
 				$scope.projekat = response.data;
 				var korId = $stateParams.id;
 				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
-					if($scope.projekat.zadatak[i].korisnik !== null){
+					if($scope.projekat.zadatak[i].korisnik !== null && $scope.projekat.zadatak[i].korisnik !== undefined){
 						if($scope.projekat.zadatak[i].korisnik._id === korId){
 							if($scope.projekat.zadatak[i].status === status){
 								zadaci.push($scope.projekat.zadatak[i]);
@@ -77,7 +77,7 @@
 				$scope.projekat = response.data;
 				var korId = $stateParams.id;
 				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
-					if($scope.projekat.zadatak[i].korisnik !== null){
+					if($scope.projekat.zadatak[i].korisnik !== null && $scope.projekat.zadatak[i].korisnik !== undefined){
 						if($scope.projekat.zadatak[i].korisnik._id === korId){
 							if($scope.projekat.zadatak[i].prioritet === prioritet){
 								zadaci.push($scope.projekat.zadatak[i]);
@@ -93,22 +93,26 @@
 		Funkcija zaduzena za prikaz komentara korisnika na zadatku koji je njemu dodeljen
 		*/			
 		$scope.komentari = function(zadatakId, projekatId){
-			$location.path('/korisnik/' + korEntryId + '/projekat/'+projekatId + '/zadatak/'+ zadatakId+'/komentari');
+			$state.go('korKomentari', {id: korEntryId, id2: projekatId, id3: zadatakId});
+			//$location.path('/korisnik/' + korEntryId + '/projekat/'+projekatId + '/zadatak/'+ zadatakId+'/komentari');
 		}
 
 		$scope.nazadNaProjekte = function () 
 		{
-			$location.path('/korisnik/' + korEntryId);	
+			$state.go('korDash', {id: korEntryId});
+			//$location.path('/korisnik/' + korEntryId);	
 		}
 
 		$scope.hitEditComment = function (commentID) 
 		{
-			$location.path('/korisnik/' + korEntryId +'/projekat/' + projEntryId + '/zadatak/' + zadEntryId + '/komentar/' + commentID);
+			$state.go('izmenaKomKor', {id3: korEntryId, id: projEntryId, id2: zadEntryId, id4: commentID});
+			//$location.path('/korisnik/' + korEntryId +'/projekat/' + projEntryId + '/zadatak/' + zadEntryId + '/komentar/' + commentID);
 		}
 
 		$scope.izmeneZadatka = function (zadatakID, projekatID) 
 		{
-			$location.path('korisnik/' + korEntryId + '/projekat/' + projekatID + '/zadatak/' + zadatakID + '/izmene');
+			$state.go('zadaciIzmeneKorisnik', {id3: korEntryId, id: projekatID, id2: zadatakID});
+			//$location.path('korisnik/' + korEntryId + '/projekat/' + projekatID + '/zadatak/' + zadatakID + '/izmene');
 				
 		}
 

@@ -2,7 +2,7 @@
 
 	var app = angular.module('app');
 
-	var komentariIzmenaCtrl = function ($scope, $http, $resource, $stateParams, $location)
+	var komentariIzmenaCtrl = function ($scope, $http, $resource, $stateParams, $location, $state)
 	{
 		var korEntryId;
 		if(!angular.equals({}, $stateParams))
@@ -23,7 +23,8 @@
 				$http.put('/api/comment/' + comment._id, {params : {tekst : $scope.comm.tekst} })
 				.success(function(data, status, headers)
 				{
-					$location.path('/admin/' + korEntryId + '/projekat/' + projID + '/zadatak/' + zadID + '/komentar');
+					$state.go('zadKom', {id3: korEntryId, id: projID, id2: zadID});
+					//$location.path('/admin/' + korEntryId + '/projekat/' + projID + '/zadatak/' + zadID + '/komentar');
 				});
 			}
 		}

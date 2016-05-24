@@ -6,7 +6,6 @@ var korisnikRouter = express.Router();
 
 korisnikRouter
 .get('/', function(req, res) {
-  console.log(req.isAuthenticated());
 {
 	 var entry={};
 	 Korisnik.find(entry).populate('zadatak').exec(function(err, data, next) {

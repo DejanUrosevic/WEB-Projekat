@@ -41,8 +41,8 @@
 								 if (response.data.vrsta == 'admin') {
 									$state.go('main', {id2: korEntryId});
 								 } else if (response.data.vrsta == 'korisnik') {
-									 // $location.path('/korisnik/' + korisnikID);
-									 $location.path('/korisnik/' + korEntryId);
+									 $state.go('korDash', {id: korEntryId});
+									 //$location.path('/korisnik/' + korEntryId);
 								 }
 							 });
 					}

@@ -2,7 +2,7 @@
 
 	var app = angular.module('app');
 
-	var zadatakBrisanjeCtrl = function ($scope, $http, $resource, $stateParams, $location, $filter) 
+	var zadatakBrisanjeCtrl = function ($scope, $http, $resource, $stateParams, $location, $filter, $state) 
 	{
 		var ZadEntry = $resource('/api/zadatak/:id',
 			{id:'@_id'});
@@ -54,7 +54,8 @@
 		}
 
 		$scope.nazadNaMain = function(){
-			$location.path('/admin/' + korEntryId + '/main');
+			$state.go('main', {id2: korEntryId});
+			//$location.path('/admin/' + korEntryId + '/main');
 		}
 
 		$scope.promeniStatus = function(zadatak, index){
@@ -63,16 +64,19 @@
 
 		$scope.komentari = function(zadatakId, projekatId){
 			///projekat/:id/zadatak/:id2/komentari
-			$location.path('/admin/' + korEntryId + '/projekat/' + projekatId + '/zadatak/' + zadatakId + '/komentar');
+			$state.go('zadKom', {id3: korEntryId, id: projekatId, id2: zadatakId});
+			//$location.path('/admin/' + korEntryId + '/projekat/' + projekatId + '/zadatak/' + zadatakId + '/komentar');
 		}
 
 		//slanje na odredjeni URL za edit zadatka
 		$scope.editZadatak = function (zadatakId, projekatId) {
-			$location.path('/admin/' + korEntryId + '/projekat/' + projekatId + '/zadatak/' + zadatakId + '/edit');
+			$state.go('zadaciEdit', {id3: korEntryId, id: projekatId, id2: zadatakId});
+			//$location.path('/admin/' + korEntryId + '/projekat/' + projekatId + '/zadatak/' + zadatakId + '/edit');
 		}
 
 		$scope.izmeneZadatka = function (zadatakId, projekatId) {
-			$location.path('/admin/' + korEntryId + '/projekat/' + projekatId + '/zadatak/' + zadatakId + '/izmene');
+			$state.go('zadaciIzmene', {id3: korEntryId, id: projekatId, id2: zadatakId});
+			//$location.path('/admin/' + korEntryId + '/projekat/' + projekatId + '/zadatak/' + zadatakId + '/izmene');
 		}
 	};
 

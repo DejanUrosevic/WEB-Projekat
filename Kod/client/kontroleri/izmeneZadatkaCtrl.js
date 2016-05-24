@@ -2,7 +2,7 @@
 
 	var app = angular.module('app');
 
-	var izmeneZadatkaCtrl = function ($scope, $http, $resource, $stateParams, $location) 
+	var izmeneZadatkaCtrl = function ($scope, $http, $resource, $stateParams, $location, $state) 
 	{
 		if(!angular.equals({}, $stateParams)){
 			var zadEntryId = $stateParams.id2;
@@ -22,11 +22,13 @@
 			{
 				if(data.vrsta === 'admin')
 				{
-					$location.path('/admin/' + korEntryId + '/projekat/' + projEntryId + '/zadaci');
+					$state.go('zadaciProj', {id2: korEntryId, id: projEntryId});
+					//$location.path('/admin/' + korEntryId + '/projekat/' + projEntryId + '/zadaci');
 				}
 				else if(data.vrsta === 'korisnik')
 				{
-					$location.path('/korisnik/' + korEntryId + '/projekat/' + projEntryId + '/korisnik_zadaci');
+					$state.go('zadaciProjKorisnik', {id2: korEntryId, id: projEntryId});
+					//$location.path('/korisnik/' + korEntryId + '/projekat/' + projEntryId + '/korisnik_zadaci');
 				}
 			})
 			

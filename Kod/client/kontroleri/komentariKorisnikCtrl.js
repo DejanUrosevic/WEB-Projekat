@@ -2,7 +2,7 @@
 	
 	var app = angular.module('app');
 
-	var komentariKorisnikCtrl = function ($scope, $http, $resource, $stateParams, $location) {
+	var komentariKorisnikCtrl = function ($scope, $http, $resource, $stateParams, $location, $state) {
 
 		var CommEntry = $resource('/api/comment/:id', {id:'@_id'});
 
@@ -36,27 +36,10 @@
     		}
     	});
 
-    	//da se u URL-u nalazi id projekta i id zadatka prilikom dodavanja komentara
-    	$scope.noviKom = function() {
-    		$location.path('/projekat/' + projEntryId + '/zadatak/' + zadEntryId + '/noviKomentar');
-    	}
-
-    	$scope.zapamti = function (zadatakID) 
-		{
-			if(!$scope.commEntry._id)
-			{
-				$http.post('/api/comment/', {params:{tekst: $scope.commEntry.tekst, autor: korEntryId, zadatakID: zadatakID}})
-				.success(function(data, status, headers)
-				{
-					$location.path('/projekat/' + projEntryId + '/zadatak/' + zadEntryId + '/komentar');
-				});
-
-			}
-		}
-
 		$scope.nazadNaZadatke = function () 
 		{
-			$location.path('/korisnik/' + korEntryId +'/projekat/' + projEntryId + '/korisnik_zadaci');	
+			$state.go('zadaciProjKorisnik', {id2: korEntryId, id: projEntryId});
+			//$location.path('/korisnik/' + korEntryId +'/projekat/' + projEntryId + '/korisnik_zadaci');	
 		}
 	}
 

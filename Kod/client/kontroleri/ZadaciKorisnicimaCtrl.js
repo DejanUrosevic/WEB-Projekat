@@ -130,7 +130,8 @@
 							var all = 0;
 							var done = 0;
 							for(var j = 0; j < data.zadatak.length; j++){
-								if(data.zadatak[j].korisnik !== null){
+								console.log(data.zadatak[j].korisnik);
+								if(data.zadatak[j].korisnik !== null && data.zadatak[j].korisnik !== undefined){
 									if(data.korisnici[i]._id === data.zadatak[j].korisnik._id){
 										all += 1;
 										if(data.zadatak[j].status === "Done"){

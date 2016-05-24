@@ -2,7 +2,7 @@
 
 	var app = angular.module('app');
 	
-	var addRemoveUserProject = function ($scope, $http, $resource, $stateParams, $location) 
+	var addRemoveUserProject = function ($scope, $http, $resource, $stateParams, $location, $state) 
 	{
 			var KorEntry = $resource('/api/korisnik');
 			var loadEntries = function () 
@@ -60,7 +60,8 @@
 			}
 
 			$scope.nazadNaMain = function(){
-				$location.path('/admin/' + korEntryId + '/main');
+				$state.go('main', {id2: korEntryId});
+				//$location.path('/admin/' + korEntryId + '/main');
 			}
 	}
 

@@ -42,16 +42,18 @@
 		}
 	
 		$scope.dodajZad = function (projEntry) {
-      		$location.path('/korisnik/' + korEntryId + '/projekat/' + projEntry._id + '/noviZadatak');
+			$state.go('dodajZadatak', {id2: korEntryId, id: projEntry._id });
+      		//$location.path('/korisnik/' + korEntryId + '/projekat/' + projEntry._id + '/noviZadatak');
     	};
 
     	$scope.pregledZadataka = function (projEntry) {
-      		$location.path('/korisnik/' + korEntryId + '/projekat/'+ projEntry._id + '/korisnik_zadaci');
+    		$state.go('zadaciProjKorisnik', {id2: korEntryId, id: projEntry._id});
+      		//$location.path('/korisnik/' + korEntryId + '/projekat/'+ projEntry._id + '/korisnik_zadaci');
       	};
       		
       	$scope.mojiZadaci = function(projEntry) {
-      		///korisnik/:id/projekat/:id2/zadaci
-      		$location.path('/korisnik/'+korEntryId +'/projekat/'+projEntry._id + '/zadaci');
+      		$state.go('korZadaci', {id: korEntryId, id2: projEntry._id});
+      		//$location.path('/korisnik/'+korEntryId +'/projekat/'+projEntry._id + '/zadaci');
       	};
 	};
 
