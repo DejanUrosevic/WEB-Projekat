@@ -67,7 +67,7 @@ var isLoggedInInterceptor = function(req, res, next) {
   if (req.isAuthenticated()) {
     next();
   } else {
-    res.redirect('/blog/indexx.html#/login');
+    res.redirect('/SlicTask/indexx.html#/login');
   }
 };
 
@@ -88,7 +88,7 @@ app.use('/api/zadatak', isLoggedInInterceptor, zadatakRouter);
 app.use('/api/comment', isLoggedInInterceptor, komentarRouter);
 
 //klijentsku angular aplikaciju serviramo iz direktorijuma client
-app.use('/blog', express.static(__dirname + '/client'));
+app.use('/SlicTask', express.static(__dirname + '/client'));
 
 app.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, korisnik, info) {
@@ -97,7 +97,7 @@ app.post('/login', function(req, res, next) {
     }
     	
     if (!korisnik) {
-      // return res.redirect('/blog/indexx.html');
+      // return res.redirect('/SlicTask/indexx.html');
       return res.json({});
     }
 
@@ -110,11 +110,11 @@ app.post('/login', function(req, res, next) {
 
       /*
       if(korisnik.vrsta === 'admin'){
-        return res.redirect('/blog/indexx.html#/main');
+        return res.redirect('/SlicTask/indexx.html#/main');
       }else if(korisnik.vrsta === 'korisnik'){
-        return res.redirect('/blog/indexx.html#/korisnik/'+korisnik._id);
+        return res.redirect('/SlicTask/indexx.html#/korisnik/'+korisnik._id);
       }else{
-        return res.redirect('/blog/indexx.html#/login');
+        return res.redirect('/SlicTask/indexx.html#/login');
       }
       */
 
@@ -128,7 +128,7 @@ app.get('/logout', function(req, res, next) {
 
   req.logout();
 
-  res.redirect('/blog/indexx.html#/login');
+  res.redirect('/SlicTask/indexx.html#/login');
 });
 
 //na kraju dodajemo middleware za obradu gresaka

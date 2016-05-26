@@ -380,9 +380,12 @@
 					// OVDE SU SVU MOGUCI ZADACI NA SVIM PROJEKTIMA
 					var zadaci = [];
 					for (var i = 0; i < projekti.length; i++) {
-						for (var j = 0; j < projekti[i].zadatak.length; j++) {
-							zadaci.push( projekti[i].zadatak[j]);
-						}	
+						var projekat = projekti[i];
+						if(projekat._id == projEntryId){
+							for (var j = 0; j < projekat.zadatak.length; j++) {
+								zadaci.push( projekti[i].zadatak[j]);
+							}	
+						}
 					}
 
 					// OVDE SU ZADACI NASEG KORISNIKA KOJEG SMO SELEKTOVALI U COMBOBOX-U U HTML-U
