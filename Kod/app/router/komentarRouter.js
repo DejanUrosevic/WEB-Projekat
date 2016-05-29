@@ -41,8 +41,8 @@ komentarRouter
       console.log(err);
       next(err);
     }
-    var newEntry = req.body.params.tekst;
-    comment.tekst = newEntry;
+    var newEntry = req.body;
+    comment.tekst = newEntry.tekst;
     comment.save(function(err, data) {
       if (err){
         console.log(err);
@@ -52,11 +52,11 @@ komentarRouter
     });
   });
 })
-.post('/', function(req, res, next) {
-  var comment = new Comment();
-  comment.tekst = req.body.params.tekst;
-  comment.autor = req.body.params.autor;
-  Zadatak.findOne({"_id":req.body.params.zadatakID},function (err, entry) {
+.post('/zadatak/:zadId/autor/:korId', function(req, res, next) {
+
+  var comment = new Comment(req.body);
+  comment.autor = req.params.korId;
+  Zadatak.findOne({"_id": req.params.zadId},function (err, entry) {
     comment.save(function(err, comment)
     {
       if (err)

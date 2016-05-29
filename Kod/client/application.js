@@ -1,5 +1,5 @@
 (function (angular) {
 
-	angular.module('app',['ui.router', 'ngResource']);
+	angular.module('app',['korEntry', 'projEntry', 'zadEntry', 'commEntry','ui.router', 'ngResource']);
 	
 }(angular));

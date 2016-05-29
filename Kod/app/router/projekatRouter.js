@@ -36,38 +36,6 @@ projekatRouter
     res.json(entry);
   });
 })
-.post('/zadatak', function(req, res, next) {
-  var zadatak = new Zadatak(req.body);
-  zadatak.autor = req.user;
-
-  if(req.body.korisnik !== null || req.body.korisnik !== undefined) {
-    Korisnik.findByIdAndUpdate(req.body.korisnik, {$push:{"zadatak":zadatak}}, function (err, entry) {
-      if(err) {
-        console.log(err);
-        next(err);
-      }
-    });
-  }
-  Projekat.findOne({"oznaka": zadatak.oznaka},function (err, entry) {
-    if(err) {
-      next(err);
-    }
-
-    zadatak.save(function (err, zadatak) {
-      if(err) {
-        console.log(err);
-        next(err);
-      }
-      Projekat.findByIdAndUpdate(entry._id, {$push:{"zadatak":zadatak}}, function (err, entry) {
-        if(err) {
-          console.log(err);
-          next(err);
-        }
-        res.json(entry);
-      });
-    });
-  });
-})
 .get('/:id/zadatak', function(req, res) {
   var entry={"_id":req.params.id};
   Projekat.findOne(entry).populate('korisnici').populate('zadatak').exec(function(err, data, next) {

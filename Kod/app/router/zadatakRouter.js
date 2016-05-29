@@ -60,6 +60,38 @@ zadatakRouter
     });
   });
 })
+.post('/', function(req, res, next) {
+  var zadatak = new Zadatak(req.body);
+  zadatak.autor = req.user;
+
+  if(req.body.korisnik !== null || req.body.korisnik !== undefined) {
+    Korisnik.findByIdAndUpdate(req.body.korisnik, {$push:{"zadatak":zadatak}}, function (err, entry) {
+      if(err) {
+        console.log(err);
+        next(err);
+      }
+    });
+  }
+  Projekat.findOne({"oznaka": zadatak.oznaka},function (err, entry) {
+    if(err) {
+      next(err);
+    }
+
+    zadatak.save(function (err, zadatak) {
+      if(err) {
+        console.log(err);
+        next(err);
+      }
+      Projekat.findByIdAndUpdate(entry._id, {$push:{"zadatak":zadatak}}, function (err, entry) {
+        if(err) {
+          console.log(err);
+          next(err);
+        }
+        res.json(entry);
+      });
+    });
+  });
+})
 .put('/:id', function(req, res, next) {
   Zadatak.findOne({
     "_id": req.params.id
@@ -71,18 +103,17 @@ zadatakRouter
     Zadatak.findByIdAndUpdate(zadatak._id, {$push:{"izmeneZadatka":zadatak}}, function (err, entry)
     {
       var newEntry = req.body;
-      //{params : {status : zadatak.status}}
-      zadatak.naslov = newEntry.params.naslov;
-      zadatak.opis = newEntry.params.opis;
-      zadatak.status = newEntry.params.status;
-      zadatak.prioritet = newEntry.params.prioritet;
-      zadatak.korisnik = newEntry.params.korisnik;
+      zadatak.naslov = newEntry.naslov;
+      zadatak.opis = newEntry.opis;
+      zadatak.status = newEntry.status;
+      zadatak.prioritet = newEntry.prioritet;
+      zadatak.korisnik = newEntry.korisnik;
       zadatak.save(function(err, zadatak) {
         if (err){
           console.log(err);
           next(err);
         }
-        Korisnik.findByIdAndUpdate(newEntry.params.korisnik, {$push: {"zadatak": zadatak._id}}, function(err){
+        Korisnik.findByIdAndUpdate(newEntry.korisnik, {$push: {"zadatak": zadatak._id}}, function(err){
           if(err){
             console.log(err);
             next(err);

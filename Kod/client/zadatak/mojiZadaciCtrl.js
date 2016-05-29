@@ -1,33 +1,31 @@
 (function(angular) {
 
-	var app = angular.module('app');
-
-	/*
-	Kontroler zaduzen za preuzimanje zadataka korisnika i njihovo prikazivanje i filtriranje
-	*/
-	var mojiZadaciCtrl = function($scope, $http, $resource, $location, $stateParams, $state){
-		$scope.myTask = [];
-
+	var appModule = angular.module('zadEntry');
+	appModule.controller('mojiZadaciCtrl', function($scope, $stateParams, $state, ZadatakEntry, ProjekatEntry, KorisnikEntry)
+	{
 		if(!angular.equals({}, $stateParams)){
-			var KorEntry = $resource('/api/korisnik/:_id');
 			var korEntryId = $stateParams.id;
-    		$scope.User = KorEntry.get({_id:korEntryId});
+    		$scope.User = KorisnikEntry.get({_id:korEntryId});
     		var projEntryId = $stateParams.id2;
 		}
-		
+		$scope.myTask = [];
+
 		/*
 		Funkcija koja povlaci projekat sa baze i uporedjuje korisnika kojem je dodjeljen zadatak na tom projektu sa
 		korisnikom koji je ulogovan i dodaje te zadatke na $scope
 		*/
-		var ucitaj = function(){
-			var korisnik = $http.get('/api/projekat/'+$stateParams.id2)
-			.then(function(response){
+		var ucitaj = function()
+		{
+			ProjekatEntry.get({_id: projEntryId}, function(response)
+			{
 				var zadaci = [];
-				$scope.projekat = response.data;
+				$scope.projekat = response;
 				var korId = $stateParams.id;
-				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
+				for(var i = 0; i < $scope.projekat.zadatak.length; i++)
+				{
 					if($scope.projekat.zadatak[i].korisnik !== null && $scope.projekat.zadatak[i].korisnik !== undefined){
-						if($scope.projekat.zadatak[i].korisnik._id === korId){
+						if($scope.projekat.zadatak[i].korisnik._id === korId)
+						{
 							zadaci.push($scope.projekat.zadatak[i]);
 						}
 					}
@@ -40,7 +38,7 @@
 		//sluzi da mozemo da pozovemo gornju funkiciju sa html-a
 		$scope.ucitavanje = ucitaj;
 
-		//sluzi da odmag ucita sadrzaj
+		//sluzi da odmah ucita sadrzaj
 		ucitaj();
 
 		/*
@@ -48,16 +46,20 @@
 		zadataka proverava se koji pripada trenutno ulogovanom korisniku, a nakon toga se proverava da li je i status tog 
 		zadatka isti kao i odabrani. Prvo se dodaje u obican niz ZADACI, koji se nakon svih provera postavlja na $scope 
 		*/
-		$scope.filtriraj = function(status){
+		$scope.filtriraj = function(status)
+		{
 			var zadaci = [];
-			var projekat = $http.get('/api/projekat/'+projEntryId)
-			.then(function(response){
-				$scope.projekat = response.data;
+			ProjekatEntry.get({_id: projEntryId}, function(response)
+			{
+				$scope.projekat = response;
 				var korId = $stateParams.id;
-				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
+				for(var i = 0; i < $scope.projekat.zadatak.length; i++)
+				{
 					if($scope.projekat.zadatak[i].korisnik !== null && $scope.projekat.zadatak[i].korisnik !== undefined){
-						if($scope.projekat.zadatak[i].korisnik._id === korId){
-							if($scope.projekat.zadatak[i].status === status){
+						if($scope.projekat.zadatak[i].korisnik._id === korId)
+						{
+							if($scope.projekat.zadatak[i].status === status)
+							{
 								zadaci.push($scope.projekat.zadatak[i]);
 							}
 						}
@@ -70,16 +72,20 @@
 		/*
 		Isto radi kao i filtriraj samo sto se ovde proverava prioritet zadatka.
 		*/
-		$scope.filtriraj2 = function(prioritet){
+		$scope.filtriraj2 = function(prioritet)
+		{
 			var zadaci = [];
-			var projekat = $http.get('/api/projekat/'+projEntryId)
-			.then(function(response){
-				$scope.projekat = response.data;
+			ProjekatEntry.get({_id: projEntryId}, function(response)
+			{
+				$scope.projekat = response;
 				var korId = $stateParams.id;
-				for(var i = 0; i < $scope.projekat.zadatak.length; i++){
+				for(var i = 0; i < $scope.projekat.zadatak.length; i++)
+				{
 					if($scope.projekat.zadatak[i].korisnik !== null && $scope.projekat.zadatak[i].korisnik !== undefined){
-						if($scope.projekat.zadatak[i].korisnik._id === korId){
-							if($scope.projekat.zadatak[i].prioritet === prioritet){
+						if($scope.projekat.zadatak[i].korisnik._id === korId)
+						{
+							if($scope.projekat.zadatak[i].prioritet === prioritet)
+							{
 								zadaci.push($scope.projekat.zadatak[i]);
 							}
 						}
@@ -116,8 +122,5 @@
 				
 		}
 
-	};
-
-	app.controller('mojiZadaciCtrl', mojiZadaciCtrl);
-	
+	});
 })(angular)

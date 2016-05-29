@@ -1,20 +1,20 @@
 (function(angular){
 
-	var app = angular.module('app');
-
-	var izmeneZadatkaCtrl = function ($scope, $http, $resource, $stateParams, $location, $state) 
+	var zadatakModule = angular.module('zadEntry');
+	zadatakModule.controller('izmeneZadatkaCtrl', function ($scope, $http, $stateParams, $location, $state, ZadatakEntry)
 	{
-		if(!angular.equals({}, $stateParams)){
+		if(!angular.equals({}, $stateParams))
+		{
 			var zadEntryId = $stateParams.id2;
 			var korEntryId = $stateParams.id3;
 			var projEntryId = $stateParams.id;
 		}
 
-		$http.get('/api/zadatak/' + zadEntryId)
-		.success(function(data, status, headers)
+		ZadatakEntry.get({_id: zadEntryId}, function (zadatak) 
 		{
-			$scope.sveIzmene = data.izmeneZadatka;
+			$scope.sveIzmene = zadatak.izmeneZadatka;
 		});
+
 
 		$scope.nazadNaMain = function(){
 			$http.get('/api/korisnik/' + korEntryId)
@@ -27,14 +27,12 @@
 				}
 				else if(data.vrsta === 'korisnik')
 				{
-					$state.go('zadaciProjKorisnik', {id2: korEntryId, id: projEntryId});
+					$state.go('korZadaci', {id: korEntryId, id2: projEntryId});
 					//$location.path('/korisnik/' + korEntryId + '/projekat/' + projEntryId + '/korisnik_zadaci');
 				}
 			})
 			
 		}
-	}
 
-	app.controller('izmeneZadatkaCtrl', izmeneZadatkaCtrl);
-	
+	});
 })(angular)

@@ -66,5 +66,5 @@
 	}
 
 	app.controller('addRemoveUserProject', addRemoveUserProject);
-	
+
 })(angular)

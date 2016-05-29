@@ -38,9 +38,9 @@
 	      controller: 'zadatakBrisanjeCtrl'
 	    })
 	    .state('addProjekat', {
-	      url: '/admin/:id/dodajProjekat', 
+	      url: '/admin/:id2/dodajProjekat', 
 	      templateUrl: 'html-stranice/projekat-unos.html',
-	      controller: 'projekatUnosCtrl'
+	      controller: 'projekatCtrl'
 	    })
 	    .state('zadKom', {
 	      url: '/admin/:id3/projekat/:id/zadatak/:id2/komentar', 

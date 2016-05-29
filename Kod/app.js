@@ -67,7 +67,7 @@ var isLoggedInInterceptor = function(req, res, next) {
   if (req.isAuthenticated()) {
     next();
   } else {
-    res.redirect('/SlicTask/indexx.html#/login');
+    res.redirect('/slickTask/indexx.html#/login');
   }
 };
 
@@ -88,7 +88,7 @@ app.use('/api/zadatak', isLoggedInInterceptor, zadatakRouter);
 app.use('/api/comment', isLoggedInInterceptor, komentarRouter);
 
 //klijentsku angular aplikaciju serviramo iz direktorijuma client
-app.use('/SlicTask', express.static(__dirname + '/client'));
+app.use('/slickTask', express.static(__dirname + '/client'));
 
 app.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, korisnik, info) {
@@ -128,7 +128,7 @@ app.get('/logout', function(req, res, next) {
 
   req.logout();
 
-  res.redirect('/SlicTask/indexx.html#/login');
+  res.redirect('/slickTask/indexx.html#/login');
 });
 
 //na kraju dodajemo middleware za obradu gresaka
