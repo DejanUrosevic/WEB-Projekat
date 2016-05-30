@@ -107,25 +107,29 @@ zadatakRouter
       zadatak.opis = newEntry.opis;
       zadatak.status = newEntry.status;
       zadatak.prioritet = newEntry.prioritet;
-      zadatak.korisnik = newEntry.korisnik;
-      zadatak.save(function(err, zadatak) {
-        if (err){
-          console.log(err);
-          next(err);
-        }
+      if(zadatak.korisnik !== newEntry.korisnik){
+        zadatak.korisnik = newEntry.korisnik; 
         Korisnik.findByIdAndUpdate(newEntry.korisnik, {$push: {"zadatak": zadatak._id}}, function(err){
           if(err){
             console.log(err);
             next(err);
           }
         });
-
+        
         Korisnik.findByIdAndUpdate(entry.korisnik, {$pull: {"zadatak": zadatak._id}}, function(err){
           if(err){
             console.log(err);
             next(err);
           }
-        });
+        }); 
+      }
+      
+      zadatak.save(function(err, zadatak) {
+        if (err){
+          console.log(err);
+          next(err);
+        }
+
         res.json(zadatak);
       });
     });
