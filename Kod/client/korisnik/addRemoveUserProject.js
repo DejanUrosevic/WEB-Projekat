@@ -1,70 +1,63 @@
 (function(angular){
 
-	var app = angular.module('app');
-	
-	var addRemoveUserProject = function ($scope, $http, $resource, $stateParams, $location, $state) 
-	{
-			var KorEntry = $resource('/api/korisnik');
-			var loadEntries = function () 
-			{
-				$scope.korEntries = KorEntry.query();		
-			}
-			loadEntries();
+	var korisnikModul = angular.module('korEntry');
+	korisnikModul.controller('addRemoveUserProject', ["$scope", "$http", "$resource", "$stateParams", "$location", "$state", "ProjekatEntry", "KorisnikEntry", function ($scope, $http, $resource, $stateParams, $location, $state, ProjekatEntry, KorisnikEntry) {
+		//preuzimanje odgovarajuceg projekta (provera da li URL ima id)
+		
+		$scope.dodatiKorisnici = [];
 
-			//preuzimanje odgovarajuceg projekta (provera da li URL ima id)
-			if(!angular.equals({}, $stateParams))
-			{
-				var ProjEntry2 = $resource('/api/projekat/:_id');
-				var projEntryId = $stateParams.id;
-	    		$scope.projUser = ProjEntry2.get({_id:projEntryId});
-	    		var korEntryId = $stateParams.id2;
-			}
+		if(!angular.equals({}, $stateParams))
+		{
+			var projEntryId = $stateParams.id;
+	    	$scope.projUser = ProjekatEntry.get({_id:projEntryId}, function(response){
+	    		$scope.dodatiKorisnici = response.korisnici;
+	    	});
+	    	var korEntryId = $stateParams.id2;
+		}
 
-			$scope.obrisiUsera = function (korisnik, index) 
-			{
-				$http.put('/api/projekat/' + projEntryId, {params : {korisnikID : korisnik._id} })
-				.success(function (data, status, headers) {
-					$scope.projUser.korisnici.splice(index, 1);
-					$scope.korEntries.push(korisnik);
-	            });
-			}
 
-			//ovde u $scope.nizKorisnika stavljamo samo one korisnike koji nisu na selektovanom projektu.
-			if(!angular.equals({}, $stateParams))
-			{
-				var ProjEntry2 = $resource('/api/projekat/:_id');
-				var projEntryId = $stateParams.id;
-	    		$scope.projUser = ProjEntry2.get({_id:projEntryId} , function (projekatt) 
-			    {
-			    	for(var i=0; i<projekatt.korisnici.length; i++)
-			    	{		 
-						for(var j=0; j<$scope.korEntries.length; j++)
-						{						
-							if($scope.korEntries[j]._id === projekatt.korisnici[i]._id)
-							{
-								$scope.korEntries.splice(j, 1);
-								break;  	
-							} 
-						}
+		var loadEntries = function () 
+		{
+			$scope.korEntries = KorisnikEntry.query();	
+		}
+		
+		loadEntries();
+
+		$scope.obrisiUsera = function (korisnik, index) 
+		{
+			$scope.projUser.$obrisiKorisnika( {'korId': korisnik._id});
+         	$scope.dodatiKorisnici.splice(index, 1);
+           	$scope.korEntries.push(korisnik);
+		}
+
+		if(!angular.equals({}, $stateParams))
+		{
+			var projEntryId = $stateParams.id;
+	    	$scope.projUser = ProjekatEntry.get({_id:projEntryId} , function (projekatt) 
+		    {
+		    	for(var i=0; i<projekatt.korisnici.length; i++)
+		    	{		 
+					for(var j=0; j<$scope.korEntries.length; j++)
+					{						
+						if($scope.korEntries[j]._id === projekatt.korisnici[i]._id)
+						{
+							$scope.korEntries.splice(j, 1);
+							break;  	
+						} 
 					}
-			    });
-			}
-			
-			$scope.dodajUsera = function (kor, index)
-			{
-				$http.put('/api/projekat/' + projEntryId + '/dodajKor', {params : {korisnikID : kor._id} })
-				.success(function (data, status, headers) {
-					$scope.korEntries.splice(index, 1);
-					$scope.projUser.korisnici.push(kor);
-	            });
-			}
+				}
+		    });
+		}
 
-			$scope.nazadNaMain = function(){
-				$state.go('main', {id2: korEntryId});
-				//$location.path('/admin/' + korEntryId + '/main');
-			}
-	}
+		$scope.dodajUsera = function (kor, index)
+		{
+	        $scope.projUser.$dodajKorisnika({'korId': kor._id});
+         	$scope.korEntries.splice(index, 1);
+           	$scope.dodatiKorisnici.push(kor);
+		}
 
-	app.controller('addRemoveUserProject', addRemoveUserProject);
-
+		$scope.nazadNaMain = function(){
+			$state.go('main', {id2: korEntryId});
+		}
+	}]);
 })(angular)

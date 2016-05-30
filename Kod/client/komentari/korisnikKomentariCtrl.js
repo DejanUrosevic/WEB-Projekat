@@ -1,7 +1,7 @@
 (function(angular) {
 	
 	var commModule = angular.module('commEntry');
-	commModule.controller('korisnikKomentariCtrl', function($scope, $stateParams, $state, KorisnikEntry, ProjekatEntry, ZadatakEntry, KomentarEntry)
+	commModule.controller('korisnikKomentariCtrl', ["$scope", "$stateParams", "$state", "KorisnikEntry", "ProjekatEntry", "ZadatakEntry", "KomentarEntry", function($scope, $stateParams, $state, KorisnikEntry, ProjekatEntry, ZadatakEntry, KomentarEntry)
 	{
 		/*
 		Kontroler zaduzen za preuzimanje komentara korisnika i njihovo prikazivanje, dodavanje, brisanje
@@ -70,6 +70,6 @@
 
 		}
 
-	});
+	}]);
 	
 })(angular)

@@ -1,7 +1,7 @@
 (function(angular){
 	
 	var commModule = angular.module('commEntry');
-	commModule.controller('komentariKorisnikCtrl', function ($scope, $stateParams, $state, KomentarEntry, ZadatakEntry)
+	commModule.controller('komentariKorisnikCtrl', ["$scope", "$stateParams", "$state", "KomentarEntry", "ZadatakEntry", function ($scope, $stateParams, $state, KomentarEntry, ZadatakEntry)
 	{
 		if(!angular.equals({}, $stateParams))
 		{
@@ -36,10 +36,9 @@
     	$scope.nazadNaZadatke = function () 
 		{
 			$state.go('zadaciProjKorisnik', {id2: korEntryId, id: projEntryId});
-			//$location.path('/korisnik/' + korEntryId +'/projekat/' + projEntryId + '/korisnik_zadaci');	
 		}
 
 
-	});
+	}]);
 	
 })(angular)

@@ -1,7 +1,7 @@
 (function(angular){
 
 	var zadatakModule = angular.module('zadEntry');
-	zadatakModule.controller('izmeneZadatkaCtrl', function ($scope, $http, $stateParams, $location, $state, ZadatakEntry)
+	zadatakModule.controller('izmeneZadatkaCtrl',["$scope", "$http", "$stateParams", "$location", "$state", "ZadatakEntry", function ($scope, $http, $stateParams, $location, $state, ZadatakEntry)
 	{
 		if(!angular.equals({}, $stateParams))
 		{
@@ -34,5 +34,5 @@
 			
 		}
 
-	});
+	}]);
 })(angular)

@@ -9,7 +9,12 @@
 			obrisiKorisnika: 
 			{
 				method: 'PUT',
-				url: 'api/projekat/:_id/:korId'
+				url: '/api/projekat/:_id/obrisi/:korId'
+			},
+			dodajKorisnika:
+			{
+				method: 'PUT',
+				url: '/api/projekat/:_id/dodaj/:korId'
 			}
 			
 		});

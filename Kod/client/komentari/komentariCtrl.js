@@ -1,7 +1,7 @@
 (function(angular){
 
 	angular.module('commEntry', ['zadatak.resource', 'projekat.resource', 'komentar.resource', 'korisnik.resource'])
-	.controller('komentariCtrl', function ($scope, $http, $stateParams, $state, ZadatakEntry, ProjekatEntry, KomentarEntry)
+	.controller('komentariCtrl', ["$scope", "$http", "$stateParams", "$state", "ZadatakEntry", "ProjekatEntry", "KomentarEntry" ,function ($scope, $http, $stateParams, $state, ZadatakEntry, ProjekatEntry, KomentarEntry)
 	{
 		if(!angular.equals({}, $stateParams))
 		{
@@ -79,8 +79,8 @@
 			comment.$delete(loadEntries);
 			$scope.listaKomentara.splice(index, 1);
 		}
-	})
-	.controller('komentariKontrolerKorisnikCtrl', function ($scope, $stateParams, $state, KomentarEntry, ZadatakEntry, KorisnikEntry)
+	}])
+	.controller('komentariKontrolerKorisnikCtrl', ["$scope", "$stateParams", "$state", "KomentarEntry", "ZadatakEntry", "KorisnikEntry", function ($scope, $stateParams, $state, KomentarEntry, ZadatakEntry, KorisnikEntry)
 	{
 		if(!angular.equals({}, $stateParams))
 		{
@@ -129,5 +129,5 @@
 			
 		}
 
-	});	
+	}]);	
 })(angular)

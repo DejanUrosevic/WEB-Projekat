@@ -50,10 +50,11 @@ projekatRouter
     res.json(data.korisnici);
   });
 })
-.put('/:id', function(req, res, next) {
-  Korisnik.findOne({
-    "_id": req.body.params.korisnikID
-  }, function(err, korisnik) {
+.put('/:id/obrisi/:korId', function(req, res, next) {
+    console.log("dasdasasdasds");
+    Korisnik.findOne({
+      "_id": req.params.korId
+    }, function(err, korisnik) {
     if (err)
     {
       console.log(err);
@@ -61,25 +62,25 @@ projekatRouter
     }
     Korisnik.findByIdAndUpdate(korisnik._id, {$pull:{"projekti":req.params.id}}, function (err)
     {
-      if(err)
-      {
-        console.log(err);
-        next(err);
-      }
+    if(err)
+    {
+      console.log(err);
+      next(err);
+    }
     });
     Projekat.findByIdAndUpdate(req.params.id, {$pull:{"korisnici":korisnik._id}}, function (err, entry) {
-      if (err)
-      {
-        console.log(err);
-        next(err);
-      }
-      res.json(entry);
-    });
+    if (err)
+    {
+      console.log(err);
+      next(err);
+    }
+    res.json(entry);
+   });
   });
 })
-.put('/:id/dodajKor', function(req, res, next) {
+.put('/:_id/dodaj/:korId', function(req, res, next) {
   Korisnik.findOne({
-    "_id": req.body.params.korisnikID
+    "_id": req.params.korId
   }, function(err, korisnik) {
     if (err)
     {
@@ -94,7 +95,7 @@ projekatRouter
         next(err);
       }
     });
-    Projekat.findByIdAndUpdate(req.params.id, {$push:{"korisnici":korisnik}}, function (err, entry) {
+    Projekat.findByIdAndUpdate(req.params._id, {$push:{"korisnici":korisnik._id}}, function (err, entry) {
       if (err)
       {
         console.log(err);

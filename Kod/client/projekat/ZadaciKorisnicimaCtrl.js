@@ -1,9 +1,8 @@
 (function(angular){
 
-	var app = angular.module('app');
+	var projekatModul = angular.module('projEntry');
 
-	var ZadaciKorisnicimaCtrl = function ($scope, $http, $resource, $stateParams, $location) 
-	{
+	projekatModul.controller('ZadaciKorisnicimaCtrl', ["$scope", "$http", "$resource", "$stateParams", "$location","ZadatakEntry", "ProjekatEntry", "KorisnikEntry" ,function ($scope, $http, $resource, $stateParams, $location, ZadatakEntry, ProjekatEntry, KorisnikEntry){
 		var projEntryId;
 		if(!angular.equals({}, $stateParams)){
 			var korEntryId = $stateParams.id2;
@@ -12,14 +11,8 @@
 		
 		$scope.Users = [];
 
-		$http.get('/api/korisnik/').success(function(korisnici, status, headers1) {
-
-			for(var i = 0; i < korisnici.length; i++){
-				var korisnik = korisnici[i];
-				if(korisnik.vrsta == 'korisnik'){
-					$scope.Users.push(korisnik);
-				}
-			}
+		ProjekatEntry.get({_id: projEntryId},function(projekat){
+			$scope.Users = projekat.korisnici;
 		});
 
 		/*
@@ -36,16 +29,16 @@
 				//druga je za da se prodju svi zadaci na kojima korisnici rade, iz svih projekata(jbg tako smo schemu napravili)
 				//treca je da se uporede ti zadaci sa zadacima na trenutnom projektu
 				//oni koji su isti se racunaju kao brojac++, inace se preskacu.
-				$http.get('/api/projekat/' + $stateParams.id)
-				.success(function(data, status, headers)
-				{
+				ProjekatEntry.get({_id: $stateParams.id}, function(data){
+					
 					for (var i = 0; i < data.korisnici.length; i++) 
 					{
 						var brojac = 0;
-						for(var j=0; j<data.zadatak.length; j++)
+						for(var z=0; z<data.korisnici[i].zadatak.length; z++)
 						{
-							for(var z=0; z<data.korisnici[i].zadatak.length; z++)
+							for(var j=0; j<data.zadatak.length; j++)
 							{
+							
 								if(data.zadatak[j]._id === data.korisnici[i].zadatak[z])
 								{
 									brojac = brojac + 1;
@@ -107,16 +100,13 @@
 
 				    $location.path('/admin/' + korEntryId + '/projekat/' + data._id + '/izvestaji/izvestaj1');
 				});
+				}
 			}
-		};
 
-		/*
-		Funkcija za kreiranje izvestaja Zavrseni zadaci.
-		*/
+
 		$scope.izvestaj2 = function(){
 			if(!angular.equals({}, $stateParams)){
-				$http.get('/api/projekat/' + $stateParams.id)
-				.success(function(data, status, headers){
+				ProjekatEntry.get({_id: $stateParams.id}, function(data){
 					$scope.projekat = data;
 					function podaci(){
 						var ukupnoZadataka = [];
@@ -214,15 +204,11 @@
 			}
 		};
 
-		/*
-		Funkcija za kreiranje izvestaja Dinamika kreiranja zadataka na projektu.
-		*/
-        $scope.izvestaj3 = function() {
+		$scope.izvestaj3 = function() {
              var podaci = [];
 
              if (!angular.equals({}, $stateParams)) {
-                 $http.get('/api/projekat/' + $stateParams.id)
-                      .success(function(data, status, headers) {
+                      	ProjekatEntry.get({_id: $stateParams.id}, function(data){
                           var zadaci = data.zadatak;                // Preuzmemo spisak zadataka
 
                           // var currentDate = new Date();             // Preuzmemo trenutni datum
@@ -255,7 +241,7 @@
                           // Crtanje grafika
                           nv.addGraph(function() {
                               var chart = nv.models.discreteBarChart() /*multiBarHorizontalChart()*/
-                                                    .x(function(d) {return d.label;})
+                                                   .x(function(d) {return d.label;})
                                                     .y(function(d) {return d.value;})
                                                     // .margin({top: 30, right: 20, bottom: 50, left: 175})
                                                     // .staggerLabels(true)
@@ -274,15 +260,11 @@
              }
          };
 
-        /*
-		Funkcija za kreiranje izvestaja Dinamika završavanja zadataka na projektu.
-        */
-		$scope.izvestaj4 = function() {
+         $scope.izvestaj4 = function() {
 			var podaci = [];
 
 			if (!angular.equals({}, $stateParams)) {
-				$http.get('/api/projekat/' + $stateParams.id)
-					 .success(function(data, status, headers) {
+				ProjekatEntry.get({_id: $stateParams.id}, function(data){
 						 var zadaci = data.zadatak;					// Preuzmemo spisak zadataka
 
 						 // var currentDate = new Date();				// Preuzmemo trenutni datum
@@ -353,12 +335,150 @@
 						 $location.path('/admin/' + korEntryId + '/projekat/'+data._id+'/izvestaji/izvestaj4');
 					 });
 			}
+		};
+
+		$scope.izvestaj5 = function(prosledjeniKorisnik) {
+			var podaciKorisnika = {};
+			var redniBrojKorisnika = 0;
+			ProjekatEntry.get({_id: $stateParams.id}, function(projekti){
+				KorisnikEntry.query(function(svi_korisnici){
+					
+					/*
+					$http.get('/api/projekat/').success(function(projekti, status, headers) {
+						$http.get('/api/korisnik/').success(function(svi_korisnici, status1, headers1) 
+					*/
+
+					// OVDE SU SVI KORISNICI NA PROJEKTU
+					var korisnici = projekti.korisnici;
+					
+
+					// STAVLJAMO SVE KORISNIKE NA SCOPE
+					$scope.Users = korisnici;
+
+					// OVDE SU ZADACI KOJI SE NALAZE NA PROJEKTU
+					var zadaci = projekti.zadatak;
+
+					// OVDE SU ZADACI NASEG KORISNIKA KOJEG SMO SELEKTOVALI U COMBOBOX-U U HTML-U
+					var zadaciOdabranogKorisnika = [];
+					// for (var i = 0; i < korisnici.length; i++) {
+					// 	var zadaciKorisnika = [];
+					// 	var korisnik = korisnici[i];
+					for (var j = 0; j < zadaci.length; j++) {
+						var zadatak = zadaci[j];
+						if(prosledjeniKorisnik == zadatak.korisnik._id){
+							zadaciOdabranogKorisnika.push(zadatak);
+						}
+					}
+					// 	zadaciSvihKorisnika[korisnici[i]._id] = zadaciKorisnika;
+					// }
+						
+					// var redniBrojKorisnika = 0;
+					// for (var korisnik in zadaciSvihKorisnika) {
+						var zadaci = zadaciOdabranogKorisnika;
+						var podaci = [];
+						var brojZadatakaPoDanu = {};						// Sadrži broj završenih zadataka po danu
+
+						 // Određivanje broja završenih zadataka po danu
+						for (var i = 0; i < zadaci.length; i++) {
+							 var zadatak = zadaci[i];
+
+							 if (zadatak.status == 'Done') {
+								 var updatedAt = zadatak.updatedAt;
+
+								 var year = updatedAt.substr(0, 4);
+								 var month = updatedAt.substr(5, 2);
+								 var day = updatedAt.substr(8, 2);
+
+								 var updatedAtFormated = day+"/"+month+"/"+year;
+								 if (brojZadatakaPoDanu[updatedAtFormated] == undefined) {
+									 brojZadatakaPoDanu[updatedAtFormated] = 1;
+								 } else {
+									 brojZadatakaPoDanu[updatedAtFormated]++;
+								 }
+							 }
+						}
+
+						for (var stavka in brojZadatakaPoDanu) {
+							 podaci.push({label: stavka, value: brojZadatakaPoDanu[stavka]});
+						}
+
+						 podaci.sort(function(a, b) {
+							 var daya = a.label.substr(0, 2);
+							 var dayb = b.label.substr(0, 2);
+							 var montha = a.label.substr(3, 2);
+							 var monthb = b.label.substr(3, 2);
+							 var yeara = a.label.substr(6, 4);
+							 var yearb = b.label.substr(6, 4);
+
+							 var datea = new Date(yeara, montha, daya);
+							 var dateb = new Date(yearb, monthb, dayb);
+
+							 // console.log(datea+"||"+dateb);
+							 if (datea > dateb) {
+								 return 1;
+							 }
+							 if (datea < dateb)
+								 return -1;
+
+							 return 0;
+						 });
+
+						 var podaciChart = [{key: "Naslov", values: podaci}];
+
+						  nv.addGraph(function() {
+							 var chart = nv.models.discreteBarChart()
+								 .x(function(d) {return d.label;})
+								 .y(function(d) {return d.value;})
+								 .showValues(true);
+							var id_grafika = "#test5" + " svg";
+							 d3.select(id_grafika)
+								 .datum(podaciChart)
+								 .call(chart);
+
+
+							// 	 var proba = 5;
+
+							// redniBrojKorisnika++;	
+							 return chart;
+
+						 });
+						
+					// }
+
+					 $location.path('/admin/' + korEntryId + '/projekat/'+ $stateParams.id +'/izvestaji/izvestaj5');
+				 });
+				 });	
 		};	
+
+		$scope.selektuj = function(selektovanKorisnik){
+
+    		$scope.izvestaj5(selektovanKorisnik);
+    	}
+
+    	$scope.prikaz = function(){
+
+    		$location.path('/admin/' + korEntryId + '/projekat/' + projEntryId + '/izvestaji/izvestaj5');
+    	}
+
+		$scope.nazadNaZadatke = function(){
+			$location.path('/admin/' + korEntryId + '/main' );
+		}
+
+	}]);
+
+/*
+	var ZadaciKorisnicimaCtrl = function ($scope, $http, $resource, $stateParams, $location) 
+	{
+	
+        /*
+		Funkcija za kreiranje izvestaja Dinamika završavanja zadataka na projektu.
+        */
+		/*
 
 		/*
 		Funkcija za kreiranje izvestaja Aktivnost korisnika na projektu.
 		*/
-		$scope.izvestaj5 = function(prosledjeniKorisnik) {
+		/*$scope.izvestaj5 = function(prosledjeniKorisnik) {
 			var podaciKorisnika = {};
 			var redniBrojKorisnika = 0;
 			$http.get('/api/projekat/').success(function(projekti, status, headers) {
@@ -495,5 +615,5 @@
 		}
 	}
 
-	app.controller('ZadaciKorisnicimaCtrl', ZadaciKorisnicimaCtrl);
+	app.controller('ZadaciKorisnicimaCtrl', ZadaciKorisnicimaCtrl);*/
 })(angular)

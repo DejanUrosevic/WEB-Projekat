@@ -1,7 +1,7 @@
 (function(angular) {
 
 	angular.module('zadEntry', ['zadatak.resource', 'projekat.resource', 'korisnik.resource'])
-    .controller('zadatakCtrl', function ($scope, $stateParams, $state, $location, ZadatakEntry, ProjekatEntry, $http)
+    .controller('zadatakCtrl',["$scope", "$stateParams", "$state", "$location", "ZadatakEntry", "ProjekatEntry", "$http", function ($scope, $stateParams, $state, $location, ZadatakEntry, ProjekatEntry, $http)
     {
     	if(!angular.equals({}, $stateParams)){
 			var korEntryId = $stateParams.id2;	
@@ -63,7 +63,5 @@
 				$scope.saveZadatak();
 			}
 		};
-
-
-    });
+    }]);
 })(angular)

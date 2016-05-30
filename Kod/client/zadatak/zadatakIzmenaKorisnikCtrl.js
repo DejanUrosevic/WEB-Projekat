@@ -1,9 +1,8 @@
 (function(angular){
 
 	var appModule = angular.module('zadEntry');
-	appModule.controller('zadatakIzmenaKorisnikCtrl', function ($scope, $stateParams, $state, ZadatakEntry)
+	appModule.controller('zadatakIzmenaKorisnikCtrl', ["$scope", "$stateParams", "$state", "ZadatakEntry", function ($scope, $stateParams, $state, ZadatakEntry)
 	{
-
 		if(!angular.equals({}, $stateParams))
 		{
 			var zadEntryId = $stateParams.id2;
@@ -24,8 +23,5 @@
 				$scope.izmena();
 			}
 		};
-
-
-	});
-
+	}]);
 })(angular)

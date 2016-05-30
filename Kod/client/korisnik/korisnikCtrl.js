@@ -1,7 +1,7 @@
 (function (angular) {
 	
 	angular.module('korEntry', ['korisnik.resource', 'zadatak.resource', 'projekat.resource', 'komentar.resource'])
-	.controller('korisnikCtrl', function ($scope, $state, $stateParams, $http, KorisnikEntry)
+	.controller('korisnikCtrl', ["$scope", "$state", "$stateParams", "$http", "KorisnikEntry", function ($scope, $state, $stateParams, $http, KorisnikEntry)
 	{
 
 		if(!angular.equals({}, $stateParams)) 
@@ -47,5 +47,5 @@
       	};
 
 
-	});
+	}]);
 })(angular)

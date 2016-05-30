@@ -1,7 +1,7 @@
 (function(angular) {
 
 	var zadatakModule = angular.module('zadEntry');
-	zadatakModule.controller('zadatakBrisanjeCtrl', function ($scope, $stateParams, $location, $state, ZadatakEntry, ProjekatEntry)
+	zadatakModule.controller('zadatakBrisanjeCtrl', ["$scope", "$stateParams", "$location", "$state", "ZadatakEntry", "ProjekatEntry", function ($scope, $stateParams, $location, $state, ZadatakEntry, ProjekatEntry)
 	{
 		if(!angular.equals({}, $stateParams)){
 			var korEntryId = $stateParams.id2;
@@ -62,5 +62,5 @@
 			$state.go('zadaciIzmene', {id3: korEntryId, id: projekatId, id2: zadatakId});
 			//$location.path('/admin/' + korEntryId + '/projekat/' + projekatId + '/zadatak/' + zadatakId + '/izmene');
 		}
-	});
+	}]);
 })(angular)

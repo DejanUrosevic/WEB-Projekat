@@ -1,7 +1,7 @@
 (function(angular) {
 
 	var appModule = angular.module('zadEntry');
-	appModule.controller('mojiZadaciCtrl', function($scope, $stateParams, $state, ZadatakEntry, ProjekatEntry, KorisnikEntry)
+	appModule.controller('mojiZadaciCtrl', ["$scope", "$stateParams", "$state", "ZadatakEntry", "ProjekatEntry", "KorisnikEntry", function($scope, $stateParams, $state, ZadatakEntry, ProjekatEntry, KorisnikEntry)
 	{
 		if(!angular.equals({}, $stateParams)){
 			var korEntryId = $stateParams.id;
@@ -122,5 +122,5 @@
 				
 		}
 
-	});
+	}]);
 })(angular)

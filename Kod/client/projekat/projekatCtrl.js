@@ -1,7 +1,7 @@
 (function(angular){
 
-	angular.module('projEntry', ['projekat.resource', 'korisnik.resource'])
-	.controller('projekatCtrl', function ($scope, ProjekatEntry, $location, $stateParams, $state)
+	angular.module('projEntry', ['projekat.resource', 'korisnik.resource', 'zadatak.resource'])
+	.controller('projekatCtrl', ["$scope", "ProjekatEntry", "$location", "$stateParams", "$state", function ($scope, ProjekatEntry, $location, $stateParams, $state)
 	{
 		var loadEntries = function () 
 		{
@@ -58,8 +58,8 @@
       	$scope.dodajProjekat = function(){
       		$state.go('addProjekat', {id2: korEntryId});
       	}
-	})
-	.controller('korisnikProjekatZadaciCtrl', function ($scope,  $stateParams, $state, ProjekatEntry, KorisnikEntry)
+	}])
+	.controller('korisnikProjekatZadaciCtrl', ["$scope",  "$stateParams", "$state", "ProjekatEntry", "KorisnikEntry", function ($scope,  $stateParams, $state, ProjekatEntry, KorisnikEntry)
 	{
 		if(!angular.equals({}, $stateParams))
 		{
@@ -95,6 +95,5 @@
 			//$location.path('korisnik/' + korEntryId + '/projekat/' + projekatID + '/zadatak/' + zadatakID + '/izmene');
 				
 		}
-	});
-	
+	}]);
 })(angular)

@@ -1,7 +1,7 @@
 (function(angular){
 
 	var komentariModul = angular.module('commEntry');
-	komentariModul.controller('komentariIzmenaCtrl', function ($scope, $http, $stateParams, ZadatakEntry, ProjekatEntry, KomentarEntry, $state)
+	komentariModul.controller('komentariIzmenaCtrl',["$scope", "$http", "$stateParams", "ZadatakEntry", "ProjekatEntry", "KomentarEntry", "$state", function ($scope, $http, $stateParams, ZadatakEntry, ProjekatEntry, KomentarEntry, $state)
 	{
 
 		if(!angular.equals({}, $stateParams))
@@ -25,5 +25,5 @@
 			}
 		}
 
-	});
+	}]);
 })(angular)

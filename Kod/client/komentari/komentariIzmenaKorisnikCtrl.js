@@ -1,7 +1,7 @@
 (function(angular){
 
 	var commModule = angular.module('commEntry');
-	commModule.controller('komentariIzmenaKorisnikCtrl', function ($scope, $stateParams, $state, KomentarEntry)
+	commModule.controller('komentariIzmenaKorisnikCtrl',["$scope", "$stateParams", "$state", "KomentarEntry", function ($scope, $stateParams, $state, KomentarEntry)
 	{
 		if(!angular.equals({}, $stateParams))
 		{
@@ -23,6 +23,6 @@
 			}
 		}
 
-	});
+	}]);
 
 })(angular)
